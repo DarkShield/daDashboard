@@ -1,0 +1,13 @@
+{
+    "name": "Vice"
+  , "description": "Top Secret"
+  , "version": "0.0.1"
+  , "private": true
+  , "author": "Mattjay & ProZachJ"
+  , "dependencies": {
+      "express": "latest"
+    , "mongoose": "latest"
+    , "connect": "latest"
+    , "bcrypt": "latest"
+  }
+}

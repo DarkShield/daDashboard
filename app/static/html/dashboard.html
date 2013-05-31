@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html data-ng-app="dashboard" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+
+    <link href="../css/customizations.css" rel="stylesheet" media="screen">
+    <script src="../js/vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/vendor/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/vendor/angular.min.js"></script>
+    <script type="text/javascript" src="../js/directives/angular-strap/dist/angular-strap.js"></script>
+    <script type="text/javascript" src="../js/dashboard.js"></script>
+    <!-- Controllers -->
+    <script type="text/javascript" src="../js/controllers/sidebarCtrl.js"></script>
+    <script type="text/javascript" src="../js/controllers/drilldownCtrl.js"></script>
+    <!-- Services -->
+    <script type="text/javascript" src="../js/services/domainService.js"></script>
+    <title>Vice Dashboard</title>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-static-top" bs-navbar>
+        <div class="navbar-inner">
+            <a class="brand" href="#">Vice Dashboard</a>
+            <ul class="nav">
+                <!-- You can use regular expressions -->
+                <!--<li data-match-route="/(:?navbar)"><a href="">Home</a></li>-->
+            </ul>
+            <form class="navbar-search pull-right">
+                <input name="Searchbar" type="text" class="search-query pull-left" data-ng-style="myStyle" data-ng-click="myStyle={width: 1300}" data-ng-mouseleave="myStyle={}" placeholder="Search">
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="well sidebar-nav" ng-controller="sidebarCtrl">
+                   <ul class="nav nav-list">
+                       <li class="nav-header">
+                           <a href=""><i class="icon-fire"></i>
+                               Threats
+                           </a>
+                       </li>
+                       <li class="nav-header">
+                           <a href=""><i class="icon-exclamation-sign"></i>
+                               Alerts
+                           </a>
+                       </li>
+                       <li id="sites" class="nav-header"  data-ng-Mouseover="sites.visible = true">
+                           <a data-ng-click="sites.visible = !sites.visible" href=""><i class="icon-home" ng-click="test()"></i>
+                               Sites
+			       <span class="badge badge-important pull-right">{{domains.length}}</span></a>
+                           <div data-ng-show="sites.visible" data-ng-init="getDomains()">
+                            <a data-ng-repeat="domain in domains" data-ng-click="select(domain)" href=""><ul><!--<a data-ng-click="getRequestData(domain.name)" href="">-->{{domain.name}}<!--</a>--></ul></a>
+                           </div>
+                       </li>
+                       <li class="nav-header"><a href=""><i class="icon-eye-close"></i> Config</a></li>
+                   </ul>
+                </div>
+            </div>
+
+            <div class="span9" data-ng-controller="drilldownCtrl">
+               <div class="page-header">
+                     <div class="btn-group pull-left">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+                           Filter By: {{filterby}}
+                           <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                           <li><a href="" data-ng-click="filterby = '';">All</a></li>
+                           <li><a href="" data-ng-click="filterby = 'XSS';">XSS</a></li>
+                           <li><a href="" data-ng-click="filterby = 'SQL';">SQLi</a></li>
+                           <li><a href="" data-ng-click="filterby = 'Directory Traversal';">Directory Traversal</a></li>
+                        </ul>
+                     </div>
+                     <p class="lead">&nbsp;Attacks: {{attacks()}}</p
+            </div>
+
+		    <table class="table table-striped"><thead><!--<tr>Attacks: {{attacks()}}</tr>--><tr class="text-info"><td><a href="" data-ng-click="sort = 'date'; reverse=!reverse">Date</a></td><td><a href="" data-ng-click="sort = 'method'; reverse=!reverse">Method</a></td><td><a href="" data-ng-click="sort = 'url'; reverse=!reverse">URL</a></td><!--<td><a href="" data-ng-click="sort = 'headers'; reverse=!reverse">Headers</a></td>--><td><a href="" data-ng-click="sort = 'body'; reverse=!reverse">Body</a></td><td><a href="" data-ng-click="sort = 'from'; reverse=!reverse">From</a></td></tr></thead><tbody><tr data-ng-repeat="requestData in details() | filter:filterby | orderBy:sort:reverse"><td>{{requestData.requestedtimestamp}}</td><td>{{requestData.method}}</td><td>{{requestData.url}}</td><!--<td>{{requestData.headers}}</td>--><td>{{requestData.body}}</td><td>{{requestData.remoteIP}}:{{requestData.remotePort}}</td></tr></tbody></table>
+                
+                <!--<div class="hero-unit">
+                    <h1>DATA!</h1>
+                    <p>Man there are going to be some really fancy graphics
+                        and animations going on here but for now I'll just type
+                    a bunch of placeholder text.</p>
+
+                    <div class="span4 navbar">
+                        <div class="navbar-inner">
+                            <a class="brand" href="">Widget</a>
+                        </div>
+                    </div>
+                    <div class="span4 navbar">
+                        <div class="navbar-inner">
+                            <a class="brand" href="">Widget</a>
+                        </div>
+                    </div>
+                    <div class="span4 navbar">
+                    <div class="navbar-inner">
+                        <a class="brand" href="">Widget</a>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 navbar">
+                        <div class="navbar-inner">
+                            <a class="brand" href="">Widget</a>
+                        </div>
+                    </div>
+                    <div class="span4 navbar">
+                        <div class="navbar-inner">
+                            <a class="brand" href="">Widget</a>
+                        </div>
+                    </div>
+                    <div class="span4 navbar">
+                        <div class="navbar-inner">
+                            <a class="brand" href="">Widget</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
