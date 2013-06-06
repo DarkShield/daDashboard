@@ -98,6 +98,19 @@ describe('routes', function(){
       expect(typeof(routes.signup)).toBe('function');
       expect(routes.signup.name).toBe('addAccount');
     });
+
+    it('should call send with an argument of "ok", 400 when user is created successfully', function(){
+      var req = {
+            name : 'testy mctesterson',
+            email : 'test@email.com',
+            user : 'testuser',
+            pass: 'testpassword',
+            country : 'testmerica'
+          }
+       //TODO: need to figure out a way to test the actual act of adding to the db
+       //without actually adding to the db. Jasmine does provide interupt functions
+       //capabilites just need to figure out how to implement here.
+    });
   });
 
   //nested describe for domain route
