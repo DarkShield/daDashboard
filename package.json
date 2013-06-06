@@ -7,6 +7,10 @@
   , "dependencies": {
       "express": "latest"
     , "mongoose": "latest"
+    , "vows": "latest"
+    , "mitm-proxy": "0.0.1"
+    , "http-proxy": "latest"
+    , "fusker": "latest"
     , "connect": "latest"
     , "bcrypt": "latest"
   }
