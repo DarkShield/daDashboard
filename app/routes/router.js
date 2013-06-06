@@ -21,6 +21,22 @@ exports.login = function authenticate (req, res) {
   User.getAuthenticated(username, password, respond);
 }
 
+exports.signup = function addAccount (req, res) {
+  var newAccountData = {
+        name : req.param('name'),
+        email : req.param('email'),
+        user : req.param('user'),
+        pass : req.param('pass'),
+        country : req.param('country')
+      };
+  User.addNewAccount(newAccountData, function(e){
+    if(e){
+      res.send(e, 400);
+    } else{
+      res.send('ok', 200);
+    }
+  });
+}
 
 exports.domains = function getDomains(req, res){
   res.send(req.session.user.sites);

@@ -1,7 +1,7 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost', 'vicetest', function(err){
+mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   console.log('Successfully connected to mongo');
 });
@@ -88,6 +88,15 @@ describe('routes', function(){
         expect(res.redirect).toHaveBeenCalledWith('/login');
       });
 
+    });
+  });
+
+  //nested describe for signup route
+  describe('signup route', function(){
+
+    it('should have a signup property that references a method named addAccount', function(){
+      expect(typeof(routes.signup)).toBe('function');
+      expect(routes.signup.name).toBe('addAccount');
     });
   });
 
