@@ -18,7 +18,7 @@ var mongoose = require('mongoose'),
     LOCK_TIME = 2 * 60 * 60 * 1000;
 
 /* establish the database connection */
-mongoose.connect('10.192.198.253', 'vicetest', function(err) {
+mongoose.connect('localhost', 'vicetest', function(err) {
 //mongoose.connect('localhost', dbName, function(err) {
     if (err) throw err;
     console.log('Successfully connected to MongoDB');
