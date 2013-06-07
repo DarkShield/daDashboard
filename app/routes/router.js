@@ -1,7 +1,5 @@
-var User = require('../model/user'),
-    RequestStore = require('../../lib/requestSchema');
-
-exports.user = User;
+var User = exports.User = require('../model/user'),
+    RequestStore = exports.RequestStore = require('../../lib/requestSchema');
 
 exports.loginpage = function loginpage (req, res) {
   res.sendfile('./public/html/login.html');
