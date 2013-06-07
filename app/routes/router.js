@@ -1,6 +1,8 @@
 var User = require('../model/user'),
     RequestStore = require('../../lib/requestSchema');
 
+exports.user = User;
+
 exports.loginpage = function loginpage (req, res) {
   res.sendfile('./public/html/login.html');
 }
@@ -9,7 +11,7 @@ exports.loginpage = function loginpage (req, res) {
 exports.login = function authenticate (req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var respond = function (err, user, reason) {
+  var respond = function respond (err, user, reason) {
     if (user !==null){
       req.session.user = user;
       res.sendfile('./routes/html/dashboard.html');
