@@ -50,6 +50,7 @@ describe('routes', function(){
             redirect: function(req, res){}
           };
       spyOn(res, 'redirect');
+      spyOn(routes.User,'getAuthenticated').andCallThrough();
       runs(function(){
         routes.login(req, res);
       });
@@ -61,6 +62,10 @@ describe('routes', function(){
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith('/home');
+        expect(routes.User.getAuthenticated).toHaveBeenCalled();
+	expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
+	expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
+	expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');	
       });
     });
 

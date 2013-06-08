@@ -1,5 +1,5 @@
 {
-    "name": "Vice"
+    "name": "Dashboard"
   , "description": "Top Secret"
   , "version": "0.0.1"
   , "private": true
@@ -7,11 +7,12 @@
   , "dependencies": {
       "express": "latest"
     , "mongoose": "latest"
-    , "vows": "latest"
-    , "mitm-proxy": "0.0.1"
-    , "http-proxy": "latest"
-    , "fusker": "latest"
     , "connect": "latest"
     , "bcrypt": "latest"
   }
+  ,"devDependencies": {
+      "jasmine-node": "latest"
+      ,"karma": "latest"
+  }
+  ,"engine": "node>=0.10.5"
 }
