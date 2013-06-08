@@ -12,7 +12,9 @@ exports.login = function authenticate (req, res) {
   var respond = function (err, user, reason) {
     if (user !==null){
       req.session.user = user;
-      res.sendfile('./routes/html/dashboard.html');
+      req.session.user_id = user.id;
+      //res.sendfile('./routes/html/dashboard.html');
+      res.redirect('/home');
     } else {
       req.session.user = {'reason':reason, 'error':err};
       res.redirect('/login');
@@ -21,6 +23,9 @@ exports.login = function authenticate (req, res) {
   User.getAuthenticated(username, password, respond);
 }
 
+exports.home = function homePage (req, res) {
+  res.sendfile('./routes/html/dashboard.html');
+}
 
 exports.domains = function getDomains(req, res){
   res.send(req.session.user.sites);

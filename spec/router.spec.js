@@ -1,7 +1,8 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost', 'vicetest', function(err){
+//mongoose.connect('localhost', 'vicetest', function(err){
+mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   console.log('Successfully connected to mongo');
 });
@@ -20,7 +21,7 @@ describe('routes', function(){
       expect(routes.loginpage.name).toBe('loginpage');
     });
 
-    it('should call sendFile with argument "./public/html/login.html"', function(){
+    it('should call sendfile with argument "./public/html/login.html"', function(){
       var req = {};
       var res = {
             sendfile: function(req, res){}
@@ -40,16 +41,15 @@ describe('routes', function(){
       expect(routes.login.name).toBe('authenticate');
     });
 
-    it('should call sendfile with argument "./routes/html/dashboard.html" when username and password are valid', function(){
+    it('should call redirect with argument "/home" when username and password are valid', function(){
       var req = {
             body: { username: 'mattjay', password: 'mattjay' },
             session: { user: null }
           };
       var res = {
-            sendfile: function(req, res){},
             redirect: function(req, res){}
           };
-      spyOn(res, 'sendfile', 'redirect');
+      spyOn(res, 'redirect');
       runs(function(){
         routes.login(req, res);
       });
@@ -59,8 +59,8 @@ describe('routes', function(){
       }, 'User should be set', 750);
 
       runs(function() {
-        expect(res.sendfile).toHaveBeenCalled();
-        expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+        expect(res.redirect).toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith('/home');
       });
     });
 
@@ -70,10 +70,8 @@ describe('routes', function(){
             session: { user: null }
           };
       var res = {
-            sendfile: function(req, res){},
             redirect: function(req, res){}
           };
-      spyOn(res, 'sendfile');
       spyOn(res, 'redirect');
       runs(function(){
         routes.login(req, res);
@@ -135,7 +133,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 750);
+      }, 'Send to be called', 7500);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
@@ -166,7 +164,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 750);
+      }, 'Send to be called', 7500);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
