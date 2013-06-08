@@ -89,6 +89,26 @@ describe('routes', function(){
     });
   });
 
+  //nested describe for home route
+  describe('home route', function(){
+  
+    it('should have a home property that references a method named homePage', function(){
+      expect(typeof(routes.home)).toBe('function');
+      expect(routes.home.name).toBe('homePage');
+    });
+
+    it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
+      var req = {};
+      var res = {
+            sendfile: function(req, res){}
+          };
+      spyOn(res, 'sendfile');
+      routes.home(req, res);
+      expect(res.sendfile).toHaveBeenCalled();
+      expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+    }); 
+  });
+
   //nested describe for domain route
   describe('domain route', function(){
 
@@ -133,7 +153,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 7500);
+      }, 'Send to be called', 1000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
@@ -164,7 +184,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 7500);
+      }, 'Send to be called', 1000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
