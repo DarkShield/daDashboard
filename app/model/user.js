@@ -10,11 +10,12 @@ var UserSchema = new Schema({
     user : { type : String, required : true, index : { unique: true } },
     pass : { type : String, required : true },
     email : { type : String, required : true },
+    name : String,
     //date : Date,
     loginAttempts : { type : Number, required : true, default : 0 },
-    lockUntil : { type: Number }
+    lockUntil : { type: Number },
     //account : { type : Schema.ObjectID, ref : 'Account' },
-    //sites : [ { type : Schema.ObjectID, ref : 'Site' } ]
+    sites : Array
 });
 
 UserSchema.virtual('isLocked').get(function() {
@@ -79,6 +80,31 @@ var reasons = UserSchema.statics.failedLogin = {
     PASSWORD_INCORRECT: 1,
     MAX_ATTEMPTS: 2
 };
+
+//add new account
+UserSchema.statics.addNewAccount = function(newData, callback) {
+  var user = this;
+  var data = user(newData);
+  user.findOne({user:newData.user}, function(e, o) {
+    if (o){
+      callback('username-taken');
+    } else{
+      user.findOne({email:newData.email}, function(e, o) {
+        if (o){
+          callback('email-taken');
+        } else {
+          data.save(function(err) {
+            if (err) { callback(err); }
+            else { 
+              console.log('account created');
+              callback('account created');
+            }
+          });
+        }
+      });
+    }
+  });
+}
 
 UserSchema.statics.getAuthenticated = function(username, password, cb) {
     this.findOne({ user: username }, function(err, user) {

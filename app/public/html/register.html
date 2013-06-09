@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+CTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Sign in &middot; Twitter Bootstrap</title>
+    <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -16,7 +16,7 @@
         background-color: #f5f5f5;
       }
 
-      .form-signin {
+      .form-register {
         max-width: 300px;
         padding: 19px 29px 29px;
         margin: 0 auto 20px;
@@ -29,12 +29,12 @@
            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
                 box-shadow: 0 1px 2px rgba(0,0,0,.05);
       }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
+      .form-register .form-register-heading,
+      .form-register .checkbox {
         margin-bottom: 10px;
       }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
+      .form-register input[type="text"],
+      .form-register input[type="password"] {
         font-size: 16px;
         height: auto;
         margin-bottom: 15px;
@@ -61,13 +61,17 @@
 
     <div class="container">
 
-      <form class="form-signin" method="POST" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" name="username" class="input-block-level" placeholder="Email address">
-        <input type="password" name="password" class="input-block-level" placeholder="Password">
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+      <form class="form-register" method="POST" action="/signup">
+        <h2 class="form-register-heading">Please Create An Account</h2>
+        <input type="text" name="name" class="input-block-level" placeholder="Full Name">
+        <input type="text" name="email" class="input-block-level" placeholder="E-Mail Address">
+        <input type="text" name="user" class="input-block-level" placeholder="Username">
+        <input type="password" name="pass1" class="input-block-level" placeholder="Password">
+        <input type="password" name="pass2" class="input-block-level" placeholder="Re-Type Password">
+        <input type="text" name="sites" class="input-block-level" placeholder="[{'name': 'DOMAIN1'}, {'name': 'DOMAIN2'}]">
+        <button class="btn btn-large btn-primary" type="submit">Sign Up</button>
       </form>
-      <a href="/signup">Register</a>
+
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -89,3 +93,4 @@
 
   </body>
 </html>
+

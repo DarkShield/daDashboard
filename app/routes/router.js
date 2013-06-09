@@ -21,21 +21,31 @@ exports.login = function authenticate (req, res) {
   User.getAuthenticated(username, password, respond);
 }
 
+exports.signuppage = function signuppage (req, res) {
+  res.sendfile('./public/html/register.html');
+}
+
 exports.signup = function addAccount (req, res) {
   var newAccountData = {
         name : req.param('name'),
         email : req.param('email'),
         user : req.param('user'),
-        pass : req.param('pass'),
-        country : req.param('country')
+        pass : req.param('pass1'),
+        sites : req.param('sites')
       };
-  User.addNewAccount(newAccountData, function(e){
-    if(e){
-      res.send(e, 400);
-    } else{
-      res.send('ok', 200);
-    }
-  });
+  if (req.param('pass1') != req.param('pass2')) {
+    res.redirect('/signup');
+  } else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites){
+    User.addNewAccount(newAccountData, function(e){
+      if(e){
+        res.send(e, 400);
+      } else{
+        res.redirect('/login');
+      }
+    });
+  } else {
+    res.send('Please provide all information');
+  }
 }
 
 exports.domains = function getDomains(req, res){
