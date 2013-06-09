@@ -1,5 +1,5 @@
-var User = require('../model/user'),
-    RequestStore = require('../../lib/requestSchema');
+var User = exports.User = require('../model/user'),
+    RequestStore = exports.RequestStore = require('../../lib/requestSchema');
 
 exports.loginpage = function loginpage (req, res) {
   res.sendfile('./public/html/login.html');
@@ -9,10 +9,12 @@ exports.loginpage = function loginpage (req, res) {
 exports.login = function authenticate (req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var respond = function (err, user, reason) {
+  var respond = function respond (err, user, reason) {
     if (user !==null){
       req.session.user = user;
-      res.sendfile('./routes/html/dashboard.html');
+      req.session.user_id = user.id;
+      //res.sendfile('./routes/html/dashboard.html');
+      res.redirect('/home');
     } else {
       req.session.user = {'reason':reason, 'error':err};
       res.redirect('/login');
@@ -46,6 +48,9 @@ exports.signup = function addAccount (req, res) {
   } else {
     res.send('Please provide all information');
   }
+
+exports.home = function homePage (req, res) {
+  res.sendfile('./routes/html/dashboard.html');
 }
 
 exports.domains = function getDomains(req, res){

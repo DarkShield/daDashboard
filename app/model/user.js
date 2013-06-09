@@ -18,6 +18,11 @@ var UserSchema = new Schema({
     sites : Array
 });
 
+UserSchema.virtual('id')
+  .get(function() {
+    return this._id.toHexString();
+  });
+
 UserSchema.virtual('isLocked').get(function() {
     // check for a future lockUntil timestamp
     return !!(this.lockUntil && this.lockUntil > Date.now());

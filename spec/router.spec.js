@@ -1,6 +1,7 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
+//mongoose.connect('localhost', 'vicetest', function(err){
 mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   console.log('Successfully connected to mongo');
@@ -20,7 +21,7 @@ describe('routes', function(){
       expect(routes.loginpage.name).toBe('loginpage');
     });
 
-    it('should call sendFile with argument "./public/html/login.html"', function(){
+    it('should call sendfile with argument "./public/html/login.html"', function(){
       var req = {};
       var res = {
             sendfile: function(req, res){}
@@ -40,16 +41,16 @@ describe('routes', function(){
       expect(routes.login.name).toBe('authenticate');
     });
 
-    it('should call sendfile with argument "./routes/html/dashboard.html" when username and password are valid', function(){
+    it('should call redirect with argument "/home" when username and password are valid', function(){
       var req = {
             body: { username: 'mattjay', password: 'mattjay' },
             session: { user: null }
           };
       var res = {
-            sendfile: function(req, res){},
             redirect: function(req, res){}
           };
-      spyOn(res, 'sendfile', 'redirect');
+      spyOn(res, 'redirect');
+      spyOn(routes.User,'getAuthenticated').andCallThrough();
       runs(function(){
         routes.login(req, res);
       });
@@ -59,8 +60,12 @@ describe('routes', function(){
       }, 'User should be set', 750);
 
       runs(function() {
-        expect(res.sendfile).toHaveBeenCalled();
-        expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+        expect(res.redirect).toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith('/home');
+        expect(routes.User.getAuthenticated).toHaveBeenCalled();
+	expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
+	expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
+	expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');	
       });
     });
 
@@ -70,10 +75,8 @@ describe('routes', function(){
             session: { user: null }
           };
       var res = {
-            sendfile: function(req, res){},
             redirect: function(req, res){}
           };
-      spyOn(res, 'sendfile');
       spyOn(res, 'redirect');
       runs(function(){
         routes.login(req, res);
@@ -111,6 +114,25 @@ describe('routes', function(){
        //without actually adding to the db. Jasmine does provide interupt functions
        //capabilites just need to figure out how to implement here.
     });
+  
+  //nested describe for home route
+  describe('home route', function(){
+  
+    it('should have a home property that references a method named homePage', function(){
+      expect(typeof(routes.home)).toBe('function');
+      expect(routes.home.name).toBe('homePage');
+    });
+
+    it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
+      var req = {};
+      var res = {
+            sendfile: function(req, res){}
+          };
+      spyOn(res, 'sendfile');
+      routes.home(req, res);
+      expect(res.sendfile).toHaveBeenCalled();
+      expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+    }); 
   });
 
   //nested describe for domain route
@@ -157,7 +179,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 750);
+      }, 'Send to be called', 1000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
@@ -188,7 +210,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 750);
+      }, 'Send to be called', 1000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
