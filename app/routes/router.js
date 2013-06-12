@@ -48,6 +48,7 @@ exports.signup = function addAccount (req, res) {
   } else {
     res.send('Please provide all information');
   }
+}
 
 exports.home = function homePage (req, res) {
   res.sendfile('./routes/html/dashboard.html');
