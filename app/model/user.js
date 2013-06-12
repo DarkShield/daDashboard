@@ -92,17 +92,17 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
   var data = user(newData);
   user.findOne({user:newData.user}, function(e, o) {
     if (o){
-      callback('username-taken');
+      callback('username-taken', null);
     } else{
       user.findOne({email:newData.email}, function(e, o) {
         if (o){
-          callback('email-taken');
+          callback('email-taken', null);
         } else {
           data.save(function(err) {
             if (err) { callback(err); }
             else { 
               console.log('account created');
-              callback('account created');
+              callback(null, 'account created');
             }
           });
         }
