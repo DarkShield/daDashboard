@@ -9,6 +9,7 @@
     , "mongoose": "latest"
     , "connect": "latest"
     , "bcrypt": "latest"
+    , "emailjs": "latest"
   }
   ,"devDependencies": {
       "jasmine-node": "latest"
