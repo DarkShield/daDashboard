@@ -14,9 +14,11 @@ files = [
   //Include Vendor Files
   './app/public/js/vendor/angular.js',
   './app/public/js/vendor/angular-mocks.js',
-  
+  './app/public/js/directives/angular-strap/dist/angular-strap.js',
+ 
   //Include App Code
   './app/public/js/dashboard.js',
+  './app/public/js/services/*.js',
 
   //Include Unit Tests
   './spec/angular/unit/*.js'
@@ -63,8 +65,8 @@ autoWatch = true;
 // - Safari (only Mac)
 // - PhantomJS
 // - IE (only Windows)
-browsers = ['Firefox', 'Chrome'];
-
+//browsers = ['Firefox', 'Chrome'];
+browsers = ['PhantomJS'];
 
 // If browser does not capture in given timeout [ms], kill it
 captureTimeout = 60000;
