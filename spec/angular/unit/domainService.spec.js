@@ -4,9 +4,11 @@
 describe('Unit: Testing Services', function() {
   describe('Domain Service:', function() {
     
-    beforeEach(function(){
+    /*beforeEach(function(){
       var App = angular.mock.module('dashboard');
-    });
+    });*/
+
+    beforeEach(angular.mock.module('App'));
 
     it('should contain a domainService service', inject(function(domainService) {
       expect(domainService).not.toBe(undefined);

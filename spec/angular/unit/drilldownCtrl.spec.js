@@ -3,16 +3,22 @@
 //
 describe('Unit: Testing Controllers', function() {
   describe('Drilldown Controller:', function() {
-    
-    beforeEach(function(){
-      var App = angular.mock.module('dashboard');
-    });
+    var ctrl, scope, service;
 
-    it('should have a drilldownCtrl controller', function() {
-      expect(App.drilldownCtrl).not.toBe(undefined);
-    });
+    beforeEach(angular.mock.module('App'));
+    beforeEach(angular.mock.module('App.DrilldownCtrl'));
+    beforeEach(angular.mock.inject(function($controller, $rootScope, domainService) {
+      scope = $rootScope.$new();
+      service = domainService;
+      ctrl = $controller('DrilldownCtrl', {
+        $scope: scope,
+        domainService: service
+      });
+    }));
 
-    //TODO: figure out how to test if controller is functional
+    it('should have a DrilldownCtrl controller', function() {
+      expect(ctrl).not.toBe(undefined);
+    });
 
   });
 });

@@ -2,26 +2,23 @@
 // spec/angular/unit/sidebarCtrl.spec.js
 //
 describe('Unit: Testing Controllers', function() {
-  describe('sidebarCtrl', function() {
+  describe('Sidebar Controller:', function() {
+    var ctrl, scope, service;
 
-    beforeEach(function() {
-      var App = angular.mock.module('dashboard');
-    });
-
-    beforeEach(angular.mock.inject(function($rootScope, $controller) {
-      this.scope = $rootScope.$new();
-      $controller('sidebarCtrl', {
-        $scope: this.scope
+    beforeEach(angular.mock.module('App'));
+    beforeEach(angular.mock.module('App.SidebarCtrl'));
+    beforeEach(angular.mock.inject(function($controller, $rootScope, domainService) {
+      scope = $rootScope.$new();
+      service = domainService;
+      ctrl = $controller('SidebarCtrl', {
+        $scope: scope,
+        domainService: service
       });
     }));
 
-    it('should have a sidebarCtrl controller', function() {
-      expect(App.sidebarCtrl).not.toBe(undefined);
-      console.log(JSON.stringify(App));
-      console.log(App.sidebarCtrl);
+    it('should have a SidebarCtrl controller', function() {
+      expect(ctrl).not.toBe(undefined);
     });
-
-    //TODO: figure out how to test if controller is functional
 
   });
 });

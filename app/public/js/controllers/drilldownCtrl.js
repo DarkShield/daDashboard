@@ -1,57 +1,40 @@
-function drilldownCtrl($scope, domainService){
+angular.module('App.DrilldownCtrl', [])
 
-   $scope.domain = domainService;
+  .controller('DrilldownCtrl',['$scope', 'domainService', function($scope, domainService) {
 
-   //$scope.selectedsite = $scope.domain.getSelectedSite();
+     $scope.domain = domainService;
 
-   $scope.sort = 'date';
+     //$scope.selectedsite = $scope.domain.getSelectedSite();
 
-   $scope.filterby ='';
+     $scope.sort = 'date';
 
-   /*$scope.dropdown = [
-      {
+     $scope.filterby ='';
+
+     /*$scope.dropdown = [
+       {
          "text": "All",
          "click": "$scope.filterby = '';"
-      },
-      {
+       },
+       {
          "text": "XSS",
          "click": "$scope.filterby = 'XSS';"
-      },
-      {
+       },
+       {
          "text": "SQLi",
          "click": "$scope.filterby = 'SQLi';"
-      },
-      {
+       },
+       {
          "text": "Directory Traversal",
          "click": "filterby = 'Directory Traversal'"
-      }
-   ];*/
+       }
+     ];*/
 
-   $scope.details = function(){
+    $scope.details = function(){
       var selectedsite = $scope.domain.getSelectedSite();
       return selectedsite.requestData;
-   };
+    };
 
-   // Probably don't need
-   /*$scope.displayFilter = function(){
-      if ($scope.filterby === ''){
-         return 'All';
-      }
-      else if ($scope.filterby === 'XSS'){
-         return 'XSS';
-      }
-      else if ($scope.filterby === 'SQLi'){
-         return 'SQLi';
-      }
-      else if ($scope.filterby === 'Directory Traversal'){
-         return 'Directory Traversal';
-      }
-      else {
-         return $scope.filterby;
-      }
-   }*/
-
-   $scope.attacks = function(){
+    $scope.attacks = function(){
       var selectedsite = $scope.domain.getSelectedSite();
       if (!selectedsite.attacks){
          return 0;
@@ -59,10 +42,10 @@ function drilldownCtrl($scope, domainService){
       else {
          return selectedsite.attacks.length;
       }
-   };
+    };
 
-   $scope.displayFilter = function(){
+    $scope.displayFilter = function(){
       //TODO: figure out if blocks for potential filters here
       //
-   };
-}
+    };
+  }]);
