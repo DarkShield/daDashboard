@@ -19,6 +19,7 @@ files = [
   //Include App Code
   './app/public/js/dashboard.js',
   './app/public/js/services/*.js',
+  './app/public/js/controllers/*.js',
 
   //Include Unit Tests
   './spec/angular/unit/*.js'
