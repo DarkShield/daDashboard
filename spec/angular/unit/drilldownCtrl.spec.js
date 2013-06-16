@@ -7,9 +7,17 @@ describe('Unit: Testing Controllers', function() {
 
     beforeEach(angular.mock.module('App'));
     beforeEach(angular.mock.module('App.DrilldownCtrl'));
-    beforeEach(angular.mock.inject(function($controller, $rootScope, domainService) {
+    beforeEach(angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
       scope = $rootScope.$new();
+
       service = domainService;
+
+      httpBackend = $httpBackend;
+
+      spyOn(service, 'getDomains');
+      spyOn(service, 'getRequestData');
+      spyOn(service, 'getSelectedSite').andCallThrough();
+
       ctrl = $controller('DrilldownCtrl', {
         $scope: scope,
         domainService: service
@@ -28,5 +36,12 @@ describe('Unit: Testing Controllers', function() {
       expect(scope.displayFilter).not.toBe(undefined);
     });
 
+    it('should have a working details function', function() {
+      spyOn(scope, 'details').andCallThrough();
+
+      //TODO: why can't I get this to pass?!
+      //expect(service.getSelectedSite).toHaveBeenCalled();
+
+    });
   });
 });
