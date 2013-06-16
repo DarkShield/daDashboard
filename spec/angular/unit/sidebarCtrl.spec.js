@@ -20,5 +20,14 @@ describe('Unit: Testing Controllers', function() {
       expect(ctrl).not.toBe(undefined);
     });
 
+    it('should have all the necessary parameters', function() {
+      expect(scope.domains).not.toBe(undefined);
+      expect(scope.getDomains).not.toBe(undefined);
+      expect(scope.getRequestData).not.toBe(undefined);
+      expect(scope.test).not.toBe(undefined);
+      expect(scope.sites).not.toBe(undefined);
+      expect(scope.select).not.toBe(undefined);
+    });
+
   });
 });
