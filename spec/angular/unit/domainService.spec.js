@@ -8,9 +8,11 @@ describe('Unit: Testing Services', function() {
       var App = angular.mock.module('dashboard');
     });*/
 
+    var $http;
     beforeEach(angular.mock.module('App'));
     beforeEach(inject(function($injector) {
       $httpBackend = $injector.get('$httpBackend');
+      $httpBackend.when('GET', '/domains').respond([{name: 'test.com'}]);
     }));
 
     it('should contain a domainService service', inject(function(domainService) {
@@ -26,14 +28,10 @@ describe('Unit: Testing Services', function() {
     it('should have a working getDomains function', inject(['domainService', function($ds) {
       //TODO: WTF?! This should work. When I try to flush it says nothing queued up but there should
       //be a GET to /domains queued up. 
+      $httpBackend.expectGET('/domains');
       spyOn($ds, 'getDomains').andCallThrough();
-      //$ds.getDomains();
-      $httpBackend.expectGET('/domains').respond([{name: 'test.com'}]);
-      expect($ds.domains).toBe(undefined);
-      //spyOn($ds, 'getDomains').andCallThrough();
       //$httpBackend.flush();
-      
-      console.log($ds.domains);
+      console.log($ds.doms);
     }]));
 
   });
