@@ -1,6 +1,6 @@
 angular.module('App.Services', [])
 
-  .factory('domainService', ['$http', function($http){
+  .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
     'use strict';
 
     var domains = {
@@ -19,7 +19,8 @@ angular.module('App.Services', [])
     getRequestData: function(domain){
       $http.post('/domains/info', domain).success(function(body){
         domain.requestData = body;
-        console.log(body);
+        //console.log(body);
+        $rootScope.$broadcast('Request.data', body);
       });
       $http.post('/domains/attacks', domain).success(function(body){
         domain.attacks = body;
