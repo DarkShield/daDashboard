@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="dashboard" lang="en">
+<html data-ng-app="App" lang="en">
 <head>
     <meta charset="utf-8" />
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -19,6 +19,7 @@
     <title>Vice Dashboard</title>
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-static-top" bs-navbar>
         <div class="navbar-inner">
             <a class="brand" href="#">Vice Dashboard</a>
@@ -31,10 +32,11 @@
             </form>
         </div>
     </div>
+
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3">
-                <div class="well sidebar-nav" ng-controller="sidebarCtrl">
+                <div class="well sidebar-nav" ng-controller="SidebarCtrl">
                    <ul class="nav nav-list">
                        <li class="nav-header">
                            <a href=""><i class="icon-fire"></i>
@@ -59,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="span9" data-ng-controller="drilldownCtrl">
+            <div class="span9" data-ng-controller="DrilldownCtrl">
                <div class="page-header">
                      <div class="btn-group pull-left">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
