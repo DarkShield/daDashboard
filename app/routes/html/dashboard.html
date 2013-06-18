@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html data-ng-app="dashboard" lang="en">
+<html data-ng-app="App" lang="en">
 <head>
     <meta charset="utf-8" />
     <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../css/font-awesome.css" rel="stylesheet">
 
     <link href="../css/customizations.css" rel="stylesheet" media="screen">
     <script src="../js/vendor/jquery.min.js"></script>
@@ -19,6 +20,7 @@
     <title>Vice Dashboard</title>
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-static-top" bs-navbar>
         <div class="navbar-inner">
             <a class="brand" href="#">Vice Dashboard</a>
@@ -26,15 +28,16 @@
                 <!-- You can use regular expressions -->
                 <!--<li data-match-route="/(:?navbar)"><a href="">Home</a></li>-->
             </ul>
-            <form class="navbar-search pull-right">
+            <!--<form class="navbar-search pull-right">
                 <input name="Searchbar" type="text" class="search-query pull-left" data-ng-style="myStyle" data-ng-click="myStyle={width: 1300}" data-ng-mouseleave="myStyle={}" placeholder="Search">
-            </form>
+            </form>-->
         </div>
     </div>
+
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3">
-                <div class="well sidebar-nav" ng-controller="sidebarCtrl">
+                <div class="well sidebar-nav" ng-controller="SidebarCtrl">
                    <ul class="nav nav-list">
                        <li class="nav-header">
                            <a href=""><i class="icon-fire"></i>
@@ -59,7 +62,10 @@
                 </div>
             </div>
 
-            <div class="span9" data-ng-controller="drilldownCtrl">
+            <div class="span9" data-ng-controller="DrilldownCtrl">
+               <script type="text/javascript">
+                 var sortingOrder = 'date';
+               </script>
                <div class="page-header">
                      <div class="btn-group pull-left">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
@@ -74,10 +80,47 @@
                            <li><a href="" data-ng-click="filterby = 'Directory Traversal';">Directory Traversal</a></li>
                         </ul>
                      </div>
-                     <p class="lead">&nbsp;Attacks: {{attacks()}}</p
-            </div>
+                     <p class="lead">&nbsp;Attacks: {{attacks()}}
+                       <input name="Search" type="text" ng-model="query" ng-change="search()" class="search-query pull-right" placeholder="Search">
+               </div>
 
-		    <table class="table table-striped"><thead><!--<tr>Attacks: {{attacks()}}</tr>--><tr class="text-info"><td><a href="" data-ng-click="sort = 'date'; reverse=!reverse">Date</a></td><td><a href="" data-ng-click="sort = 'method'; reverse=!reverse">Method</a></td><td><a href="" data-ng-click="sort = 'url'; reverse=!reverse">URL</a></td><!--<td><a href="" data-ng-click="sort = 'headers'; reverse=!reverse">Headers</a></td>--><td><a href="" data-ng-click="sort = 'body'; reverse=!reverse">Body</a></td><td><a href="" data-ng-click="sort = 'from'; reverse=!reverse">From</a></td></tr></thead><tbody><tr data-ng-repeat="requestData in details() | filter:filterby | orderBy:sort:reverse"><td>{{requestData.requestedtimestamp}}</td><td>{{requestData.method}}</td><td>{{requestData.url}}</td><!--<td>{{requestData.headers}}</td>--><td>{{requestData.body}}</td><td>{{requestData.remoteIP}}:{{requestData.remotePort}}</td></tr></tbody></table>
+		    <table class="table table-striped">
+                      <thead>
+                        <tr class="text-info">
+                        <th class="requestedtimestamp">Date&nbsp;<a data-ng-click="sort_by('requestedtimestamp')"><i class="icon-sort"></i></a></th>
+                        <th class="method">Method&nbsp;<a data-ng-click="sort_by('method')"><i class="icon-sort"></i></a></th>
+                        <th class="url">URL&nbsp;<a data-ng-click="sort_by('url')"><i class="icon-sort"></i></a></th>
+                        <th class="body">POST Body&nbsp;<a data-ng-click="sort_by('body')"><i class="icon-sort"></i></a></th>
+                        <th class="remoteIP">From&nbsp;<a data-ng-click="sort_by('remoteIP')"><i class="icon-sort"></i></a></th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <td colspan="5">
+                          <div class="pagination pull-right">
+                            <ul>
+                              <li ng-class="{disabled: currentPage == 0}">
+                                <a data-ng-click="prevPage()">Prev</a>
+                              </li>
+                              <li data-ng-repeat="n in range(pagedItems.length)" ng-class="{active: n == currentPage}" data-ng-click="setPage()">
+                                <a data-ng-bind="n + 1">1</a>
+                              </li>
+                              <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a data-ng-click="nextPage()">Next</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tfoot>
+                      <tbody>
+                        <tr data-ng-repeat="item in pagedItems[currentPage] | filter:filterby | orderBy:sortingOrder:reverse">
+                          <td>{{item.requestedtimestamp}}</td>
+                          <td>{{item.method}}</td>
+                          <td>{{item.url}}</td>
+                          <td>{{item.body}}</td>
+                          <td>{{item.remoteIP}}:{{item.remotePort}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                 
                 <!--<div class="hero-unit">
                     <h1>DATA!</h1>
