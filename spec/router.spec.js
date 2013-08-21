@@ -94,6 +94,52 @@ describe('routes', function(){
     });
   });
 
+  //nested describe for buildAccountObj
+  describe('buildAccountObj', function() {
+    it('should build correct newAccountData object with multiple sites', function(){
+      var req = {
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          sites : 'test.com, test2.com, test3.com'
+        }
+      };
+
+      var newAccountData = routes.buildAccountObj(req);
+      expect(newAccountData.name).toBe('testy mctesterson');
+      expect(newAccountData.email).toBe('test@email.com');
+      expect(newAccountData.user).toBe('testuser');
+      expect(newAccountData.pass).toBe('testpassword');
+      expect(typeof(newAccountData.sites[0])).toBe('object');
+      expect(newAccountData.sites[0].name).toBe('test.com');
+      expect(newAccountData.sites[1].name).toBe('test2.com');
+      expect(newAccountData.sites[2].name).toBe('test3.com');
+    });
+
+    it('should build correct newAccount object with a single site', function() {
+      var req = {
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          sites : 'test.com'
+        }
+      };
+
+      var newAccountData = routes.buildAccountObj(req);
+      expect(newAccountData.name).toBe('testy mctesterson');
+      expect(newAccountData.email).toBe('test@email.com');
+      expect(newAccountData.user).toBe('testuser');
+      expect(newAccountData.pass).toBe('testpassword');
+      expect(typeof(newAccountData.sites[0])).toBe('object');
+      expect(newAccountData.sites[0].name).toBe('test.com');
+      expect(newAccountData.sites[1]).toBeUndefined();
+    });
+  });
+
   //nested describe for signup route
   describe('signup route', function(){
 
@@ -101,19 +147,9 @@ describe('routes', function(){
       expect(typeof(routes.signup)).toBe('function');
       expect(routes.signup.name).toBe('addAccount');
     });
-
-    it('should call send with an argument of "ok", 400 when user is created successfully', function(){
-      var req = {
-            name : 'testy mctesterson',
-            email : 'test@email.com',
-            user : 'testuser',
-            pass: 'testpassword',
-            country : 'testmerica'
-          }
-       //TODO: need to figure out a way to test the actual act of adding to the db
-       //without actually adding to the db. Jasmine does provide interupt functions
-       //capabilites just need to figure out how to implement here.
-    });
+    //TODO: need to figure out a way to test the actual act of adding to the db
+    //without actually adding to the db. Jasmine does provide interupt functions
+    //capabilites just need to figure out how to implement here.
   });
   
   //nested describe for home route

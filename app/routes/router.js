@@ -28,17 +28,37 @@ exports.signuppage = function signuppage (req, res) {
   res.sendfile('./public/html/register.html');
 }
 
-exports.signup = function addAccount (req, res) {
+var buildAccountObj = function(req) {
+  //var sitesArray = [];
+  var tmpObj = {};
   var newAccountData = {
-        name : req.body.name,
-        email : req.body.email,
-        user : req.body.user,
-        pass : req.body.pass1,
-        sites : req.body.sites
-      };
+    name : req.body.name,
+    email : req.body.email,
+    user : req.body.user,
+    pass : req.body.pass1,
+    sites : []
+  };
+
+  if (req.body.sites.split(', ')) {
+    var splitArray = req.body.sites.split(', ');
+    for (var i = 0; i < splitArray.length; i++) {
+      tmpObj = {'name': splitArray[i]};
+      newAccountData.sites.push(tmpObj);
+    }
+  }
+  else {
+    tmpObj = {'name': req.body.sites}
+    newAccountData.sites.push(tmpObj);
+  }
+  return newAccountData;
+}
+
+exports.signup = function addAccount (req, res) {
+  var newAccountData = buildAccountObj(req);
   if (req.body.pass1 != req.body.pass2) {
     res.redirect('/signup');
-  } else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites){
+  }
+  else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites){
     User.addNewAccount(newAccountData, function(e, o){
       if(e){
         res.send(e, 400);
@@ -52,7 +72,8 @@ exports.signup = function addAccount (req, res) {
         res.redirect('/login');
       }
     });
-  } else {
+  }
+  else {
     res.send('Please provide all information');
   }
 }
