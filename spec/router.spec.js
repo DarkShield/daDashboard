@@ -1,8 +1,8 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-//mongoose.connect('localhost', 'vicetest', function(err){
-mongoose.connect('10.192.198.253', 'vicetest', function(err){
+mongoose.connect('localhost', 'vicetest', function(err){
+//mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   console.log('Successfully connected to mongo');
 });
@@ -63,9 +63,9 @@ describe('routes', function(){
         expect(res.redirect).toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith('/home');
         expect(routes.User.getAuthenticated).toHaveBeenCalled();
-	expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
-	expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
-	expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');	
+        expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
+        expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
+        expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');
       });
     });
 
@@ -114,6 +114,7 @@ describe('routes', function(){
        //without actually adding to the db. Jasmine does provide interupt functions
        //capabilites just need to figure out how to implement here.
     });
+  });
   
   //nested describe for home route
   describe('home route', function(){
