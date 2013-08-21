@@ -103,6 +103,7 @@ describe('routes', function(){
           email : 'test@email.com',
           user : 'testuser',
           pass1: 'testpassword',
+          pass2: 'testpassword',
           sites : 'test.com, test2.com, test3.com'
         }
       };
@@ -125,6 +126,7 @@ describe('routes', function(){
           email : 'test@email.com',
           user : 'testuser',
           pass1: 'testpassword',
+          pass2: 'testpassword',
           sites : 'test.com'
         }
       };
@@ -207,7 +209,7 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(req, res){ done = true; }
+            send: function(){ done = true; }
           };
       var done = false;
       spyOn(res, 'send').andCallThrough();
@@ -238,7 +240,7 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(req, res){ done = true; }
+            send: function(){ done = true; }
           };
       var done = false;
       spyOn(res, 'send').andCallThrough();
