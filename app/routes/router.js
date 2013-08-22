@@ -67,7 +67,7 @@ exports.signup = function addAccount(req, res) {
         EmailServer.send({
           text: 'Registration: Name - ' + newAccountData.name + ', Email - ' + newAccountData.email + ', User - ' + newAccountData.user + ', Sites - ' + newAccountData.sites,
           from: 'Admin <vicet3ch@gmail.com>',
-          to: 'Matt <mattjay01@gmail.com>',// Zach <ProZachJ@gmail.com>',
+          to: 'Matt <mattjay01@gmail.com>, Zach <ProZachJ@gmail.com>',
           subject: 'Registration ' + newAccountData.name + ', ' + newAccountData.user
         }, function (err, message) {
           console.log(err || message);
