@@ -15,7 +15,7 @@ exports.login = function authenticate(req, res) {
       req.session.user = user;
       req.session.user_id = user.id;
       //res.sendfile('./routes/html/dashboard.html');
-      res.redirect('/home');
+      res.redirect('/');
     } else {
       req.session.user = {'reason': reason, 'error': err};
       res.redirect('/login');
