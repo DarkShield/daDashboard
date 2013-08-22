@@ -64,7 +64,7 @@ function loadUser(req, res, next) {
 app.get('/domains', loadUser, Routes.domains);
 app.get('/login', Routes.loginpage);
 app.get('/signup', Routes.signuppage);
-app.get('/home', loadUser, Routes.home);
+app.get('/', loadUser, Routes.home);
 
 app.post('/signup', Routes.signup);
 app.post('/login', Routes.login);
