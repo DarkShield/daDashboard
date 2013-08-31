@@ -81,6 +81,11 @@ exports.signup = function addAccount(req, res) {
   }
 };
 
+exports.logout = function logout(req, res){
+  req.session.destroy();
+  res.redirect('/login');
+};
+
 exports.home = function homePage(req, res) {
   res.sendfile('./routes/html/dashboard.html');
 };
