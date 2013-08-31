@@ -1,8 +1,8 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-//mongoose.connect('localhost', 'vicetest', function(err){
-mongoose.connect('10.192.198.253', 'vicetest', function(err){
+mongoose.connect('localhost', 'vicetest', function(err){
+//mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   //console.log('Successfully connected to mongo');
 });
@@ -41,7 +41,7 @@ describe('routes', function(){
       expect(routes.login.name).toBe('authenticate');
     });
 
-    it('should call redirect with argument "/home" when username and password are valid', function(){
+    it('should call redirect with argument "/" when username and password are valid', function(){
       var req = {
             body: { username: 'mattjay', password: 'mattjay' },
             session: { user: null }
@@ -61,7 +61,7 @@ describe('routes', function(){
 
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
-        expect(res.redirect).toHaveBeenCalledWith('/home');
+        expect(res.redirect).toHaveBeenCalledWith('/');
         expect(routes.User.getAuthenticated).toHaveBeenCalled();
         expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
         expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
@@ -152,6 +152,31 @@ describe('routes', function(){
     //TODO: need to figure out a way to test the actual act of adding to the db
     //without actually adding to the db. Jasmine does provide interupt functions
     //capabilites just need to figure out how to implement here.
+  });
+
+  //nested describe for logout route
+  describe('logout route', function(){
+
+    it('should have a logout property that references a method named logout', function(){
+      expect(typeof(routes.logout)).toBe('function');
+      expect(routes.logout.name).toBe('logout');
+    });
+
+    it('should call req.session.destroy and redirect to login page', function(){
+      var req = {
+        session: {
+          destroy: function(req, res){}
+        }
+      };
+      var res = {
+        redirect: function(req, res){}
+      };
+      spyOn(req.session, 'destroy');
+      spyOn(res, 'redirect');
+      routes.logout(req, res);
+      expect(req.session.destroy).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith('/login');
+    });
   });
   
   //nested describe for home route
