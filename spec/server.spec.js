@@ -63,10 +63,16 @@ describe("app", function(){
     expect(app.routes.get[2].callbacks[0].name).toBe('signuppage');
   });
 
-  it("should have a GET route to  /home that calls the loginpage function", function(){
-    expect(app.routes.get[3].path).toBe('/home');
+  it("should have a GET route to  / that calls the loginpage function", function(){
+    expect(app.routes.get[3].path).toBe('/');
     expect(app.routes.get[3].callbacks[0].name).toBe('loadUser');
     expect(app.routes.get[3].callbacks[1].name).toBe('homePage');
+  });
+
+  it("should have a GET route to /logout that calls the logout function", function(){
+    expect(app.routes.get[4].path).toBe('/logout');
+    expect(app.routes.get[4].callbacks[0].name).toBe('loadUser');
+    expect(app.routes.get[4].callbacks[1].name).toBe('logout');
   });
 
   it("should have a POST route to /signup that calls the addAccount function", function(){
