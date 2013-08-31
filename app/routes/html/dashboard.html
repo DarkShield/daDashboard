@@ -70,6 +70,17 @@
                <div class="page-header">
                    <div class="btn-group pull-left">
                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+                           Date Range: {{range}}
+                           <span class="caret"></span>
+                       </a>
+
+                       <ul class="dropdown-menu" role="menu">
+                           <li><a href="" data-ng-click="range = 'All'; getRequestData();">All</a></li>
+                           <li><a href="" data-ng-click="range = 'Last Day'; getLastDay();">Last Day</a></li>
+                       </ul>
+                   </div>
+                   <div class="btn-group">
+                       <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
                            Filter By: {{filterby}}
                            <span class="caret"></span>
                        </a>

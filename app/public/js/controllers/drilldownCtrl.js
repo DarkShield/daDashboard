@@ -9,6 +9,11 @@ angular.module('App.DrilldownCtrl', [])
     //$scope.sort = 'date';
 
     $scope.filterby ='';
+    $scope.range = 'Last Day';
+
+    $scope.getRequestData = domainService.getRequestData;
+
+    $scope.getLastDay = domainService.getLastDay;
 
     $scope.details = function(){
       var selectedsite = $scope.domain.getSelectedSite();
