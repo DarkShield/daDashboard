@@ -1,8 +1,8 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost', 'vicetest', function(err){
-//mongoose.connect('10.192.198.253', 'vicetest', function(err){
+//mongoose.connect('localhost', 'vicetest', function(err){
+mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   //console.log('Successfully connected to mongo');
 });

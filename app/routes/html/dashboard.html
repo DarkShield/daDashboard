@@ -24,6 +24,7 @@
     <div class="navbar navbar-inverse navbar-static-top" bs-navbar>
         <div class="navbar-inner">
             <a class="brand" href="#">Vice Dashboard</a>
+            <a class="btn pull-right" href="/logout">Logout</a>
             <ul class="nav">
                 <!-- You can use regular expressions -->
                 <!--<li data-match-route="/(:?navbar)"><a href="">Home</a></li>-->
@@ -67,21 +68,21 @@
                  var sortingOrder = 'date';
                </script>
                <div class="page-header">
-                     <div class="btn-group pull-left">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+                   <div class="btn-group pull-left">
+                       <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
                            Filter By: {{filterby}}
                            <span class="caret"></span>
-                        </a>
+                       </a>
 
-                        <ul class="dropdown-menu" role="menu">
-                           <li><a href="" data-ng-click="filterby = '';">All</a></li>
-                           <li><a href="" data-ng-click="filterby = 'XSS';">XSS</a></li>
-                           <li><a href="" data-ng-click="filterby = 'SQL';">SQLi</a></li>
-                           <li><a href="" data-ng-click="filterby = 'Directory Traversal';">Directory Traversal</a></li>
-                        </ul>
-                     </div>
-                     <p class="lead">&nbsp;Attacks: {{attacks()}}
-                       <input name="Search" type="text" ng-model="query" ng-change="search()" class="search-query pull-right" placeholder="Search">
+                       <ul class="dropdown-menu" role="menu">
+                          <li><a href="" data-ng-click="filterby = '';">All</a></li>
+                          <li><a href="" data-ng-click="filterby = 'XSS';">XSS</a></li>
+                          <li><a href="" data-ng-click="filterby = 'SQL';">SQLi</a></li>
+                          <li><a href="" data-ng-click="filterby = 'Directory Traversal';">Directory Traversal</a></li>
+                       </ul>
+                   </div>
+                   <p class="lead">&nbsp;Attacks: {{attacks()}}</p>
+                   <input name="Search" type="text" ng-model="query" ng-change="search()" class="search-query pull-right" placeholder="Search">
                </div>
 
 		    <table class="table table-striped">

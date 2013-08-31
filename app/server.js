@@ -65,6 +65,7 @@ app.get('/domains', loadUser, Routes.domains);
 app.get('/login', Routes.loginpage);
 app.get('/signup', Routes.signuppage);
 app.get('/', loadUser, Routes.home);
+app.get('/logout', loadUser, Routes.logout);
 
 app.post('/signup', Routes.signup);
 app.post('/login', Routes.login);
