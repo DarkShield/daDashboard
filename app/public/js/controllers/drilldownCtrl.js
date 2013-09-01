@@ -4,11 +4,22 @@ angular.module('App.DrilldownCtrl', [])
 
     $scope.domain = domainService;
 
-    //$scope.selectedsite = $scope.domain.getSelectedSite();
+    $scope.domains = domainService.doms;
 
-    //$scope.sort = 'date';
+    $scope.site = {};
+
+    $scope.drillSite = function(){
+      var selectedsite = $scope.domain.getSelectedSite();
+      return selectedsite;
+    };
 
     $scope.filterby ='';
+
+    $scope.range = 'Last Day';
+
+    $scope.getRequestData = domainService.getRequestData;
+
+    $scope.getLastDay = domainService.getLastDay;
 
     $scope.details = function(){
       var selectedsite = $scope.domain.getSelectedSite();

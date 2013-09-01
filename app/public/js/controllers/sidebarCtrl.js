@@ -14,6 +14,7 @@ angular.module('App.SidebarCtrl', [])
 
     $scope.getRequestData = domainService.getRequestData;
 
+    $scope.getLastDay = domainService.getLastDay;
 
     $scope.test = function(){
       console.log(domainService.doms);
@@ -31,7 +32,8 @@ angular.module('App.SidebarCtrl', [])
         }
       }
       clickedsite.selected = 'active';
-      $scope.getRequestData(clickedsite);
+      $scope.getLastDay(clickedsite);
+      //$scope.getRequestData(clickedsite);
     }
 
 

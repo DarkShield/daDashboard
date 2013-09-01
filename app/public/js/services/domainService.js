@@ -27,6 +27,16 @@ angular.module('App.Services', [])
       });
     },
 
+    getLastDay: function(domain){
+      $http.post('/domains/info/lastday', domain).success(function(body){
+        domain.requestData = body;
+        $rootScope.$broadcast('Request.data', body);
+      });
+      //$http.post('/domains/attacks', domain).success(function(body){
+      //  domain.attacks = body;
+      //});
+    },
+
     getSelectedSite: function(){
       var selectedsite = {};
       for (var dom in domains.doms){
