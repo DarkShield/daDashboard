@@ -75,8 +75,8 @@
                        </a>
 
                        <ul class="dropdown-menu" role="menu">
-                           <li><a href="" data-ng-click="range = 'All'; getRequestData();">All</a></li>
-                           <li><a href="" data-ng-click="range = 'Last Day'; getLastDay();">Last Day</a></li>
+                           <li><a href="" data-ng-click="range = 'All'; site = drillSite(); getRequestData(site);">All</a></li>
+                           <li><a href="" data-ng-click="range = 'Last Day'; site = drillSite(); getLastDay(site);">Last Day</a></li>
                        </ul>
                    </div>
                    <div class="btn-group">
