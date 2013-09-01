@@ -109,3 +109,14 @@ exports.domains.attacks = function getDomainAttacks(req, res){
    };
    RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
 };
+
+exports.domains.info.lastday = function getLastDay (req, res) {
+  var domainName = req.body.name;
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  var yesterdayISO = yesterday.toISOString();
+  var respond = function (err, docs) {
+    res.send(docs);
+  };
+  RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, respond);
+};

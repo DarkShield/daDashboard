@@ -1,8 +1,8 @@
 var routes = require('../app/routes/router');
 var mongoose = require('mongoose');
 
-//mongoose.connect('localhost', 'vicetest', function(err){
-mongoose.connect('10.192.198.253', 'vicetest', function(err){
+mongoose.connect('localhost', 'vicetest', function(err){
+//mongoose.connect('10.192.198.253', 'vicetest', function(err){
   if (err) throw err;
   //console.log('Successfully connected to mongo');
 });
@@ -270,7 +270,7 @@ describe('routes', function(){
       var done = false;
       spyOn(res, 'send').andCallThrough();
       runs(function(){
-        routes.domains.info(req, res);
+        routes.domains.attacks(req, res);
       });
       waitsFor(function() {
         return done;
@@ -281,4 +281,35 @@ describe('routes', function(){
       });
     });
   });
+
+  //nested describe for domain.info.lastday route
+  describe('domains.info.lastday route', function() {
+
+    it('should have a domains.info.lastday property that references a mehtod named getLastDay', function(){
+      expect(typeof(routes.domains.info.lastday)).toBe('function');
+      expect(routes.domains.info.lastday.name).toBe('getLastDay');
+    });
+
+    it('should call send with argument docs', function(){
+      var req = {
+        body: { name: 'test.com'  }
+      };
+      var res = {
+        send: function(){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.domains.info.lastday(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 1000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+  });
+
 });
