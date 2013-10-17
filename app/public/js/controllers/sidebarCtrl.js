@@ -25,4 +25,17 @@ angular.module('App.SidebarCtrl', [])
       visible: false
     };
 
+    //TODO migrate to angular.forEach
+    $scope.select = function(clickedsite){
+      for (var key in $scope.domains){
+        if ($scope.domains.hasOwnProperty(key)){
+          $scope.domains[key].selected = '';
+        }
+      }
+      clickedsite.selected = 'active';
+      $scope.getLastDay(clickedsite);
+      //$scope.getRequestData(clickedsite);
+    }
+
+
   }]);

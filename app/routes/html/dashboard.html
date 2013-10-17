@@ -37,7 +37,7 @@
         <li class="panel">
             <a class="accordion-toggle collapsed" data-toggle="collapse"
                data-parent="#side-nav" href="#ui-collapse"><i class="icon-magic"></i> <span class="name" data-ng-init="getDomains()">Sites {{domains.length}}</span></a>
-            <ul id="ui-collapse" class="panel-collapse collapse">
+            <ul id="ui-collapse" class="panel-collapse collapse" data-ng-init="select(domains[0])">
                 <li><a href="#">Attacks</a></li>
                 <li><a href="traffic.html">Traffic</a></li>
                 <li><a href="#">Response Report</a></li>
@@ -147,16 +147,16 @@
 <div class="content container">
 <div class="row">
     <div class="col-md-12">
-        <h2 class="page-title">Static Tables <small>Different variations </small></h2>
+        <h2 class="page-title">Traffic Report<small>Reqeust Data</small></h2>
     </div>
 </div>
 <div class="row">
 <div class="col-md-10 col-md-offset-1">
-<section class="widget">
+<section class="widget" data-ng-controller="drilldownCtrl">
 <header>
     <h4>
         <i class="icon-list-ol"></i>
-        Varius content
+        {{drillsite()}}
     </h4>
 </header>
 <div class="body">
@@ -164,191 +164,21 @@
     <thead>
     <tr>
         <th class="hidden-xs-portrait">#</th>
-        <th>Picture</th>
-        <th>Description</th>
-        <th class="hidden-xs-portrait">Info</th>
-        <th class="hidden-xs">Date</th>
-        <th class="hidden-xs">Size</th>
+        <th>Date</th>
+        <th>Method</th>
+        <th>URL</th>
+        <th>POST Body</th>
+        <th>From</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td class="hidden-xs-portrait">1</td>
-        <td>
-            <img src="img/jpeg/1.jpg" alt="">
-        </td>
-        <td>
-            Palo Alto
-        </td>
-        <td class="hidden-xs-portrait">
-            <p>
-                <small>
-                    <strong>Type:</strong>
-                    &nbsp; JPEG
-                </small>
-            </p>
-            <p>
-                <small>
-                    <strong>Dimensions:</strong>
-                    &nbsp; 200x150
-                </small>
-            </p>
-        </td>
-        <td class="hidden-xs">
-            September 14, 2012
-        </td>
-        <td class="hidden-xs">
-            45.6 KB
-        </td>
-        <td>
-            <button class="btn btn-sm btn-primary">
-                Show
-            </button>
-            <button class="btn btn-sm btn-warning" data-toggle="button">
-                Mark
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td class="hidden-xs-portrait">2</td>
-        <td>
-            <img src="img/jpeg/2.jpg" alt="">
-        </td>
-        <td>
-            The Sky
-        </td>
-        <td class="hidden-xs-portrait">
-            <p>
-                <small>
-                    <strong>Type:</strong>
-                    &nbsp; PSD
-                </small>
-            </p>
-            <p>
-                <small>
-                    <strong>Dimensions:</strong>
-                    &nbsp; 2400x1455
-                </small>
-            </p>
-        </td>
-        <td class="hidden-xs">
-            November 14, 2012
-        </td>
-        <td class="hidden-xs">
-            15.3 MB
-        </td>
-        <td>
-            <button class="btn btn-sm btn-primary">
-                Show
-            </button>
-            <button class="btn btn-sm btn-warning" data-toggle="button">
-                Mark
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td class="hidden-xs-portrait">3</td>
-        <td>
-            <img src="img/jpeg/3.jpg" alt="">
-        </td>
-        <td>
-            Down the road
-        </td>
-        <td class="hidden-xs-portrait">
-            <p>
-                <small>
-                    <strong>Type:</strong>
-                    &nbsp; JPEG
-                </small>
-            </p>
-            <p>
-                <small>
-                    <strong>Dimensions:</strong>
-                    &nbsp; 200x150
-                </small>
-            </p>
-        </td>
-        <td class="hidden-xs">
-            September 14, 2012
-        </td>
-        <td class="hidden-xs">
-            49.0 KB
-        </td>
-        <td>
-            <button class="btn btn-sm btn-primary">
-                Show
-            </button>
-            <button class="btn btn-sm btn-warning" data-toggle="button">
-                Mark
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td class="hidden-xs-portrait">4</td>
-        <td>
-            <img src="img/jpeg/4.jpg" alt="">
-        </td>
-        <td>
-            The Edge
-        </td>
-        <td class="hidden-xs-portrait">
-            <p>
-                <small>
-                    <strong>Type:</strong>
-                    &nbsp; PNG
-                </small>
-            </p>
-            <p>
-                <small>
-                    <strong>Dimensions:</strong>
-                    &nbsp; 210x160
-                </small>
-            </p>
-        </td>
-        <td class="hidden-xs">
-            September 15, 2012
-        </td>
-        <td class="hidden-xs">
-            69.1 KB
-        </td>
-        <td>
-            <button class="btn btn-sm btn-primary">
-                Show
-            </button>
-            <button class="btn btn-sm btn-warning" data-toggle="button">
-                Mark
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td class="hidden-xs-portrait">5</td>
-        <td>
-            <img src="img/jpeg/11.jpg" alt="">
-        </td>
-        <td>
-            Fortress
-        </td>
-        <td class="hidden-xs-portrait">
-            <p>
-                <small>
-                    <strong>Type:</strong>
-                    &nbsp; JPEG
-                </small>
-            </p>
-            <p>
-                <small>
-                    <strong>Dimensions:</strong>
-                    &nbsp; 1452x1320
-                </small>
-            </p>
-        </td>
-        <td class="hidden-xs">
-            October 1, 2012
-        </td>
-        <td class="hidden-xs">
-            2.3 MB
-        </td>
+    <tr data-ng-repeat="item in pagedItems[currentPage] | filter:filterby | orderBy:sortingOrder:revers">
+        <td class="hidden-xs-portrait">{{item.requestedtimesstamp}}</td>
+        <td>{{item.method}}</td>
+        <td>{{item.url}}</td>
+        <td>{{item.body}}</td>
+        <td>{{item.remoteIP}}:{{item.remotePort}}</td>
         <td>
             <button class="btn btn-sm btn-primary">
                 Show
