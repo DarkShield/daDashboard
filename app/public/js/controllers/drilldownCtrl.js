@@ -1,6 +1,6 @@
-angular.module('App.DrilldownCtrl', [])
+angular.module('App.drilldownCtrl', [])
 
-  .controller('DrilldownCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
+  .controller('drilldownCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
 
     $scope.domain = domainService;
 
@@ -37,7 +37,7 @@ angular.module('App.DrilldownCtrl', [])
     };
 
     //Pagination and sorting
-    $scope.sortingOrder = sortingOrder;
+    //$scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
     $scope.filteredItems = [];
     $scope.groupedItems = [];

@@ -25,8 +25,16 @@ describe('Unit: Testing Modules', function() {
         deps = App.value('appName').requires;
       });
 
-      it('should have $stap.directives as a dependency', function(){
-        expect(hasModule('$strap.directives')).toBe(true);
+      it('should have App.drilldownCtrl as a dependency', function(){
+        expect(hasModule('App.drilldownCtrl')).toBe(true);
+      });
+
+      it('should have App.SidebarCtrl as a dependency', function(){
+        expect(hasModule('App.SidebarCtrl')).toBe(true);
+      });
+
+      it('should have App.domainService as a dependency', function(){
+        expect(hasModule('App.domainService')).toBe(true);
       });
 
     });

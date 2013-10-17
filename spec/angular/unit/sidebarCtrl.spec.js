@@ -44,16 +44,6 @@ describe('Unit: Testing Controllers', function() {
       expect(scope.getRequestData).not.toBe(undefined);
       expect(scope.test).not.toBe(undefined);
       expect(scope.sites).not.toBe(undefined);
-      expect(scope.select).not.toBe(undefined);
-    });
-
-    it('should have a working select function', function() {
-      spyOn(scope, 'select').andCallThrough();
-      scope.select(domain);
-
-      expect(scope.select).toHaveBeenCalled();
-      expect(domain.selected).toBe('active');
-      expect(scope.getRequestData).toHaveBeenCalled();
     });
 
   });
