@@ -33,8 +33,8 @@ angular.module('App.SidebarCtrl', [])
         }
       }
       clickedsite.selected = 'active';
-      $scope.getLastDay(clickedsite);
-      //$scope.getRequestData(clickedsite);
+      //$scope.getLastDay(clickedsite);
+      $scope.getRequestData(clickedsite);
     }
 
 
