@@ -1,7 +1,6 @@
-
 var domainStatic = { name: 'test.com', selected: '', requestData: {}};
 
-describe('Drilldown Controller:', function() {
+describe('drilldown Controller:', function() {
   var ctrl, scope;
 
   beforeEach(angular.mock.module('App'));

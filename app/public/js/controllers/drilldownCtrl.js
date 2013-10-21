@@ -2,14 +2,12 @@ angular.module('App.drilldownCtrl', [])
 
   .controller('drilldownCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
 
-    $scope.domain = domainService;
-
     $scope.domains = domainService.doms;
 
     $scope.site = {};
 
     $scope.drillSite = function(){
-      return $scope.domain.getSelectedSite();
+      return domainService.getSelectedSite();
     };
 
     $scope.filterby ='';
@@ -21,12 +19,12 @@ angular.module('App.drilldownCtrl', [])
     $scope.getLastDay = domainService.getLastDay;
 
     $scope.details = function(){
-      var selectedsite = $scope.domain.getSelectedSite();
+      var selectedsite = domainService.getSelectedSite();
       return selectedsite.requestData;
     };
 
     $scope.attacks = function(){
-      var selectedsite = $scope.domain.getSelectedSite();
+      var selectedsite = domainService.getSelectedSite();
       if (!selectedsite.attacks){
          return 0;
       }
