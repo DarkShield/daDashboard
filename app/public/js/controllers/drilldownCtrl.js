@@ -6,8 +6,6 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.drillsite = domainService.getSelectedSite();
 
-    $scope.site = {};
-
     $scope.filterby ='';
 
     $scope.range = 'Last Day';
