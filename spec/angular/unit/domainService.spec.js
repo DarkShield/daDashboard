@@ -30,12 +30,14 @@ describe('Domain Service:', function() {
     expect(typeof dS.getSelectedSite).toBe('function');
   });
 
-  it('should have a working getDomains function', function() {
-    $httpBackend.expectGET('/domains');
-    expect(dS.getDomains).not.toHaveBeenCalled();
-    dS.getDomains();
-    expect(dS.getDomains).toHaveBeenCalled();
-    $httpBackend.flush();
-    expect(dS.doms[0].name).toBe('test.com');
+  describe('getDomains method', function(){
+    it('should have a working getDomains function', function() {
+      $httpBackend.expectGET('/domains');
+      expect(dS.getDomains).not.toHaveBeenCalled();
+      dS.getDomains();
+      expect(dS.getDomains).toHaveBeenCalled();
+      $httpBackend.flush();
+      expect(dS.doms[0].name).toBe('test.com');
+    });
   });
 });
