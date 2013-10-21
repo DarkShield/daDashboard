@@ -1,7 +1,7 @@
 //var domainStatic = { name: 'test.com', selected: '', requestData: {}};
 
 describe('Drilldown Controller:', function() {
-  var ctrl, scope;
+  var ctrl, scope, domainService;
 
   beforeEach(function(){
     angular.mock.module('App');
@@ -9,7 +9,7 @@ describe('Drilldown Controller:', function() {
     angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
 
       scope = $rootScope.$new();
-
+      dS = domainService;
 
       httpBackend = $httpBackend;
 
@@ -17,7 +17,7 @@ describe('Drilldown Controller:', function() {
 
       spyOn(domainService, 'getDomains');
       spyOn(domainService, 'getRequestData');
-      spyOn(domainService, 'getSelectedSite');//.andCallThrough();
+      spyOn(domainService, 'getSelectedSite').andReturn('selectedsite');
 
       ctrl = $controller('drilldownCtrl', {
         $scope:  scope,
@@ -35,8 +35,9 @@ describe('Drilldown Controller:', function() {
     expect(angular.isArray(scope.domains)).toBe(true);
   });
 
-  it('should define drillsite as a reference to the currently selected site', function(){
-
+  it('should should have a drillsite property that calls domainService.getSelectedSite', function(){
+    expect(scope.drillsite).toBe('selectedsite');
+    expect(dS.getSelectedSite).toHaveBeenCalled();
   });
 
 
