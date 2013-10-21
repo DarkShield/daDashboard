@@ -19,7 +19,6 @@ angular.module('App.domainService', [])
     getRequestData: function(domain){
       $http.post('/domains/info', domain).success(function(body){
         domain.requestData = body;
-        //console.log(body);
         $rootScope.$broadcast('Request.data', body);
       });
       $http.post('/domains/attacks', domain).success(function(body){

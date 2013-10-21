@@ -1,13 +1,14 @@
 describe('Domain Service:', function() {
   var dS = null;
+
   beforeEach(function(){
     angular.mock.module('App');
     angular.mock.module('App.domainService');
-    inject(function($injector, domainService) {
-      $httpBackend = $injector.get('$httpBackend');
-      $httpBackend.when('GET', '/domains').respond([{name: 'test.com'}]);
+
+    inject(function(domainService) {
       dS = domainService;
     });
+
     spyOn(dS, 'getDomains').andCallThrough();
   });
 
@@ -31,13 +32,25 @@ describe('Domain Service:', function() {
   });
 
   describe('getDomains method', function(){
-    it('should have a working getDomains function', function() {
+    var domainsresponse = [
+      {name: 'test.com'},
+      {name: 'www.test.com'}];
+
+    beforeEach(function(){
+      inject(function($injector){
+        $httpBackend = $injector.get('$httpBackend');
+        $httpBackend.when('GET', '/domains').respond(domainsresponse);
+      });
+    });
+
+    it('should add the response data into the doms array', function() {
       $httpBackend.expectGET('/domains');
       expect(dS.getDomains).not.toHaveBeenCalled();
       dS.getDomains();
       expect(dS.getDomains).toHaveBeenCalled();
       $httpBackend.flush();
       expect(dS.doms[0].name).toBe('test.com');
+      expect(dS.doms[1].name).toBe('www.test.com');
     });
   });
 });
