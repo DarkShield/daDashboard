@@ -10,9 +10,9 @@ angular.module('App.domainService', [])
 
     getDomains: function(){
       $http.get('/domains').success(function(body){
-        for (var domain in body){
-          domains.doms.push(body[domain]);
-        }
+        angular.forEach(body, function(domain){
+          domains.doms.push(domain);
+        });
       });
     },
 
