@@ -36,7 +36,6 @@ angular.module('App.drilldownCtrl', [])
     };
 
     //Pagination and sorting
-    //$scope.sortingOrder = sortingOrder;
     $scope.reverse = false;
     $scope.filteredItems = [];
     $scope.groupedItems = [];
@@ -117,8 +116,7 @@ angular.module('App.drilldownCtrl', [])
       $scope.currentPage = this.n;
     };
 
-    //$scope.search();
-
+    //TODO I don't like this at all. Manual DOM manipulation = BAD
     $scope.sort_by = function(newSortingOrder) {
       if ($scope.sortingOrder == newSortingOrder)
         $scope.reverse = !$scope.reverse;
@@ -133,5 +131,4 @@ angular.module('App.drilldownCtrl', [])
       else
         $('th.'+newSortingOrder+' i').removeClass().addClass('icon-chevron-down');
     };
-
-  }]);
+}]);
