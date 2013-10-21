@@ -2,7 +2,7 @@
 var domainStatic = { name: 'test.com', selected: '', requestData: {}};
 
 describe('Drilldown Controller:', function() {
-  var ctrl, scope, service;
+  var ctrl, scope;
 
   beforeEach(angular.mock.module('App'));
   beforeEach(angular.mock.module('App.drilldownCtrl'));
