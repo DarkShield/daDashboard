@@ -6,17 +6,13 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.site = {};
 
-    $scope.drillSite = function(){
-      return domainService.getSelectedSite();
-    };
-
     $scope.filterby ='';
 
     $scope.range = 'Last Day';
 
-    $scope.getRequestData = domainService.getRequestData;
-
-    $scope.getLastDay = domainService.getLastDay;
+    $scope.drillSite = function(){
+      return domainService.getSelectedSite();
+    };
 
     $scope.details = function(){
       var selectedsite = domainService.getSelectedSite();
@@ -34,6 +30,7 @@ angular.module('App.drilldownCtrl', [])
     };
 
     //Pagination and sorting
+    //TODO should pagination be factored into a service?
     $scope.reverse = false;
     $scope.filteredItems = [];
     $scope.groupedItems = [];
