@@ -9,8 +9,7 @@ angular.module('App.drilldownCtrl', [])
     $scope.site = {};
 
     $scope.drillSite = function(){
-      var selectedsite = $scope.domain.getSelectedSite();
-      return selectedsite;
+      return $scope.domain.getSelectedSite();
     };
 
     $scope.filterby ='';
@@ -44,7 +43,6 @@ angular.module('App.drilldownCtrl', [])
     $scope.itemsPerPage = 50;
     $scope.pagedItems = [];
     $scope.currentPage = 0;
-    $scope.items;
     $scope.populate = function() { $scope.items = $scope.details(); };
     //$scope.items = $scope.populate();
     //$scope.populate();
@@ -62,8 +60,7 @@ angular.module('App.drilldownCtrl', [])
     };
 
     $scope.search = function() {
-      //$scope.populate();
-      //console.log('Search ' + $scope.items);
+     //TODO should be converted to angular for each
       $scope.filteredItems = $filter('filter')($scope.items, function (item) {
         for(var attr in item) {
           if (searchMatch(JSON.stringify(item[attr]), $scope.query))
