@@ -27,5 +27,6 @@ describe('Domain Service:', function() {
     dS.getDomains();
     expect(dS.getDomains).toHaveBeenCalled();
     $httpBackend.flush();
+    expect(dS.doms[0].name).toBe('test.com');
   });
 });
