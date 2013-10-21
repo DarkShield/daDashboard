@@ -13,15 +13,15 @@ angular.module('App.drilldownCtrl', [])
     $scope.range = 'Last Day';
 
     $scope.details = function(){
-      return $scope.drillSite.requestData;
+      return $scope.drillsite.requestData;
     };
 
     $scope.attacks = function(){
-      if (!$scope.drillSite.attacks){
+      if (!$scope.drillsite.attacks){
          return 0;
       }
       else {
-         return drillsite.attacks.length;
+         return $scope.drillsite.attacks.length;
       }
     };
 
