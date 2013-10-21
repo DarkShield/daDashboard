@@ -8,7 +8,6 @@ describe('Drilldown Controller:', function() {
   beforeEach(angular.mock.module('App.drilldownCtrl'));
 
   beforeEach(angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
-    scope = $rootScope.$new();
 
     httpBackend = $httpBackend;
 
@@ -19,7 +18,7 @@ describe('Drilldown Controller:', function() {
     spyOn(domainService, 'getSelectedSite');//.andCallThrough();
 
     ctrl = $controller('drilldownCtrl', {
-      $scope: scope,
+      $scope:  $rootScope.$new(),
       domainService: domainService
     });
   }));
