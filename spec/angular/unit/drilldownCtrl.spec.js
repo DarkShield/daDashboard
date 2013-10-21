@@ -1,4 +1,4 @@
-//var domainStatic = { name: 'test.com', selected: '', requestData: {}};
+var domainStatic = { name: 'test.com', selected: '', requestData: {}};
 
 describe('Drilldown Controller:', function() {
   var ctrl, scope, domainService;
@@ -6,23 +6,26 @@ describe('Drilldown Controller:', function() {
   beforeEach(function(){
     angular.mock.module('App');
     angular.mock.module('App.drilldownCtrl');
-    angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
+    angular.mock.inject(function($controller, $rootScope, domainService) {
 
       scope = $rootScope.$new();
       dS = domainService;
 
-      httpBackend = $httpBackend;
 
       //domain = domainStatic;
 
       spyOn(domainService, 'getDomains');
       spyOn(domainService, 'getRequestData');
-      spyOn(domainService, 'getSelectedSite').andReturn('selectedsite');
+      spyOn(domainService, 'getSelectedSite').andReturn(domainStatic);
+
+
 
       ctrl = $controller('drilldownCtrl', {
         $scope:  scope,
         domainService: domainService
       });
+
+      spyOn(scope, 'details').andCallThrough();
     });
   });
 
@@ -36,7 +39,7 @@ describe('Drilldown Controller:', function() {
   });
 
   it('should should have a drillsite property that calls domainService.getSelectedSite', function(){
-    expect(scope.drillsite).toBe('selectedsite');
+    expect(scope.drillsite.name).toBe('test.com');
     expect(dS.getSelectedSite).toHaveBeenCalled();
   });
 
@@ -44,9 +47,10 @@ describe('Drilldown Controller:', function() {
     expect(scope.filterby).not.toBe(undefined);
   });
 
-
-
-
+  it('should have a details method that returns the currently selected sites requestdata',function(){
+    expect(typeof scope.details).toBe('function');
+    expect(scope.details).not.toHaveBeenCalled();
+  })
 
   //TODO improve the description here
   xit('should have all the necessary parameters', function() {

@@ -8,6 +8,7 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.filterby ='';
 
+    //TODO why does this need to initialize to Last Day when it isn't used in the template?
     $scope.range = 'Last Day';
 
     $scope.details = function(){
