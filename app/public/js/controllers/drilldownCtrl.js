@@ -4,28 +4,24 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.domains = domainService.doms;
 
+    $scope.drillsite = domainService.getSelectedSite();
+
     $scope.site = {};
 
     $scope.filterby ='';
 
     $scope.range = 'Last Day';
 
-    $scope.drillSite = function(){
-      return domainService.getSelectedSite();
-    };
-
     $scope.details = function(){
-      var selectedsite = domainService.getSelectedSite();
-      return selectedsite.requestData;
+      return $scope.drillSite.requestData;
     };
 
     $scope.attacks = function(){
-      var selectedsite = domainService.getSelectedSite();
-      if (!selectedsite.attacks){
+      if (!$scope.drillSite.attacks){
          return 0;
       }
       else {
-         return selectedsite.attacks.length;
+         return drillsite.attacks.length;
       }
     };
 

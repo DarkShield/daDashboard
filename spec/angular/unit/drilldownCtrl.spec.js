@@ -3,24 +3,25 @@ var domainStatic = { name: 'test.com', selected: '', requestData: {}};
 describe('drilldown Controller:', function() {
   var ctrl, scope;
 
-  beforeEach(angular.mock.module('App'));
-  beforeEach(angular.mock.module('App.drilldownCtrl'));
+  beforeEach(function(){
+    angular.mock.module('App');
+    angular.mock.module('App.drilldownCtrl');
+    angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
 
-  beforeEach(angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
+      httpBackend = $httpBackend;
 
-    httpBackend = $httpBackend;
+      domain = domainStatic;
 
-    domain = domainStatic;
+      spyOn(domainService, 'getDomains');
+      spyOn(domainService, 'getRequestData');
+      spyOn(domainService, 'getSelectedSite');//.andCallThrough();
 
-    spyOn(domainService, 'getDomains');
-    spyOn(domainService, 'getRequestData');
-    spyOn(domainService, 'getSelectedSite');//.andCallThrough();
-
-    ctrl = $controller('drilldownCtrl', {
-      $scope:  $rootScope.$new(),
-      domainService: domainService
+      ctrl = $controller('drilldownCtrl', {
+        $scope:  $rootScope.$new(),
+        domainService: domainService
+      });
     });
-  }));
+  });
 
   it('should have a drilldownCtrl controller', function() {
     expect(ctrl).not.toBe(undefined);
