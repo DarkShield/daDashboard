@@ -1,5 +1,3 @@
-var domainStatic = { name: 'test.com', selected: '', requestData: {}};
-
 describe('Drilldown Controller:', function() {
   var ctrl, scope, domainService;
 
@@ -10,22 +8,14 @@ describe('Drilldown Controller:', function() {
 
       scope = $rootScope.$new();
       dS = domainService;
+      domain = { name: 'test.com', selected: '', requestData: 'test', attacks: []};
 
-
-      //domain = domainStatic;
-
-      spyOn(domainService, 'getDomains');
-      spyOn(domainService, 'getRequestData');
-      spyOn(domainService, 'getSelectedSite').andReturn(domainStatic);
-
-
+      spyOn(domainService, 'getSelectedSite').andReturn(domain);
 
       ctrl = $controller('drilldownCtrl', {
         $scope:  scope,
         domainService: domainService
       });
-
-      spyOn(scope, 'details').andCallThrough();
     });
   });
 
@@ -47,10 +37,9 @@ describe('Drilldown Controller:', function() {
     expect(scope.filterby).not.toBe(undefined);
   });
 
-  it('should have a details method that returns the currently selected sites requestdata',function(){
-    expect(typeof scope.details).toBe('function');
-    expect(scope.details).not.toHaveBeenCalled();
-  })
+  it('should have a details property that returns the currently selected sites requestdata',function(){
+      expect(scope.details).toBe('test');
+  });
 
   //TODO improve the description here
   xit('should have all the necessary parameters', function() {

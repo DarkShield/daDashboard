@@ -11,10 +11,9 @@ angular.module('App.drilldownCtrl', [])
     //TODO why does this need to initialize to Last Day when it isn't used in the template?
     $scope.range = 'Last Day';
 
-    $scope.details = function(){
-      return $scope.drillsite.requestData;
-    };
+    $scope.details = $scope.drillsite.requestData
 
+    //TODO are we pushing an attacks property onto the site object only after it has been attacked?
     $scope.attacks = function(){
       if (!$scope.drillsite.attacks){
          return 0;
