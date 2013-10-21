@@ -40,6 +40,12 @@ describe('Drilldown Controller:', function() {
     expect(dS.getSelectedSite).toHaveBeenCalled();
   });
 
+  it('should have a filterby property', function(){
+    expect(scope.filterby).not.toBe(undefined);
+  });
+
+
+
 
 
   //TODO improve the description here
