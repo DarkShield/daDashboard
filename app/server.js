@@ -72,5 +72,6 @@ app.post('/login', Routes.login);
 app.post('/domains/info', loadUser, Routes.domains.info);
 app.post('/domains/attacks', loadUser, Routes.domains.attacks);
 app.post('/domains/info/lastday', loadUser, Routes.domains.info.lastday);
+app.post('/traffic', loadUser, Routes.traffic);
 
 module.exports = app;

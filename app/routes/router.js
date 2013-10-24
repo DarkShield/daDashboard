@@ -120,3 +120,12 @@ exports.domains.info.lastday = function getLastDay (req, res) {
   };
   RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, respond);
 };
+
+exports.traffic = function getAllTrafficRange (req, res) {
+  var startISO = req.body.start.toISOString();
+  var endISO = req.body.end.toISOString();
+  var respond = function (err, docs) {
+    res.send(docs);
+  };
+  RequestStore.find({'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : startISO, $lt : endISO } }, respond);
+};
