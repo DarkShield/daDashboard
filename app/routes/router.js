@@ -122,10 +122,10 @@ exports.domains.info.lastday = function getLastDay (req, res) {
 };
 
 exports.traffic = function getAllTrafficRange (req, res) {
-  var startISO = req.body.start.toISOString();
-  var endISO = req.body.end.toISOString();
+  /*var startISO = req.body.start.toISOString();
+  var endISO = req.body.end.toISOString();*/
   var respond = function (err, docs) {
     res.send(docs);
   };
-  RequestStore.find({'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : startISO, $lt : endISO } }, respond);
+  RequestStore.find({'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : req.body.start, $lt : req.body.end } }, respond);
 };
