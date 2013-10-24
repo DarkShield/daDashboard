@@ -36,6 +36,13 @@ angular.module('App.domainService', [])
       //});
     },
 
+    getRange: function(range){
+      $http.post('/traffic/', range).success(function(body){
+        $rootScope.$broadcast('Request.data', body);
+      });
+    },
+
+
     getSelectedSite: function(){
       var selectedsite = {};
       for (var dom in domains.doms){
