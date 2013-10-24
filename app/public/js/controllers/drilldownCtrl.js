@@ -8,10 +8,27 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.filterby ='';
 
+    $scope.enddate = new Date();
+
+    $scope.startdate = (function(){
+      var d = new Date();
+      d.setHours(-24);
+      return d;
+    })();
+
+    $scope.requestrange = {
+      start: $scope.startdate.toISOString(),
+      end: $scope.enddate.toISOString()
+    };
+
+    $scope.getRequestData = function(){
+      domainService.getRange($scope.requestrange);
+    };
+
     //TODO why does this need to initialize to Last Day when it isn't used in the template?
     $scope.range = 'Last Day';
 
-    $scope.details = $scope.drillsite.requestData
+    $scope.details = $scope.drillsite.requestData;
 
     //TODO are we pushing an attacks property onto the site object only after it has been attacked?
     $scope.attacks = function(){
@@ -31,12 +48,12 @@ angular.module('App.drilldownCtrl', [])
     $scope.itemsPerPage = 50;
     $scope.pagedItems = [];
     $scope.currentPage = 0;
-    $scope.populate = function() { $scope.items = $scope.details(); };
+    $scope.populate = function(requestdata) { $scope.items = requestdata; };
     //$scope.items = $scope.populate();
     //$scope.populate();
 
     $scope.$on('Request.data', function(event, body) {
-      $scope.populate();
+      $scope.populate(body);
       $scope.search();
     });
 

@@ -41,6 +41,25 @@ describe('Drilldown Controller:', function() {
       expect(scope.details).toBe('test');
   });
 
+  it('should have a enddate property that initializes to now', function(){
+    expect(scope.enddate.constructor.name).toBe('Date');
+  });
+
+  it('should have a startdate property that initializes to 24 hours ago', function(){
+    expect(scope.startdate.constructor.name).toBe('Date');
+    expect(scope.enddate - scope.startdate).toBe(86400000);
+  });
+
+  describe("requestrange object", function(){
+    it('should be an object', function(){
+      expect(typeof scope.requestrange).toBe('object');
+    });
+
+    it('should have a start property that is an ISO datestring', function(){
+      expect(typeof scope.requestrange.start).toBe('string');
+    });
+  });
+
   //TODO improve the description here
   xit('should have all the necessary parameters', function() {
     expect(scope.sort).not.toBe(undefined);
