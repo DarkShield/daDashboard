@@ -312,4 +312,34 @@ describe('routes', function(){
     });
   });
 
+  //nested describe for domain.traffic route
+  describe('traffic route', function() {
+
+    it('should have a domains.traffic property that references a mehtod named getAllTrafficRange', function(){
+      expect(typeof(routes.traffic)).toBe('function');
+      expect(routes.traffic.name).toBe('getAllTrafficRange');
+    });
+
+    it('should call send with argument docs', function(){
+      var req = {
+        body: { start: '2013, 9, 1', end: '2013, 10, 1'  }
+      };
+      var res = {
+        send: function(req, res){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.domains.info(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 1000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+  });
+
 });
