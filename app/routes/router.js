@@ -124,11 +124,15 @@ exports.domains.info.lastday = function getLastDay (req, res) {
 exports.traffic = function getRange (req, res) {
   var start = new Date(req.body.start);
   var end = new Date(req.body.end);
+  var sitesArray = [];
+  for (var i = 0; i <= req.session.user.sites.length; i++) {
+    sitesArray.push(req.session.user.sites[i].name);
+  }
   var respond = function (err, docs) {
     console.log(err);
     console.log(docs);
     res.send(docs);
   };
   console.log(req.session.user.sites[0] + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
+  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
