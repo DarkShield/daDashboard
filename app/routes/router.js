@@ -127,8 +127,11 @@ exports.traffic = function getRange (req, res) {
   var sitesArray = [];
   for (var site in req.session.user.sites) {
     if (req.session.user.sites.hasOwnProperty(site)) {
+      console.log(site);
+      console.log(site.name);
       sitesArray.push(site.name);
     }
+    else console.log('doesnt have prop');
   }
   var respond = function (err, docs) {
     console.log(err);
