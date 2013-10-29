@@ -135,6 +135,6 @@ exports.traffic = function getRange (req, res) {
   var respond = function (err, docs) {
     res.send(docs);
   };
-  console.log(sitesArray + ' & ' + start + ' & ' + end)
+  //console.log(sitesArray + ' & ' + start + ' & ' + end)
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
