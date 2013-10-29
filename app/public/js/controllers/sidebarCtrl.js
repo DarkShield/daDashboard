@@ -34,7 +34,8 @@ angular.module('App.SidebarCtrl', [])
       }
       clickedsite.selected = 'active';
       //$scope.getLastDay(clickedsite);
-      $scope.getRequestData(clickedsite);
+      //$scope.getRequestData(clickedsite);
+      $scope.getRange({ start: '2013, 9, 1', end: '2013, 10, 1'  });
     }
 
 

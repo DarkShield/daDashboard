@@ -37,7 +37,7 @@ angular.module('App.domainService', [])
     },
 
     getRange: function(range){
-      $http.post('/traffic/', range).success(function(body){
+      $http.post('/traffic', range).success(function(body){
         $rootScope.$broadcast('Request.data', body);
       });
     },

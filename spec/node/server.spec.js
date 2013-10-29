@@ -1,4 +1,4 @@
-var app = require('../app/server');
+var app = require('../../app/server');
 
 describe("app", function(){
   
