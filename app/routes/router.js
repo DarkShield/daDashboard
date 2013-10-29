@@ -125,8 +125,10 @@ exports.traffic = function getRange (req, res) {
   var start = new Date(req.body.start);
   var end = new Date(req.body.end);
   var sitesArray = [];
-  for (var i = 0; i <= req.session.user.sites.length; i++) {
-    sitesArray.push(req.session.user.sites[i].name);
+  for (var site in req.session.user.sites) {
+    if (req.session.user.sites.hasOwnProperty(site)) {
+      sitesArray.push(site.name);
+    }
   }
   var respond = function (err, docs) {
     console.log(err);
