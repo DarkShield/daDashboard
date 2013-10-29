@@ -48,7 +48,6 @@ function loadUser(req, res, next) {
     User.findById(req.session.user_id, function(err, user) {
       if (user) {
         req.currentUser = user;
-        console.log('here');
         next();
       } else {
         res.redirect('/login');
