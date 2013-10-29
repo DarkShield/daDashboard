@@ -16,6 +16,8 @@ angular.module('App.SidebarCtrl', [])
 
     $scope.getLastDay = domainService.getLastDay;
 
+    $scope.getRange = domainService.getRange;
+
     $scope.test = function(){
       console.log(domainService.doms);
       console.log('scope '+ $scope.domains);
