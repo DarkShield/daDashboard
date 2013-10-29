@@ -129,7 +129,6 @@ exports.traffic = function getRange (req, res) {
     if (req.session.user.sites.hasOwnProperty(site)) {
       console.log(req.session.user.sites[site]);
       sitesArray.push(req.session.user.sites[site].name);
-      sitesArray.push('www.test.com');
     }
     else console.log('doesnt have prop');
   }
@@ -139,5 +138,5 @@ exports.traffic = function getRange (req, res) {
     res.send(docs);
   };
   console.log(sitesArray + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
+  RequestStore.find({'headers.host': { $in : [sitesArray] }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
