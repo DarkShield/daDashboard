@@ -122,22 +122,19 @@ exports.domains.info.lastday = function getLastDay (req, res) {
 };
 
 exports.traffic = function getRange (req, res) {
-  var start = new Date(req.body.start);
-  var end = new Date(req.body.end);
+  //var start = new Date(req.body.start);
+  //var end = new Date(req.body.end);
   var sitesArray = [];
   for (var site in req.session.user.sites) {
     if (req.session.user.sites.hasOwnProperty(site)) {
-      console.log(req.session.user.sites[site]);
       var name = req.session.user.sites[site].name
       sitesArray.push(name);
     }
     else console.log('doesnt have prop');
   }
   var respond = function (err, docs) {
-    console.log(err);
-    console.log(docs);
     res.send(docs);
   };
   console.log(sitesArray + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : ['dashboard.vicetek.com'] }/*, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } */}, respond);
+  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
