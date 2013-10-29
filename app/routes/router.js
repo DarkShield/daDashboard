@@ -129,6 +129,7 @@ exports.traffic = function getRange (req, res) {
     if (req.session.user.sites.hasOwnProperty(site)) {
       console.log(req.session.user.sites[site]);
       sitesArray.push(req.session.user.sites[site].name);
+      sitesArray.push('www.test.com');
     }
     else console.log('doesnt have prop');
   }
