@@ -125,8 +125,12 @@ exports.traffic = function getRange (req, res) {
   var start = new Date(req.body.start);
   var end = new Date(req.body.end);
   var respond = function (err, docs) {
+    console.log(err);
+    console.log(docs);
     res.send(docs);
   };
   console.log(req.session.user.sites[0] + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : start, $lt : end } }, respond);
+  var query = {'headers.host': { $in : req.session.user.sites }, 'requestedtimestamp' : { $gte : start, $lt : end } };
+  console.log(query);
+  RequestStore.find(query, respond);
 };
