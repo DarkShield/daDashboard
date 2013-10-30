@@ -99,7 +99,7 @@ exports.domains.info = function getDomainData (req, res){
    var respond = function (err, docs){
      res.send(docs);
    };
-   RequestStore.find({'headers.host': domainName}, respond);
+   RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
 };
 
 exports.domains.attacks = function getDomainAttacks(req, res){
@@ -118,7 +118,7 @@ exports.domains.info.lastday = function getLastDay (req, res) {
   var respond = function (err, docs) {
     res.send(docs);
   };
-  RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, respond);
+  RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
 };
 
 exports.traffic = function getRange (req, res) {
@@ -136,5 +136,5 @@ exports.traffic = function getRange (req, res) {
     res.send(docs);
   };
   //console.log(sitesArray + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
+  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, {'body' : 0}, respond);
 };

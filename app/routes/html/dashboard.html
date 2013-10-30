@@ -167,7 +167,7 @@
         <th>Date</th>
         <th>Method</th>
         <th>URL</th>
-        <th>POST Body</th>
+        <!--<th>POST Body</th>-->
         <th>From</th>
         <th></th>
     </tr>
@@ -176,8 +176,8 @@
     <tr data-ng-repeat="item in pagedItems[currentPage] | filter:filterby | orderBy:sortingOrder:revers">
         <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
         <td>{{item.method}}</td>
-        <td>{{item.url}}</td>
-        <td>{{item.body}}</td>
+        <td>{{item.headers.host}}{{item.url}}</td>
+        <!--<td>{{item.body}}</td>-->
         <td>{{item.remoteIP}}:{{item.remotePort}}</td>
         <td>
             <button class="btn btn-sm btn-primary">
