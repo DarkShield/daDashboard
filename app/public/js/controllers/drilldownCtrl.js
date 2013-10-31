@@ -45,13 +45,13 @@ angular.module('App.drilldownCtrl', [])
     $scope.maxSize = 10;
     $scope.currentPage = 1;
     $scope.pagedItems = [];
-    $scope.totalItems = $scope.items.length;
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
 
     $scope.$on('Request.data', function(event, body) {
       $scope.populate(body);
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage;
+      $scope.totalItems = $scope.items.length;
       for(var i=start;i<=end;i++){
         $scope.pagedItems.push($scope.items[i]);
       }
