@@ -44,7 +44,7 @@ angular.module('App.drilldownCtrl', [])
     $scope.pagedItems = [];
     $scope.items = [];
 
-    $scope.itemsPerPage = 2;
+    $scope.itemsPerPage = 20;
     $scope.maxSize = 10;
     $scope.currentPage = 1;
     $scope.totalItems = 0;
