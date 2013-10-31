@@ -41,21 +41,23 @@ angular.module('App.drilldownCtrl', [])
     };
 
     //Pagination and sorting
-    $scope.itemsPerPage = 50;
+    $scope.pagedItems = [];
+    $scope.items = [];
+
+    $scope.itemsPerPage = 2;
     $scope.maxSize = 10;
     $scope.currentPage = 1;
-    $scope.items = [];
-    $scope.totalItems = $scope.items.length;
-    $scope.pagedItems = [];
+    $scope.totalItems = 0;
+
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
 
     $scope.$on('Request.data', function(event, body) {
       $scope.populate(body);
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
-      var end = $scope.currentPage * $scope.itemsPerPage;
-      $scope.totalItems = $scope.items.length;
+      var end = $scope.currentPage * $scope.itemsPerPage -1;
+      $scope.totalItems = body.length;
       for(var i=start;i<=end;i++){
-        $scope.pagedItems.push($scope.items[i]);
+        $scope.pagedItems.push(body[i]);
       }
     });
 
@@ -63,7 +65,7 @@ angular.module('App.drilldownCtrl', [])
       $scope.pagedItems = [];
       if(newValue !== oldValue){
         var start = (newValue * $scope.itemsPerPage) - $scope.itemsPerPage;
-        var end = newValue * $scope.itemsPerPage;
+        var end = newValue * $scope.itemsPerPage - 1;
         for(var i=start;i<=end;i++){
           $scope.pagedItems.push($scope.items[i]);
         }

@@ -3,7 +3,8 @@
 <head>
     <title>DarkShield.IO - Dashboard</title>
     <link href="../css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="../css/application.min.css" rel="stylesheet">
+    <link href="../css/application.css" rel="stylesheet">
+    <link href="../css/customizations.css" rel="stylesheet">
     <link rel="shortcut icon" href="../img/favicon.png">
     <script type="text/javascript" src="../js/vendor/angular.min.js"></script>
     <script type="text/javascript" src="../js/ui-bootstrap-tpls-0.6.0.js"></script>
@@ -178,7 +179,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr data-ng-repeat="item in pagedItems | filter:filterby | orderBy:sortingOrder:revers">
+    <tr data-ng-repeat="item in pagedItems | filter:filterby | orderBy:sortingOrder:reverse">
         <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
         <td>{{item.method}}</td>
         <td>{{item.headers.host}}{{item.url}}</td>
@@ -198,11 +199,11 @@
 </table>
 <div class="clearfix">
     <div class="pull-right">
-        <button class="btn btn-default btn-sm">
+        <button class="btn btn-sm">
             Send to ...
         </button>
         <div class="btn-group">
-            <button class="btn btn-sm btn-inverse dropdown-toggle" data-toggle="dropdown">
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
                 &nbsp; Clear &nbsp;
                 <i class="icon-caret-down"></i>
             </button>
@@ -216,14 +217,14 @@
         </div>
     </div>
 
-    <ul class="pagination no-margin">
+    <!--<ul class="pagination no-margin">
         <li class="disabled"><a href="#">Prev</a></li>
         <li class="active"><a href="#">1</a></li>
         <li><a href="#">2</a></li>
         <li><a href="#">3</a></li>
         <li><a href="#">4</a></li>
         <li><a href="#">Next</a></li>
-    </ul>
+    </ul>-->
 
 </div>
 </div>
