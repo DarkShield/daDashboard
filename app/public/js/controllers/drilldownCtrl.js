@@ -50,7 +50,6 @@ angular.module('App.drilldownCtrl', [])
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
 
     $scope.$on('Request.data', function(event, body) {
-      console.log(body);
       $scope.populate(body);
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage;
@@ -61,10 +60,10 @@ angular.module('App.drilldownCtrl', [])
     });
 
     $scope.$watch('currentPage', function(newValue, oldValue) {
+      $scope.pagedItems = [];
       if(newValue !== oldValue){
         var start = (newValue * $scope.itemsPerPage) - $scope.itemsPerPage;
         var end = newValue * $scope.itemsPerPage;
-        $scope.pagedItems = [];
         for(var i=start;i<=end;i++){
           $scope.pagedItems.push($scope.items[i]);
         }
