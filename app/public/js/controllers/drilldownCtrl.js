@@ -41,100 +41,32 @@ angular.module('App.drilldownCtrl', [])
     };
 
     //Pagination and sorting
-    //TODO should pagination be factored into a service?
-    $scope.reverse = false;
-    $scope.filteredItems = [];
-    $scope.groupedItems = [];
     $scope.itemsPerPage = 50;
+    $scope.maxSize = 10;
+    $scope.currentPage = 1;
     $scope.pagedItems = [];
-    $scope.currentPage = 0;
+    $scope.totalItems = $scope.items.length;
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
-    //$scope.items = $scope.populate();
-    //$scope.populate();
 
     $scope.$on('Request.data', function(event, body) {
       $scope.populate(body);
-      $scope.search();
+      var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
+      var end = $scope.currentPage * $scope.itemsPerPage;
+      for(var i=start;i<=end;i++){
+        $scope.pagedItems.push($scope.items[i]);
+      }
     });
 
-    var searchMatch = function (pile, q) {
-      if(!q) {
-        return true;
-      }
-      return pile.toLowerCase().indexOf(q.toLowerCase()) !== -1;
-    };
-
-    $scope.search = function() {
-     //TODO should be converted to angular for each
-      $scope.filteredItems = $filter('filter')($scope.items, function (item) {
-        for(var attr in item) {
-          if (searchMatch(JSON.stringify(item[attr]), $scope.query))
-            return true;
-          }
-          return false;
-      });
-
-      if ($scope.sortingOrder !== '') {
-        $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
-      }
-      $scope.currentPage = 0;
-
-      $scope.groupToPages();
-    };
-
-    $scope.groupToPages = function () {
-      $scope.pagedItems = [];
-
-      for (var i = 0; i < $scope.filteredItems.length; i++) {
-        if (i % $scope.itemsPerPage === 0) {
-          $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
-        } else {
-          $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+    $scope.$watch('currentPage', function(newValue, oldValue) {
+      if(newValue !== oldValue){
+        var start = (newValue * $scope.itemsPerPage) - $scope.itemsPerPage;
+        var end = newValue * $scope.itemsPerPage;
+        $scope.pagedItems = [];
+        for(var i=start;i<=end;i++){
+          $scope.pagedItems.push($scope.items[i]);
         }
       }
-    };
+    });
 
-    $scope.range = function (start, end) {
-      var ret = [];
-      if (!end) {
-        end = start;
-        start = 0;
-      }
-      for (var i = start; i < end; i++) {
-        ret.push(i);
-      }
-      return ret;
-    };
 
-    $scope.prevPage = function () {
-      if ($scope.currentPage > 0) {
-        $scope.currentPage--;
-      }
-    };
-
-    $scope.nextPage = function () {
-      if ($scope.currentPage < $scope.pagedItems.length - 1) {
-        $scope.currentPage++;
-      }
-    };
-
-    $scope.setPage = function () {
-      $scope.currentPage = this.n;
-    };
-
-    //TODO I don't like this at all. Manual DOM manipulation = BAD
-    $scope.sort_by = function(newSortingOrder) {
-      if ($scope.sortingOrder == newSortingOrder)
-        $scope.reverse = !$scope.reverse;
-
-      $scope.sortingOrder = newSortingOrder;
-
-      $('th i').each(function(){
-        $(this).removeClass().addClass('icon-sort');
-      });
-      if ($scope.reverse)
-        $('th.'+newSortingOrder+' i').removeClass().addClass('icon-chevron-up');
-      else
-        $('th.'+newSortingOrder+' i').removeClass().addClass('icon-chevron-down');
-    };
 }]);
