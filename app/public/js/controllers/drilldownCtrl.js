@@ -51,45 +51,33 @@ angular.module('App.drilldownCtrl', [])
     $scope.defaultItemsPerPage = $scope.itemsPerPage = 10;
 
 
-    $scope.populate = function(requestdata) { $scope.items = requestdata; };
-
-    $scope.$on('Request.data', function(event, body) {
-      $scope.populate(body);
-      console.log(body.length);
-      $scope.totalItems = body.length;
-
-      $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
-
+    $scope.paginate = function(dataset) {
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage - 1;
 
       if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
         $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
-        end = start + $scope.itemsPerPage;
+        end = start + $scope.itemsPerPage -1;
       }
 
-      console.log($scope.itemsPerPage);
       for(var i=start;i<=end;i++){
-        $scope.pagedItems.push(body[i]);
+        $scope.pagedItems.push(dataset[i]);
       }
+    };
+
+    $scope.$on('Request.data', function(event, body) {
+      $scope.items = body;
+      $scope.totalItems = body.length;
+      $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
+      $scope.paginate($scope.items);
+
     });
 
     $scope.$watch('currentPage', function(newValue, oldValue) {
       $scope.pagedItems = [];
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-        var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
-        var end = newValue * $scope.itemsPerPage - 1;
-
-        if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
-          $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
-          end = start + $scope.itemsPerPage -1;
-        }
-
-        console.log($scope.itemsPerPage);
-        for(var i=start;i<=end;i++){
-          $scope.pagedItems.push($scope.items[i]);
-        }
+        $scope.paginate($scope.items);
       }
     });
 
