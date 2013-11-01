@@ -45,20 +45,23 @@ angular.module('App.drilldownCtrl', [])
     $scope.items = [];
 
     $scope.totalItems = 0;
-    $scope.defaultItemsPerPage =  31;
-    $scope.maxSize = 10;
     $scope.currentPage = 1;
+    $scope.maxSize = 10;
+
+    $scope.defaultItemsPerPage = $scope.itemsPerPage = 10;
+
 
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
 
     $scope.$on('Request.data', function(event, body) {
       $scope.populate(body);
+      console.log(body.length);
       $scope.totalItems = body.length;
-      $scope.itemsPerPage = $scope.defaultItemsPerPage;
+
       $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
 
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
-      var end = $scope.currentPage * $scope.itemsPerPage;
+      var end = $scope.currentPage * $scope.itemsPerPage - 1;
 
       if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
         $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
@@ -80,7 +83,7 @@ angular.module('App.drilldownCtrl', [])
 
         if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
           $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
-          end = start + $scope.itemsPerPage;
+          end = start + $scope.itemsPerPage -1;
         }
 
         console.log($scope.itemsPerPage);

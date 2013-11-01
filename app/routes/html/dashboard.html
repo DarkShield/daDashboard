@@ -164,7 +164,7 @@
     <!--TODO: Figure out how to port over the search and pagination functionality from the old drilldown-->
 </header>
 <div class="body">
-<pagination boundary-links="true" total-items="totalItems" page="currentPage" max-size="maxSize" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+    <pagination boundary-links="true" max-size="maxSize" total-items="totalItems" items-per-page="defaultItemsPerPage" page="currentPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 <input name="Search" type="text" data-ng-model="query" data-ng-change="search()" class="search-query pull-right" placeholder="Search">
 <table class="table table-striped table-images">
     <thead>
