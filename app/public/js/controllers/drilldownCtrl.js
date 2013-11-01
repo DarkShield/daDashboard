@@ -52,6 +52,7 @@ angular.module('App.drilldownCtrl', [])
 
 
     $scope.paginate = function(dataset) {
+      $scope.pagedItems = [];
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage - 1;
 
@@ -74,7 +75,6 @@ angular.module('App.drilldownCtrl', [])
     });
 
     $scope.$watch('currentPage', function(newValue, oldValue) {
-      $scope.pagedItems = [];
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
         $scope.paginate($scope.items);
