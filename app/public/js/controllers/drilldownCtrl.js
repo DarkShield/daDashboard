@@ -44,18 +44,28 @@ angular.module('App.drilldownCtrl', [])
     $scope.pagedItems = [];
     $scope.items = [];
 
-    $scope.itemsPerPage = 2;
+    $scope.totalItems = 0;
+    $scope.defaultItemsPerPage =  31;
     $scope.maxSize = 10;
     $scope.currentPage = 1;
-    $scope.totalItems = 0;
 
     $scope.populate = function(requestdata) { $scope.items = requestdata; };
 
     $scope.$on('Request.data', function(event, body) {
       $scope.populate(body);
-      var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
-      var end = $scope.currentPage * $scope.itemsPerPage -1;
       $scope.totalItems = body.length;
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
+      $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
+
+      var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
+      var end = $scope.currentPage * $scope.itemsPerPage;
+
+      if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
+        $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
+        end = start + $scope.itemsPerPage;
+      }
+
+      console.log($scope.itemsPerPage);
       for(var i=start;i<=end;i++){
         $scope.pagedItems.push(body[i]);
       }
@@ -63,9 +73,17 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.$watch('currentPage', function(newValue, oldValue) {
       $scope.pagedItems = [];
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-        var start = (newValue * $scope.itemsPerPage) - $scope.itemsPerPage;
+        var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
         var end = newValue * $scope.itemsPerPage - 1;
+
+        if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
+          $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
+          end = start + $scope.itemsPerPage;
+        }
+
+        console.log($scope.itemsPerPage);
         for(var i=start;i<=end;i++){
           $scope.pagedItems.push($scope.items[i]);
         }
