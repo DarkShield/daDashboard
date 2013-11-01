@@ -4,6 +4,8 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.domains = domainService.doms;
 
+    $scope.getDomains = domainService.getDomains;
+
     $scope.drillsite = domainService.getSelectedSite();
 
     $scope.filterby ='';
@@ -46,7 +48,7 @@ angular.module('App.drilldownCtrl', [])
 
     $scope.totalItems = 0;
     $scope.currentPage = 1;
-    $scope.maxSize = 10;
+    $scope.maxSize = 5;
 
     $scope.defaultItemsPerPage = $scope.itemsPerPage = 10;
 
@@ -66,6 +68,14 @@ angular.module('App.drilldownCtrl', [])
       for(var i=start;i<=end;i++){
         $scope.pagedItems.push(dataset[i]);
       }
+    };
+
+    $scope.selectAll = function(){
+      $scope.paginate($scope.items);
+    }
+
+    $scope.pickDomain = function(domain){
+      $scope.paginate($filter('filter')($scope.items, domain));
     };
 
     $scope.$on('Request.data', function(event, body) {
