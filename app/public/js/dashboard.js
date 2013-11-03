@@ -5,5 +5,11 @@ var App = window.App = angular.module('App',
     'App.trafficCtrl',
     'App.SidebarCtrl',
     'App.domainService'
-  ]
+  ],
+  function ($routeProvider, $locationProvider) {
+    $routeProvider.when('/traffic', {
+      templateUrl: '../html/traffic.html',
+      controller: App.trafficCtrl
+    });
+  }
 );
