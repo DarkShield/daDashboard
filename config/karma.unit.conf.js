@@ -16,8 +16,9 @@ module.exports = function(config) {
         files: [
 
             //Include Vendor Files
-            './app/public/js/vendor/angular.js',
-            './app/public/js/vendor/angular-mocks.js',
+            './app/public/js/vendor/angular/angular.js',
+            './app/public/js/vendor/angular/angular-mocks.js',
+            './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
             './app/public/js/directives/angular-strap/dist/angular-strap.js',
 
             //Include App Code
