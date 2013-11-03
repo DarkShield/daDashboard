@@ -27,21 +27,6 @@ angular.module('App.trafficCtrl', [])
       domainService.getRange($scope.requestrange);
     };
 
-    //TODO why does this need to initialize to Last Day when it isn't used in the template?
-    $scope.range = 'Last Day';
-
-    $scope.details = $scope.drillsite.requestData;
-
-    //TODO are we pushing an attacks property onto the site object only after it has been attacked?
-    $scope.attacks = function(){
-      if (!$scope.drillsite.attacks){
-         return 0;
-      }
-      else {
-         return $scope.drillsite.attacks.length;
-      }
-    };
-
     //Pagination and sorting
     $scope.pagedItems = [];
     $scope.items = [];
