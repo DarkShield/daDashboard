@@ -56,7 +56,7 @@ angular.module('App.trafficCtrl', [])
     $scope.paginate = function(dataset) {
       $scope.pagedItems = [];
       $scope.totalItems = dataset.length;
-      $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
+      $scope.lastPage = Math.ceil($scope.totalItems / $scope.itemsPerPage);
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage - 1;
 
