@@ -71,8 +71,9 @@ angular.module('App.trafficCtrl', [])
     };
 
     $scope.selectAll = function(){
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
       $scope.paginate($scope.items);
-    }
+    };
 
     $scope.pickDomain = function(domain){
       $scope.paginate($filter('filter')($scope.items, domain));
