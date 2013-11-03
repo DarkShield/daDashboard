@@ -1,6 +1,6 @@
-angular.module('App.drilldownCtrl', [])
+angular.module('App.trafficCtrl', [])
 
-  .controller('drilldownCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
 
     $scope.domains = domainService.doms;
 
