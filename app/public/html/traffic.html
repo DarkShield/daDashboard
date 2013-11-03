@@ -1,0 +1,85 @@
+<section class="widget" data-ng-controller="trafficCtrl" data-ng-init="getRequestData()">
+    <header></header>
+    <div class="body">
+        <div class="row">
+            <div class="col-sm-6 pull-right">
+                <div class="input-group" data-ng-init="getDomains()">
+                    <input name="Search" type="text" class="form-control" id="dropdown-appended" data-ng-model="query" placeholder="Search">
+                    <div class="input-group-btn">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            Sites
+                            <i class="icon-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li data-ng-repeat="domain in domains"><a href="#{{domain.name}}" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" data-ng-click="selectAll()">All Sites</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 pull left">
+                <pagination boundary-links="true" max-size="maxSize" total-items="totalItems" items-per-page="defaultItemsPerPage" page="currentPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+        </div>
+
+        <table class="table table-striped table-images">
+            <thead>
+            <tr>
+                <th class="hidden-xs-portrait">Date</th>
+                <th>Method</th>
+                <th>URL</th>
+                <th>From</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="item in pagedItems">
+                <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
+                <td>{{item.method}}</td>
+                <td>{{item.url}}</td>
+                <td>{{item.remoteIP}}:{{item.remotePort}}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary">
+                        Show
+                    </button>
+                    <button class="btn btn-sm btn-warning" data-toggle="button">
+                        Mark
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div class="clearfix">
+            <div class="pull-right">
+                <button class="btn btn-sm">
+                    Send to ...
+                </button>
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        &nbsp; Clear &nbsp;
+                        <i class="icon-caret-down"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Clear</a></li>
+                        <li><a href="#">Move ...</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--<ul class="pagination no-margin">
+                <li class="disabled"><a href="#">Prev</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>-->
+
+        </div>
+    </div>
+</section>
