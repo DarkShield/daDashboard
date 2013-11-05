@@ -114,6 +114,7 @@ describe('routes', function(){
        //without actually adding to the db. Jasmine does provide interupt functions
        //capabilites just need to figure out how to implement here.
     });
+  });
   
   //nested describe for home route
   describe('home route', function(){
@@ -217,4 +218,7 @@ describe('routes', function(){
       });
     });
   });
+
+
+
 });

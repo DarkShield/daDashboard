@@ -1,92 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Sign in</title>
+<html>
+<head>
+    <title>DarkShield.IO - Login</title>
+    <link href="css/application.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta charset="utf-8">
+    <script src="lib/jquery/jquery.1.9.0.min.js"> </script>
+    <script src="lib/backbone/underscore-min.js"></script>
+    <script src="js/settings.js"> </script>
+</head>
+<body>
+<div class="single-widget-container">
+    <section class="widget login-widget">
+        <header class="text-align-center">
+            <h4>Login to your account</h4>
+        </header>
+        <div class="body">
+            <form class="no-margin"
+                  action="/login" method="POST">
+                <fieldset>
+                    <div class="form-group no-margin">
+                        <label for="username" >Username</label>
 
-    <!-- Le styles -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id ="username" name="username" type="text" class="form-control input-lg"
+                                   placeholder="Username">
+                        </div>
 
-      .form-signin {
-        max-width: 300px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
+                    </div>
 
-    </style>
-    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+                    <div class="form-group">
+                        <label for="password" >Password</label>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../js/vendor/html5shiv.js"></script>
-    <![endif]-->
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="icon-lock"></i>
+                                </span>
+                            <input id="password" type="password" name="password" class="form-control input-lg"
+                                   placeholder="Password">
+                        </div>
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/ico/favicon.png">
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <form class="form-signin" method="POST" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" name="username" class="input-block-level" placeholder="Username">
-        <input type="password" name="password" class="input-block-level" placeholder="Password">
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
-      </form>
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/js/vendor/bootstrap.js"></script>
-    <script src="/js/vendor/jquery.min.js"></script>
-    <!--<script src="../js/vendor/jquery.js"></script>
-    <script src="../js/vendor/bootstrap-transition.js"></script>
-    <script src="../js/vendor/bootstrap-alert.js"></script>
-    <script src="../js/vendor/bootstrap-modal.js"></script>
-    <script src="../js/vendor/bootstrap-dropdown.js"></script>
-    <script src="../js/vendor/bootstrap-scrollspy.js"></script>
-    <script src="../js/vendor/bootstrap-tab.js"></script>
-    <script src="../js/vendor/bootstrap-tooltip.js"></script>
-    <script src="../js/vendor/bootstrap-popover.js"></script>
-    <script src="../js/vendor/bootstrap-button.js"></script>
-    <script src="../js/vendor/bootstrap-collapse.js"></script>
-    <script src="../js/vendor/bootstrap-carousel.js"></script>
-    <script src="../js/vendor/bootstrap-typeahead.js"></script>
-    -->
-  </body>
+                    </div>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-block btn-lg btn-danger">
+                        <span class="small-circle"><i class="icon-caret-right"></i></span>
+                        <small>Sign In</small>
+                    </button>
+                    <div class="forgot"><a class="forgot" href="#">Forgot Username or Password?</a></div>
+                </div>
+            </form>
+        </div>
+        <footer>
+        </footer>
+    </section>
+</div>
+</body>
 </html>

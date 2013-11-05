@@ -1,40 +1,21 @@
 angular.module('App.SidebarCtrl', [])
 
-  .controller('SidebarCtrl',['$scope', 'domainService', function($scope, domainService){
-    $scope.domains = domainService.doms;
-   
-    $scope.getDomains = domainService.getDomains;
-
-/*   $scope.$on( 'Domain.Update', function(event){
-     $scope.domains = domainService.doms;
-      if (!$scope.$$phase){
-         $scope.$apply();
-      }
-   });*/
-
-    $scope.getRequestData = domainService.getRequestData;
-
-    $scope.getLastDay = domainService.getLastDay;
-
-    $scope.test = function(){
-      console.log(domainService.doms);
-      console.log('scope '+ $scope.domains);
-    }
-
-    $scope.sites = {
-      visible: false
+  .controller('SidebarCtrl',['$scope', 'domainService', function($scope){
+    $scope.panelstates = {
+      dashboard: 'active panel',
+      attackers: 'panel',
+      sites: 'panel',
+      statistics: 'panel',
+      config: 'panel'
     };
 
-    $scope.select = function(clickedsite){
-      for (var key in $scope.domains){
-        if ($scope.domains.hasOwnProperty(key)){
-          $scope.domains[key].selected = '';
+    $scope.setActivePanel = function(panel){
+      angular.forEach($scope.panelstates, function(value,key){
+        if(panel === key){
+          $scope.panelstates[key] = 'active panel';
+        }else{
+          $scope.panelstates[key]= 'panel';
         }
-      }
-      clickedsite.selected = 'active';
-      $scope.getLastDay(clickedsite);
-      //$scope.getRequestData(clickedsite);
+      })
     }
-
-
   }]);

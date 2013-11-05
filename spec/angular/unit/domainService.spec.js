@@ -1,38 +1,56 @@
-//
-// test /unit/domainService.spec.js
-//
-describe('Unit: Testing Services', function() {
-  describe('Domain Service:', function() {
-    
-    /*beforeEach(function(){
-      var App = angular.mock.module('dashboard');
-    });*/
+describe('Domain Service:', function() {
+  var dS = null;
 
-    var $http;
-    beforeEach(angular.mock.module('App'));
-    beforeEach(inject(function($injector) {
-      $httpBackend = $injector.get('$httpBackend');
-      $httpBackend.when('GET', '/domains').respond([{name: 'test.com'}]);
-    }));
+  beforeEach(function(){
+    angular.mock.module('App');
+    angular.mock.module('App.domainService');
 
-    it('should contain a domainService service', inject(function(domainService) {
-      expect(domainService).not.toBe(undefined);
-    }));
+    inject(function(domainService) {
+      dS = domainService;
+    });
 
-    it('should have a domainService service with all its functions', inject(['domainService', function($ds) {
-      expect($ds.getDomains).not.toBe(undefined);
-      expect($ds.getRequestData).not.toBe(undefined);
-      expect($ds.getSelectedSite).not.toBe(undefined);
-    }]));
+    spyOn(dS, 'getDomains').andCallThrough();
+  });
 
-    it('should have a working getDomains function', inject(['domainService', function($ds) {
-      //TODO: WTF?! This should work. When I try to flush it says nothing queued up but there should
-      //be a GET to /domains queued up. 
+  it('should be registered', function() {
+    expect(dS).not.toBe(undefined);
+  });
+
+  it('should have a getDomains method', function(){
+    expect(dS.getDomains).not.toBe(undefined);
+    expect(typeof dS.getDomains).toBe('function');
+  });
+
+  it('should have a getRequestData method', function() {
+    expect(dS.getRequestData).not.toBe(undefined);
+    expect(typeof dS.getRequestData).toBe('function');
+  });
+
+  it('should have a getSelected site method',function(){
+    expect(dS.getSelectedSite).not.toBe(undefined);
+    expect(typeof dS.getSelectedSite).toBe('function');
+  });
+
+  describe('getDomains method', function(){
+    var domainsresponse = [
+      {name: 'test.com'},
+      {name: 'www.test.com'}];
+
+    beforeEach(function(){
+      inject(function($injector){
+        $httpBackend = $injector.get('$httpBackend');
+        $httpBackend.when('GET', '/domains').respond(domainsresponse);
+      });
+    });
+
+    it('should add the response data into the doms array', function() {
       $httpBackend.expectGET('/domains');
-      spyOn($ds, 'getDomains').andCallThrough();
-      //$httpBackend.flush();
-      console.log($ds.doms);
-    }]));
-
+      expect(dS.getDomains).not.toHaveBeenCalled();
+      dS.getDomains();
+      expect(dS.getDomains).toHaveBeenCalled();
+      $httpBackend.flush();
+      expect(dS.doms[0].name).toBe('test.com');
+      expect(dS.doms[1].name).toBe('www.test.com');
+    });
   });
 });

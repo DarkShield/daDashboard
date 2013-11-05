@@ -1,4 +1,4 @@
-var app = require('../app/server');
+var app = require('../../app/server');
 
 describe("app", function(){
   
@@ -61,4 +61,6 @@ describe("app", function(){
     expect(app.routes.post[2].path).toBe('/domains/attacks');
     expect(app.routes.post[2].callbacks[0].name).toBe('getDomainAttacks');
   });
+
+
 });

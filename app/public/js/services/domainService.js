@@ -1,4 +1,4 @@
-angular.module('App.Services', [])
+angular.module('App.domainService', [])
 
   .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
     'use strict';
@@ -10,16 +10,16 @@ angular.module('App.Services', [])
 
     getDomains: function(){
       $http.get('/domains').success(function(body){
-        for (var domain in body){
-          domains.doms.push(body[domain]);
-        }
+        domains.doms = [];
+        angular.forEach(body, function(domain){
+          domains.doms.push(domain);
+        });
       });
     },
 
     getRequestData: function(domain){
       $http.post('/domains/info', domain).success(function(body){
         domain.requestData = body;
-        //console.log(body);
         $rootScope.$broadcast('Request.data', body);
       });
       $http.post('/domains/attacks', domain).success(function(body){
@@ -36,6 +36,13 @@ angular.module('App.Services', [])
       //  domain.attacks = body;
       //});
     },
+
+    getRange: function(range){
+      $http.post('/traffic', range).success(function(body){
+        $rootScope.$broadcast('Request.data', body);
+      });
+    },
+
 
     getSelectedSite: function(){
       var selectedsite = {};

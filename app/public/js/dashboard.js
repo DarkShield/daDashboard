@@ -1,9 +1,15 @@
 //var dashboard = {};
 var App = window.App = angular.module('App',
   [
-    'App.DrilldownCtrl',
+    'ui.bootstrap',
+    'App.trafficCtrl',
     'App.SidebarCtrl',
-    'App.Services',
-    '$strap.directives'
-  ]
+    'App.domainService'
+  ],
+  function ($routeProvider, $locationProvider) {
+    $routeProvider.when('/traffic', {
+      templateUrl: '../html/traffic.html',
+      controller: 'trafficCtrl',
+    });
+  }
 );
