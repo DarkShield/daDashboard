@@ -12,6 +12,9 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 //app.use(express.cookieSession({key: 'sess', secret: 'SuperSecret'}));
 app.use(express.session({ secret: 'SuperSecretKeyForNow' }));
+app.use(function(req, res){
+  res.status(404).sendfile('./public/html/404.html');;
+});
 
 //functions
 //TODO: Should these go elsewhere?
