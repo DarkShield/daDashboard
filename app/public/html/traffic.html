@@ -14,12 +14,12 @@
                             <div class="input-group">
                                 <input name="Search" type="text" class="form-control" id="dropdown-appended" data-ng-model="query" placeholder="Search">
                                 <div class="input-group-btn">
-                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <button class="btn dropdown-toggle" data-ng-click="getDomains()" data-toggle="dropdown">
                                         Sites
                                         <i class="icon-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li data-ng-init="getDomains()" data-ng-repeat="domain in domains"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
+                                        <li data-ng-repeat="domain in domains"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
                                         <li class="divider"></li>
                                         <li><a href="" data-ng-click="selectAll()">All Sites</a></li>
                                     </ul>
