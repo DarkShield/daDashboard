@@ -1,4 +1,4 @@
-<div class="content container" data-ng-controller="trafficCtrl" data-ng-init="getRequestData()">
+<div class="content container" data-ng-init="getRequestData()">
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-title">Traffic Report<small>Reqeust Data</small></h2>
@@ -11,7 +11,7 @@
                 <div class="body">
                     <div class="row">
                         <div class="col-sm-6 pull-right">
-                            <div class="input-group" data-ng-init="getDomains()">
+                            <div class="input-group">
                                 <input name="Search" type="text" class="form-control" id="dropdown-appended" data-ng-model="query" placeholder="Search">
                                 <div class="input-group-btn">
                                     <button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -19,9 +19,19 @@
                                         <i class="icon-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li data-ng-repeat="domain in domains"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
+                                        <li data-ng-init="getDomains()" data-ng-repeat="domain in domains"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
                                         <li class="divider"></li>
                                         <li><a href="" data-ng-click="selectAll()">All Sites</a></li>
+                                    </ul>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        Attacks
+                                        <i class="icon-caret-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" data-ng-click="showAttacks()">Show Attacks</a></li>
+                                        <li><a href="" data-ng-click="selectAll()">Show All Traffic</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -59,36 +69,37 @@
                         </tbody>
 
                     </table>
-                    <div class="clearfix">
+                    <!--<div class="clearfix">
                         <div class="pull-right">
                             <button class="btn btn-sm">
-                                Send to ...
+                                Export ...
                             </button>
                             <div class="btn-group">
                                 <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    &nbsp; Clear &nbsp;
+                                    &nbsp; Attacks &nbsp;
                                     <i class="icon-caret-down"></i>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Clear</a></li>
-                                    <li><a href="#">Move ...</a></li>
-                                    <li><a href="#">Something else here</a></li>
+                                <ul class="popup-menu">
+                                    <li><a href="#">Cross Site Scripting</a></li>
+                                    <li><a href="#">SQL Injection</a></li>
+                                    <li><a href="#">Directory Traversal</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
+                                    <li><a href="#">All Attacks</a></li>
+                                    <li><a href="#">All Traffic</a></li>
                                 </ul>
                             </div>
                         </div>
 
-                        <!--<ul class="pagination no-margin">
+                        <ul class="pagination no-margin">
                             <li class="disabled"><a href="#">Prev</a></li>
                             <li class="active"><a href="#">1</a></li>
                             <li><a href="#">2</a></li>
                             <li><a href="#">3</a></li>
                             <li><a href="#">4</a></li>
                             <li><a href="#">Next</a></li>
-                        </ul>-->
+                        </ul>
 
-                    </div>
+                    </div>-->
                 </div>
             </section>
         </div>

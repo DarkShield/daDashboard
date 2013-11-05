@@ -61,7 +61,12 @@ angular.module('App.trafficCtrl', [])
     };
 
     $scope.pickDomain = function(domain){
+      $scope.drillsite = domain;
       $scope.paginate($filter('filter')($scope.items, domain));
+    };
+
+    $scope.showAttacks = function(){
+      $scope.paginate($filter('filter')($scope.items,'true'));
     };
 
     $scope.$on('Request.data', function(event, body) {
@@ -80,7 +85,9 @@ angular.module('App.trafficCtrl', [])
     $scope.$watch('query', function(newValue, oldValue){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-       $scope.paginate($filter('filter')($scope.items, $scope.query));
+       var domainfilter = $filter('filter')($scope.items, $scope.drillsite);
+       var searchfilter = $filter('filter')(domainfilter, $scope.query)
+        $scope.paginate(searchfilter);
       }
     })
 
