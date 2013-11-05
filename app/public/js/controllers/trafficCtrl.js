@@ -10,6 +10,8 @@ angular.module('App.trafficCtrl', [])
 
     $scope.filterby ='';
 
+    $scope.showAttacks = '';
+
     $scope.enddate = new Date();
 
     $scope.startdate = (function(){
@@ -57,6 +59,7 @@ angular.module('App.trafficCtrl', [])
 
     $scope.selectAll = function(){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
+      $scope.showAttacks = '';
       $scope.paginate($scope.items);
     };
 
@@ -65,8 +68,9 @@ angular.module('App.trafficCtrl', [])
       $scope.paginate($filter('filter')($scope.items, domain));
     };
 
-    $scope.showAttacks = function(){
-      $scope.paginate($filter('filter')($scope.items,'true'));
+    $scope.filterAttacks = function(){
+      $scope.showAttacks = 'true';
+      $scope.paginate($filter('filter')($scope.items, $scope.showAttacks));
     };
 
     $scope.$on('Request.data', function(event, body) {
@@ -78,14 +82,17 @@ angular.module('App.trafficCtrl', [])
     $scope.$watch('currentPage', function(newValue, oldValue) {
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-        $scope.paginate($filter('filter')($scope.items, $scope.query));
+        var attackfilter = $filter('filter')($scope.items, $scope.showAttacks);
+        var domainfilter = $filter('filter')(attackfilter, $scope.drillsite);
+        $scope.paginate($filter('filter')(domainfilter, $scope.query));
       }
     });
 
     $scope.$watch('query', function(newValue, oldValue){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-       var domainfilter = $filter('filter')($scope.items, $scope.drillsite);
+       var attackfilter = $filter('filter')($scope.items, $scope.showAttacks);
+       var domainfilter = $filter('filter')(attackfilter, $scope.drillsite);
        var searchfilter = $filter('filter')(domainfilter, $scope.query)
         $scope.paginate(searchfilter);
       }
