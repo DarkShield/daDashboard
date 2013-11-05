@@ -15,8 +15,8 @@ describe('Dashboard  Module:', function() {
       deps = App.value('appName').requires;
      });
 
-    it('should have App.drilldownCtrl as a dependency', function(){
-      expect(hasModule('App.drilldownCtrl')).toBe(true);
+    it('should have App.trafficCtrl as a dependency', function(){
+      expect(hasModule('App.trafficCtrl')).toBe(true);
     });
 
     it('should have App.SidebarCtrl as a dependency', function(){
