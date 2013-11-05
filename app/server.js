@@ -12,9 +12,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 //app.use(express.cookieSession({key: 'sess', secret: 'SuperSecret'}));
 app.use(express.session({ secret: 'SuperSecretKeyForNow' }));
-app.use(function(req, res){
-  res.status(404).sendfile('./public/html/404.html');;
-});
 
 //functions
 //TODO: Should these go elsewhere?
@@ -77,4 +74,7 @@ app.post('/domains/attacks', loadUser, Routes.domains.attacks);
 app.post('/domains/info/lastday', loadUser, Routes.domains.info.lastday);
 app.post('/traffic', loadUser, Routes.traffic);
 
+app.use(function(req, res){
+  res.status(404).sendfile('./public/html/404.html');;
+});
 module.exports = app;
