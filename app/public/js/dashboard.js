@@ -9,7 +9,7 @@ var App = window.App = angular.module('App',
   function ($routeProvider, $locationProvider) {
     $routeProvider.when('/traffic', {
       templateUrl: '../html/traffic.html',
-      controller: 'trafficCtrl',
+      controller: 'trafficCtrl'
     });
     $routeProvider.when('/', {
       templateUrl: '../html/home.html'
