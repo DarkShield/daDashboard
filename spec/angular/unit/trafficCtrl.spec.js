@@ -37,10 +37,6 @@ describe('Traffic Controller:', function() {
     expect(scope.filterby).not.toBe(undefined);
   });
 
-  it('should have a details property that returns the currently selected sites requestdata',function(){
-      expect(scope.details).toBe('test');
-  });
-
   it('should have a enddate property that initializes to now', function(){
     expect(scope.enddate.constructor.name).toBe('Date');
   });
