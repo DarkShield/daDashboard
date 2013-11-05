@@ -1,6 +1,6 @@
-angular.module('App.drilldownCtrl', [])
+angular.module('App.trafficCtrl', [])
 
-  .controller('drilldownCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
 
     $scope.domains = domainService.doms;
 
@@ -27,21 +27,6 @@ angular.module('App.drilldownCtrl', [])
       domainService.getRange($scope.requestrange);
     };
 
-    //TODO why does this need to initialize to Last Day when it isn't used in the template?
-    $scope.range = 'Last Day';
-
-    $scope.details = $scope.drillsite.requestData;
-
-    //TODO are we pushing an attacks property onto the site object only after it has been attacked?
-    $scope.attacks = function(){
-      if (!$scope.drillsite.attacks){
-         return 0;
-      }
-      else {
-         return $scope.drillsite.attacks.length;
-      }
-    };
-
     //Pagination and sorting
     $scope.pagedItems = [];
     $scope.items = [];
@@ -56,7 +41,7 @@ angular.module('App.drilldownCtrl', [])
     $scope.paginate = function(dataset) {
       $scope.pagedItems = [];
       $scope.totalItems = dataset.length;
-      $scope.lastPage = Math.floor($scope.totalItems / $scope.itemsPerPage) + 1;
+      $scope.lastPage = Math.ceil($scope.totalItems / $scope.itemsPerPage);
       var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
       var end = $scope.currentPage * $scope.itemsPerPage - 1;
 
@@ -71,11 +56,17 @@ angular.module('App.drilldownCtrl', [])
     };
 
     $scope.selectAll = function(){
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
       $scope.paginate($scope.items);
-    }
+    };
 
     $scope.pickDomain = function(domain){
+      $scope.drillsite = domain;
       $scope.paginate($filter('filter')($scope.items, domain));
+    };
+
+    $scope.showAttacks = function(){
+      $scope.paginate($filter('filter')($scope.items,'true'));
     };
 
     $scope.$on('Request.data', function(event, body) {
@@ -94,7 +85,9 @@ angular.module('App.drilldownCtrl', [])
     $scope.$watch('query', function(newValue, oldValue){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-       $scope.paginate($filter('filter')($scope.items, $scope.query));
+       var domainfilter = $filter('filter')($scope.items, $scope.drillsite);
+       var searchfilter = $filter('filter')(domainfilter, $scope.query)
+        $scope.paginate(searchfilter);
       }
     })
 
