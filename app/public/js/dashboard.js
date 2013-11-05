@@ -11,5 +11,8 @@ var App = window.App = angular.module('App',
       templateUrl: '../html/traffic.html',
       controller: 'trafficCtrl'
     });
+    $routeProvider.when('/', {
+      templateUrl: '../html/home.html'
+    });
   }
 );

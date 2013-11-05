@@ -1,0 +1,352 @@
+<div class="content">
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-title">Dashboard <small>Overview (Coming Soon!)</small></h2>
+    </div>
+</div>
+<div class="row">
+<div class="col-md-8">
+    <section class="widget">
+        <header>
+            <h4>
+                <i class="icon-group"></i>
+                Traffic
+                <small>
+                    Based on last 30 days of data
+                </small>
+            </h4>
+        </header>
+        <div class="body no-margin">
+            <div id="visits-chart" class="chart visits-chart">
+                <svg></svg>
+            </div>
+            <div class="visits-info well well-sm">
+                <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="key"><i class="eicon-users"></i> Total Visitors</div>
+                        <div class="value">24 541 <i class="icon-caret-up color-green"></i></div>
+                    </div>
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="key"><i class="eicon-user"></i> Unique Attackers</div>
+                        <div class="value">14 778 <i class="icon-caret-down color-red"></i></div>
+                    </div>
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="key"><i class="icon-plus-sign-alt"></i> Attacker %</div>
+                        <div class="value">3% <i class="icon-caret-up color-green"></i></div>
+                    </div>
+                    <div class="col-sm-3 col-xs-6">
+                        <div class="key"><i class="icon-user"></i> Attack %</div>
+                        <div class="value">12% <i class="icon-caret-down color-red"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="widget">
+        <header>
+            <h4>
+                <i class="icon-shopping-cart"></i>
+                Top Attackers
+                <small>
+                    One month tracking
+                </small>
+            </h4>
+        </header>
+        <div class="body">
+            <table class="table table-striped no-margin sources-table">
+                <thead>
+                <tr>
+                    <th class="source-col-header">Attacker</th>
+                    <th># of Attacks</th>
+                    <th>Last Seen</th>
+                    <th class="hidden-xs">Favorite Attack Type</th>
+                    <th>Top Target</th>
+                    <th class="chart-col-header hidden-xs">Trend</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span class="label label-important">Bob</span></td>
+                    <td>713</td>
+                    <td><strong class="color-green">+53</strong></td>
+                    <td class="hidden-xs">+12</td>
+                    <td>900</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="direct-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-warning">Alice</span></td>
+                    <td>562</td>
+                    <td><strong>+84</strong></td>
+                    <td class="hidden-xs">+64</td>
+                    <td>500</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="refer-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-success">Scripty</span></td>
+                    <td>148</td>
+                    <td><strong class="color-red">-12</strong></td>
+                    <td class="hidden-xs">+3</td>
+                    <td>180</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="social-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-info">Eve</span></td>
+                    <td>653</td>
+                    <td><strong class="color-green">+23</strong></td>
+                    <td class="hidden-xs">+43</td>
+                    <td>876</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="search-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-inverse">Smash</span></td>
+                    <td>976</td>
+                    <td><strong>+101</strong></td>
+                    <td class="hidden-xs">-7</td>
+                    <td>844</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="internal-trend"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="widget">
+        <header>
+            <h4>
+                <i class="icon-shopping-cart"></i>
+                Top Attack Types
+                <small>
+                    One month tracking
+                </small>
+            </h4>
+        </header>
+        <div class="body">
+            <table class="table table-striped no-margin sources-table">
+                <thead>
+                <tr>
+                    <th class="source-col-header">Attack Type</th>
+                    <th>Amount</th>
+                    <th>Change</th>
+                    <th class="hidden-xs">Percentage%</th>
+                    <th>Top Target</th>
+                    <th class="chart-col-header hidden-xs">Trend</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span class="label label-important">XSS</span></td>
+                    <td>713</td>
+                    <td><strong class="color-green">+53</strong></td>
+                    <td class="hidden-xs">+12</td>
+                    <td>900</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="direct-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-warning">SQLi</span></td>
+                    <td>562</td>
+                    <td><strong>+84</strong></td>
+                    <td class="hidden-xs">+64</td>
+                    <td>500</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="refer-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-success">CSRF</span></td>
+                    <td>148</td>
+                    <td><strong class="color-red">-12</strong></td>
+                    <td class="hidden-xs">+3</td>
+                    <td>180</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="social-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-info">Dir Traversal</span></td>
+                    <td>653</td>
+                    <td><strong class="color-green">+23</strong></td>
+                    <td class="hidden-xs">+43</td>
+                    <td>876</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="search-trend"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="label label-inverse">Brute Force</span></td>
+                    <td>976</td>
+                    <td><strong>+101</strong></td>
+                    <td class="hidden-xs">-7</td>
+                    <td>844</td>
+                    <td class="chart-cell hidden-xs">
+                        <div id="internal-trend"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<div class="col-md-4">
+    <section class="widget large">
+        <header>
+            <h4>
+                <i class="eicon-share"></i>
+                Community Intelligence Feed
+            </h4>
+            <div class="actions">
+                <button class="btn btn-transparent btn-xs">Show All <i class="icon-arrow-down"></i></button>
+            </div>
+        </header>
+        <div class="body">
+            <div id="feed" class="feed">
+                <div class="wrapper">
+                    <div class="vertical-line"></div>
+                    <section class="feed-item">
+                        <div class="icon pull-left">
+                            <i class="icon-ok color-green"></i>
+                        </div>
+                        <div class="feed-item-body">
+                            <div class="text">
+                                <a href="#">Detecting and protecting</a> against newest <a href="#">attack against Ruby on Rails</a>.
+                            </div>
+                            <div class="time pull-left">
+                                10 h
+                            </div>
+                        </div>
+                    </section>
+                    <section class="feed-item">
+                        <div class="icon pull-left">
+                            <img src="img/14.jpg" class="img-circle" alt="">
+                        </div>
+                        <div class="feed-item-body">
+                            <div class="text">
+                                New seriel attacker <a href="#">Alice</a> spotted targetting financial services.
+                            </div>
+                            <div class="time pull-left">
+                                Today
+                            </div>
+                        </div>
+                    </section>
+                    <section class="feed-item">
+                        <div class="icon pull-left">
+                            <i class="icon-bolt color-orange"></i>
+                        </div>
+                        <div class="feed-item-body">
+                            <div class="text">
+                                Denial of Service attacks raise above normal. <a href="#">See report</a> for details.
+                            </div>
+                            <div class="time pull-left">
+                                Yesterday
+                            </div>
+                        </div>
+                    </section>
+                    <section class="feed-item">
+                        <div class="icon pull-left">
+                            <i class="eicon-database"></i>
+                        </div>
+                        <div class="feed-item-body">
+                            <div class="text">
+                                <a href="#">Quarterly attack summary report</a> is ready.
+                            </div>
+                            <div class="time pull-left">
+                                Yesterday
+                            </div>
+                        </div>
+                    </section>
+                    <section class="feed-item">
+                        <div class="icon pull-left">
+                            <i class="icon-arrow-down"></i>
+                        </div>
+                        <div class="feed-item-body">
+                            <div class="text">
+                                <a href="#">Load more...</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="widget widget-tabs">
+        <header>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#stats" data-toggle="tab">FAQ</a>
+                </li>
+                <li>
+                    <a href="#report" data-toggle="tab">Support</a>
+                </li>
+                <li>
+                    <a href="#dropdown1" data-toggle="tab">Contact Us</a>
+                </li>
+            </ul>
+        </header>
+        <div class="body tab-content">
+            <div id="stats" class="tab-pane active clearfix">
+                <h5 class="tab-header"><i class="icon-group"></i> Help</h5>
+
+                FAQ
+            </div>
+            <div id="report" class="tab-pane">
+                <h5 class="tab-header"><i class="icon-star"></i> Portal</h5>
+                Support
+            </div>
+            <div id="dropdown1" class="tab-pane">
+                <h5 class="tab-header"><i class="icon-comments"></i> Contact</h5>
+                Contact Us
+            </div>
+        </div>
+    </section>
+    <section class="widget">
+        <header>
+            <h4>
+                <i class="icon-magnet"></i>
+                Integration Overview Center
+            </h4>
+        </header>
+        <div class="body">
+            <ul class="server-stats">
+                <li>
+                    <div class="key pull-right">%</div>
+                    <div class="stat">
+                        <div class="info">WhiteHat Sentinel Integration Progress</div>
+                        <div class="progress progress-small">
+                            <div class="progress-bar progress-bar-danger" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="key pull-right">%</div>
+                    <div class="stat">
+                        <div class="info">Risk.IO Integration Progress</div>
+                        <div class="progress progress-small">
+                            <div class="progress-bar" style="width: 29%;"></div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="key pull-right">%</div>
+                    <div class="stat">
+                        <div class="info">CloudPassage Integration Progress</i></div>
+                        <div class="progress progress-small">
+                            <div class="progress-bar progress-bar-inverse" style="width: 48%;"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+</div>
+</div>

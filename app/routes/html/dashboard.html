@@ -101,7 +101,7 @@
 <nav id="sidebar" class="sidebar nav-collapse collapse" data-ng-controller="SidebarCtrl">
     <ul id="side-nav" class="side-nav">
         <li class="{{panelstates.dashboard}}" data-ng-click="setActivePanel('dashboard')">
-            <a href="#home"><i class="icon-home" ></i> <span class="name">Dashboard</span></a>
+            <a href="#/"><i class="icon-home" ></i> <span class="name">Dashboard</span></a>
         </li>
         <li class="{{panelstates.attackers}}" data-ng-click="setActivePanel('attackers')">
             <a class="accordion-toggle collapsed" data-toggle="collapse"
@@ -124,9 +124,9 @@
         <li class="{{panelstates.statistics}}" data-ng-click="setActivePanel('statistics')">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#side-nav" href="#stats-collapse"><i class="icon-bar-chart"></i> <span class="name">Statistics</span></a>
             <ul id="stats-collapse" class="panel-collapse collapse">
-                <li><a href="stat_statistics.html">Stats</a></li>
-                <li><a href="stat_charts.html">Visualization</a></li>
-                <li><a href="stat_realtime.html">Real-Time</a></li>
+                <li><a href="#">Stats</a></li>
+                <li><a href="#">Visualization</a></li>
+                <li><a href="#">Real-Time</a></li>
             </ul>
         </li>
         <li class="{{panelstates.config}}" data-ng-click="setActivePanel('config')">
@@ -162,7 +162,7 @@
 <script src="../js/vendor/nvd3/lib/d3.v2.js"></script>
 <script src="../js/vendor/nvd3/nv.d3.custom.js"></script>
 
-<!-- nvd3 models -->
+<!-- nvd3 models-->
 <script src="../js/vendor/nvd3/src/models/scatter.js"></script>
 <script src="../js/vendor/nvd3/src/models/axis.js"></script>
 <script src="../js/vendor/nvd3/src/models/legend.js"></script>
