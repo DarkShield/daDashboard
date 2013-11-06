@@ -9,11 +9,10 @@ angular.module('App.domainService', [])
       ],
 
     getDomains: function(){
+      domains.doms = [];
       $http.get('/domains').success(function(body){
-        domains.doms = [];
-        angular.forEach(body, function(domain){
-          domains.doms.push(domain);
-        });
+        domains.doms = body;
+        $rootScope.$broadcast('Domain.data', body);
       });
     },
 
@@ -32,9 +31,6 @@ angular.module('App.domainService', [])
         domain.requestData = body;
         $rootScope.$broadcast('Request.data', body);
       });
-      //$http.post('/domains/attacks', domain).success(function(body){
-      //  domain.attacks = body;
-      //});
     },
 
     getRange: function(range){
