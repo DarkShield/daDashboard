@@ -1,99 +1,83 @@
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Register</title>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DarkShield.IO - Register</title>
+    <link href="../css/application.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <!-- Le styles -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
-
-      .form-register {
-        max-width: 300px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-register .form-register-heading,
-      .form-register .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-register input[type="text"],
-      .form-register input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
-
-    </style>
-    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../js/vendor/html5shiv.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/ico/favicon.png">
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <form class="form-register" method="POST" action="/signup">
-        <h2 class="form-register-heading">Please Create An Account</h2>
-        <input type="text" name="name" class="input-block-level" placeholder="Full Name">
-        <input type="text" name="email" class="input-block-level" placeholder="E-Mail Address">
-        <input type="text" name="user" class="input-block-level" placeholder="Username">
-        <input type="password" name="pass1" class="input-block-level" placeholder="Password">
-        <input type="password" name="pass2" class="input-block-level" placeholder="Re-Type Password">
-        <input type="text" name="sites" class="input-block-level" placeholder="example.com">
-        <button class="btn btn-large btn-primary" type="submit">Sign Up</button>
-      </form>
-
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/js/vendor/bootstrap.js"></script>
-    <script src="/js/vendor/jquery.min.js"></script>
-    <!--<script src="../js/vendor/jquery.js"></script>
-    <script src="../js/vendor/bootstrap-transition.js"></script>
-    <script src="../js/vendor/bootstrap-alert.js"></script>
-    <script src="../js/vendor/bootstrap-modal.js"></script>
-    <script src="../js/vendor/bootstrap-dropdown.js"></script>
-    <script src="../js/vendor/bootstrap-scrollspy.js"></script>
-    <script src="../js/vendor/bootstrap-tab.js"></script>
-    <script src="../js/vendor/bootstrap-tooltip.js"></script>
-    <script src="../js/vendor/bootstrap-popover.js"></script>
-    <script src="../js/vendor/bootstrap-button.js"></script>
-    <script src="../js/vendor/bootstrap-collapse.js"></script>
-    <script src="../js/vendor/bootstrap-carousel.js"></script>
-    <script src="../js/vendor/bootstrap-typeahead.js"></script>
-    -->
-
-  </body>
+    <meta charset="utf-8">
+    <script src="../js/vendor/jquery/jquery.1.9.0.min.js"> </script>
+    <script src="../js/vendor/backbone/underscore-min.js"></script>
+    <script src="../js/vendor/settings.js"> </script>
+</head>
+<body>
+<div class="single-widget-container">
+    <section class="widget login-widget">
+        <header class="text-align-center">
+            <h4>Please Create An Account</h4>
+        </header>
+        <div class="body">
+            <form class="no-margin"
+                  action="/signup" method="POST">
+                <fieldset>
+                    <div class="form-group no-margin">
+                        <label for="name">Name</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="name" type="text" name="name" class="form-control input-lg" placeholder="Full Name">
+                        </div>
+                        <label for="email">Email</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="email" type="text" name="email" class="form-control input-lg" placeholder="E-Mail Address">
+                        </div>
+                        <label for="user">Username</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="user" type="text" name="user" class="form-control input-lg" placeholder="Username">
+                        </div>
+                        <label for="pass1">Password</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="pass1" type="password" name="pass1" class="form-control input-lg" placeholder="Password">
+                        </div>
+                        <label for="pass2">Confirm Password</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="pass2" type="password" name="pass2" class="form-control input-lg" placeholder="Re-Type Password">
+                        </div>
+                        <label for="sites">Sites</label>
+                        <div class="input-group input-group-lg">
+                                <span class="input-group-addon">
+                                    <i class="eicon-user"></i>
+                                </span>
+                            <input id="sites" type="text" name="sites" class="form-control input-lg" placeholder="example.com, www.example.com">
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-block btn-lg btn-danger">
+                        <span class="small-circle"><i class="icon-caret-right"></i></span>
+                        <small>Sign Up</small>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <footer>
+        </footer>
+    </section>
+</div>
+</body>
 </html>
-
