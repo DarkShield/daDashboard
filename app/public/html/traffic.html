@@ -13,25 +13,25 @@
                         <div class="col-sm-6 pull-right">
                             <div class="input-group">
                                 <input name="Search" type="text" class="form-control" id="dropdown-appended" data-ng-model="query" placeholder="Search">
-                                <div class="input-group-btn">
-                                    <button class="btn dropdown-toggle" data-ng-click="getDomains()" data-toggle="dropdown">
-                                        Sites
+                                <div class="input-group-btn" data-ng-init="getDomains()">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        {{siteDisplay()}}
                                         <i class="icon-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li data-ng-repeat="domain in domains"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="" data-ng-click="selectAll()">All Sites</a></li>
+                                        <li><a href="" data-ng-click="selectAll('drillsite')">All Sites</a></li>
                                     </ul>
                                 </div>
                                 <div class="input-group-btn">
                                     <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                        Attacks
+                                        {{attackDisplay()}}
                                         <i class="icon-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a href="" data-ng-click="showAttacks()">Show Attacks</a></li>
-                                        <li><a href="" data-ng-click="selectAll()">Show All Traffic</a></li>
+                                        <li><a href="" data-ng-click="selectAll('attackview')">Show All Traffic</a></li>
                                     </ul>
                                 </div>
                             </div>
