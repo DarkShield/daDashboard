@@ -138,3 +138,15 @@ exports.traffic = function getRange (req, res) {
   //console.log(sitesArray + ' & ' + start + ' & ' + end)
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, {'body' : 0}, respond);
 };
+
+exports.toggleAttack = function toggleAttack (req, res) {
+  var respond = function (err, docs) {
+    if (!err) res.send(docs);
+  }
+  if (req.body.attack === 'false') {
+    RequestStore.update({'_id': req.body.id}, {'attack': 'true'}, respond);
+  }
+  else if (req.body.attack === 'true') {
+    RequestStore.update({'_id': req.body.id}, {'attack': 'false'}, respond);
+  }
+};

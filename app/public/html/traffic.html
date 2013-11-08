@@ -61,8 +61,8 @@
                                 <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show">
                                     {{showButtonDisplay(row.show)}}
                                 </button>
-                                <button class="btn btn-sm btn-warning" data-toggle="button">
-                                    Mark
+                                <button class="btn btn-sm btn-warning" ng-click="toggleAttack(item)">
+                                    {{markButtonDisplay(item)}}
                                 </button>
                             </td>
                         </tr>
