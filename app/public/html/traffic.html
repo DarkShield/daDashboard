@@ -51,23 +51,23 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr data-ng-repeat="item in pagedItems">
+                        <tbody data-ng-repeat="item in pagedItems" ng-switch="row.show" ng-init="row={}">
+                        <tr>
                             <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
                             <td>{{item.method}}</td>
                             <td>{{item.url}}</td>
                             <td>{{item.remoteIP}}:{{item.remotePort}}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary">
-                                    Show
+                                <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show">
+                                    {{showButtonDisplay(row.show)}}
                                 </button>
                                 <button class="btn btn-sm btn-warning" data-toggle="button">
                                     Mark
                                 </button>
                             </td>
                         </tr>
+                        <tr data-ng-switch-when="true"><td colspan="5">{{item.body}}</td></tr>
                         </tbody>
-
                     </table>
                     <!--<div class="clearfix">
                         <div class="pull-right">

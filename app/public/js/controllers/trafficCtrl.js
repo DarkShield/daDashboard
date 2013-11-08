@@ -8,6 +8,10 @@ angular.module('App.trafficCtrl', [])
     $scope.attackview = [];
     $scope.filterby ='';
 
+    $scope.showButtonDisplay = function(rowstate){
+      return (rowstate) ? 'Hide' : 'Show'
+    }
+
     $scope.enddate = new Date();
 
     $scope.startdate = (function(){
