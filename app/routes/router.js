@@ -136,7 +136,7 @@ exports.traffic = function getRange (req, res) {
     res.send(docs);
   };
   //console.log(sitesArray + ' & ' + start + ' & ' + end)
-  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, {'body' : 0}, respond);
+  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {
