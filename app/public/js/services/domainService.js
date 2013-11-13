@@ -8,6 +8,10 @@ angular.module('App.domainService', [])
         //{name: 'test', selected: '', requestData:{}}
       ],
 
+      toggleAttack: function(id, attack) {
+        $http.post('/toggle/attack', {'id': id, 'attack': attack});
+      },
+
     getDomains: function(){
       domains.doms = [];
       $http.get('/domains').success(function(body){

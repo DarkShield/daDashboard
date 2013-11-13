@@ -8,6 +8,19 @@ angular.module('App.trafficCtrl', [])
     $scope.attackview = [];
     $scope.filterby ='';
 
+    $scope.showButtonDisplay = function(rowstate){
+      return (rowstate) ? 'Hide' : 'Show'
+    }
+
+    $scope.markButtonDisplay = function(item){
+      return (item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
+    }
+
+    $scope.toggleAttack = function(item){
+      item.attack = (item.attack === 'false') ? 'true' : 'false'
+      domainService.toggleAttack(item._id, item.attack);
+    };
+
     $scope.enddate = new Date();
 
     $scope.startdate = (function(){
