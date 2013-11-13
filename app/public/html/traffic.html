@@ -66,7 +66,11 @@
                                 </button>
                             </td>
                         </tr>
+<<<<<<< HEAD
+                        <tr data-ng-switch-when="true"><td class="hidden-xs-portrait" colspan="5">{{item.body}}</td></tr>
+=======
                         <tr data-ng-switch-when="true" ><td colspan="5" class="well-white" style="word-wrap: break-word"><ul><h4>Full URL:</h4><li>{{item.headers.host}}{{item.url}}</li><br><h4>Headers</h4><li data-ng-repeat="(name,header) in item.headers">{{name}}: {{header}}</li><br><h4>POST Body:</h4><li>{{item.body}}</li><br><h4>Attack Info:</h4><li data-ng-repeat="attack in item.attacks">{{attack.type}} - Score: {{attack.score}}</li></ul></td></tr>
+>>>>>>> remotes/origin/master-dev
                         </tbody>
                     </table>
                     <!--<div class="clearfix">

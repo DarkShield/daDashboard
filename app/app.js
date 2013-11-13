@@ -13,7 +13,7 @@ if (app.get('env') === 'development') {
 
 if (app.get('env') === 'production' ) {
   app.set('db uri', '10.192.198.253');
-  app.set('db name', 'viceprod');
+  app.set('db name', 'vicetest');
 }else{
   app.set('db uri', 'localhost');
   app.set('db name', 'vicetest');
