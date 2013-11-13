@@ -1,5 +1,3 @@
-require('newrelic');
-
 var app = require('./server'),
     mongoose = require('mongoose');
 
@@ -14,6 +12,7 @@ if (app.get('env') === 'development') {
 }
 
 if (app.get('env') === 'production' ) {
+  require('newrelic');
   app.set('db uri', '10.192.198.253');
   app.set('db name', 'vicetest');
 }else{
