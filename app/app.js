@@ -1,4 +1,4 @@
-require('newrelic');
+//require('newrelic');
 
 var app = require('./server'),
     mongoose = require('mongoose');

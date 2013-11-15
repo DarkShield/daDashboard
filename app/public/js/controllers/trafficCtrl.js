@@ -17,7 +17,7 @@ angular.module('App.trafficCtrl', [])
     }
 
     $scope.toggleAttack = function(item){
-      item.attack = (item.attack === 'false') ? 'true' : 'false'
+      item.attack = (item.attack === 'false') ? 'false' : 'true'
       domainService.toggleAttack(item._id, item.attack);
     };
 
