@@ -145,11 +145,25 @@ exports.toggleAttack = function toggleAttack (req, res) {
     if (!err) res.send(docs);
   }
   if (req.body.attack === 'false') {
-    console.log(req.body);
+    EmailServer.send({
+      text: 'Missed Attack - ' + req.body.id,
+      from: 'Admin <vicet3ch@gmail.com>',
+      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+      subject: 'Missed Attack'
+    }, function (err, message) {
+      console.log(err || message);
+    });
     RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'true'}, respond);
   }
   else if (req.body.attack === 'true') {
-    console.log(req.body);
+    EmailServer.send({
+      text: 'False Positive - ' + req.body.id,
+      from: 'Admin <vicet3ch@gmail.com>',
+      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+      subject: 'False Positive'
+    }, function (err, message) {
+      console.log(err || message);
+    });
     RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'false'}, respond);
   }
 };
