@@ -1,6 +1,7 @@
 var User = exports.User = require('../model/user'),
     RequestStore = exports.RequestStore = require('../../lib/requestSchema'),
-    EmailServer = exports.EmailServer = require('../../lib/emailserver');
+    EmailServer = exports.EmailServer = require('../../lib/emailserver'),
+    ObjectId = require('mongoose').Types.ObjectId;
 
 exports.loginpage = function loginpage(req, res) {
   res.sendfile('./public/html/login.html');
@@ -67,7 +68,7 @@ exports.signup = function addAccount(req, res) {
         EmailServer.send({
           text: 'Registration: Name - ' + newAccountData.name + ', Email - ' + newAccountData.email + ', User - ' + newAccountData.user + ', Sites - ' + JSON.stringify(newAccountData.sites),
           from: 'Admin <vicet3ch@gmail.com>',
-          to: 'Matt <mattjay01@gmail.com>, Zach <ProZachJ@gmail.com>',
+          to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
           subject: 'Registration ' + newAccountData.name + ', ' + newAccountData.user
         }, function (err, message) {
           console.log(err || message);
@@ -144,9 +145,25 @@ exports.toggleAttack = function toggleAttack (req, res) {
     if (!err) res.send(docs);
   }
   if (req.body.attack === 'false') {
-    RequestStore.update({'_id': req.body.id}, {'attack': 'true'}, respond);
+    EmailServer.send({
+      text: 'Missed Attack - ' + req.body.id,
+      from: 'Admin <vicet3ch@gmail.com>',
+      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+      subject: 'Missed Attack'
+    }, function (err, message) {
+      console.log(err || message);
+    });
+    RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'true'}, respond);
   }
   else if (req.body.attack === 'true') {
-    RequestStore.update({'_id': req.body.id}, {'attack': 'false'}, respond);
+    EmailServer.send({
+      text: 'False Positive - ' + req.body.id,
+      from: 'Admin <vicet3ch@gmail.com>',
+      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+      subject: 'False Positive'
+    }, function (err, message) {
+      console.log(err || message);
+    });
+    RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'false'}, respond);
   }
 };
