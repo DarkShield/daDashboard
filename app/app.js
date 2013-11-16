@@ -11,12 +11,9 @@ if (app.get('env') === 'development') {
   app.set('db name', 'vicetest');
 }
 
-if (app.get('env') === 'production' ) {
+else {
   require('newrelic');
   app.set('db uri', '10.192.198.253');
-  app.set('db name', 'vicetest');
-}else{
-  app.set('db uri', 'localhost');
   app.set('db name', 'vicetest');
 }
 
