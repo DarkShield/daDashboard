@@ -13,7 +13,7 @@ if (app.get('env') === 'development') {
 
 else {
   require('newrelic');
-  app.set('db uri', '10.192.198.253');
+  app.set('db uri', '10.136.20.210');
   app.set('db name', 'vicetest');
 }
 
