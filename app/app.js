@@ -6,7 +6,7 @@ var app = require('./server'),
 //or
 // $export NODE_ENV=production
 
-if (app.get('env') === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.set('db uri', 'localhost');
   app.set('db name', 'vicetest');
 }
