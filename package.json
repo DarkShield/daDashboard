@@ -11,6 +11,9 @@
     "bcrypt": "~0.7.6",
     "emailjs": "~0.3.5"
   },
+  "scripts": {
+    "postinstall": "node ./node_modules/bower/bin/bower install"
+  },
   "devDependencies": {
     "jasmine-node": "latest",
     "matchdep": "~0.1.2",
