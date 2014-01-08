@@ -13,7 +13,7 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/bower/bin/bower install",
-    "test": "karma start"
+    "test": "karma run"
   },
   "devDependencies": {
     "jasmine-node": "latest",
@@ -39,8 +39,7 @@
     "karma": "~0.10.2",
     "protractor": "~0.14.0",
     "grunt-protractor-runner": "~0.1.6",
-    "grunt-shell-spawn": "~0.3.0",
-    "phantomjs": "~1.9.2-6"
+    "grunt-shell-spawn": "~0.3.0"
   },
   "engine": "node>=0.10.24"
 }
