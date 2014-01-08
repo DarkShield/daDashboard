@@ -1,4 +1,4 @@
-var routes = require('../../app/routes/router');
+var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
 //mongoose.connect('localhost', 'vicetest', function(err){

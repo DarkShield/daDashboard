@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
+
     shell: {
       options: {
         stdout: true
@@ -159,19 +160,18 @@ module.exports = function(grunt) {
         }
       }
     },
+
     jasmine_node: {
-      specNameMatcher: "",
+      specFolder: "./spec/node",
       projectRoot: ".",
       requirejs: false,
       forceExit: true
     }
   });
 
-  grunt.loadNpmTasks('grunt-jasmine-node');
-
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit', 'jasmine-node']);
+  grunt.registerTask('test:unit', ['karma:unit', 'jasmine_node']);
   grunt.registerTask('test:e2e', ['connect:testserver','protractor:singlerun']);
 
   //autotest and watch tests
