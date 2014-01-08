@@ -158,12 +158,18 @@ module.exports = function(grunt) {
           dir : 'coverage/'
         }
       }
+    },
+    jasmine_node: {
+      specNameMatcher: "",
+      projectRoot: ".",
+      requirejs: false,
+      forceExit: true
     }
   });
 
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit']);
+  grunt.registerTask('test:unit', ['karma:unit', 'jasmine-node']);
   grunt.registerTask('test:e2e', ['connect:testserver','protractor:singlerun']);
 
   //autotest and watch tests
