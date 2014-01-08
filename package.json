@@ -13,7 +13,7 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/bower/bin/bower install",
-    "test": "karma run"
+    "test": "grunt test:unit"
   },
   "devDependencies": {
     "jasmine-node": "latest",
