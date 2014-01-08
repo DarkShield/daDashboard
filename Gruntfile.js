@@ -162,8 +162,8 @@ module.exports = function(grunt) {
     },
 
     jasmine_node: {
-      specFolder: "./spec/node",
-      projectRoot: ".",
+      useProjectRoot: true,
+      projectRoot: "./spec/node",
       requirejs: false,
       forceExit: true
     }
