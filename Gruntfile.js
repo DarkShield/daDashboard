@@ -136,17 +136,17 @@ module.exports = function(grunt) {
 
     karma: {
       unit: {
-        configFile: './config/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: false,
         singleRun: true
       },
       unit_auto: {
-        configFile: './config/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: true,
         singleRun: false
       },
       unit_coverage: {
-        configFile: './config/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: false,
         singleRun: true,
         reporters: ['progress', 'coverage'],
