@@ -167,6 +167,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-jasmine-node');
+
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit', 'jasmine-node']);
