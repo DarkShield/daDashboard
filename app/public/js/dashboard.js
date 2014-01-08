@@ -1,9 +1,7 @@
-//var dashboard = {};
 var App = window.App = angular.module('App',
   [
     'ui.bootstrap',
-    'App.trafficCtrl',
-    'App.SidebarCtrl',
+    'App.Controllers',
     'App.domainService'
   ],
   function ($routeProvider, $locationProvider) {
@@ -16,3 +14,5 @@ var App = window.App = angular.module('App',
     });
   }
 );
+
+angular.module('App.Controllers', []);

@@ -1,4 +1,4 @@
-angular.module('App.SidebarCtrl', [])
+angular.module('App.Controllers')
 
   .controller('SidebarCtrl',['$scope', 'domainService', function($scope){
     $scope.panelstates = {

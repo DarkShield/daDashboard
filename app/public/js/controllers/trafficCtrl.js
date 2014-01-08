@@ -1,4 +1,4 @@
-angular.module('App.trafficCtrl', [])
+angular.module('App.Controllers')
 
   .controller('trafficCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
 
