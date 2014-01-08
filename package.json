@@ -41,5 +41,5 @@
     "grunt-shell-spawn": "~0.3.0",
     "phantomjs": "~1.9.2-6"
   },
-  "engine": "node>=0.10.5"
+  "engine": "node>=0.10.24"
 }
