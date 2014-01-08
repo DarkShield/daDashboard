@@ -3,7 +3,7 @@ describe('Domain Service:', function() {
 
   beforeEach(function(){
     angular.mock.module('App');
-    angular.mock.module('App.domainService');
+    angular.mock.module('App.Services');
 
     inject(function(domainService) {
       dS = domainService;

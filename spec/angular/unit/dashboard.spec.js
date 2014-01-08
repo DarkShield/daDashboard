@@ -20,7 +20,7 @@ describe('Dashboard  Module:', function() {
     });
 
     it('should have App.domainService as a dependency', function(){
-      expect(hasModule('App.domainService')).toBe(true);
+      expect(hasModule('App.Services')).toBe(true);
     });
   });
 });
