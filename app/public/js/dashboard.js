@@ -1,10 +1,8 @@
-//var dashboard = {};
 var App = window.App = angular.module('App',
   [
     'ui.bootstrap',
-    'App.trafficCtrl',
-    'App.SidebarCtrl',
-    'App.domainService'
+    'App.Controllers',
+    'App.Services'
   ],
   function ($routeProvider, $locationProvider) {
     $routeProvider.when('/traffic', {
@@ -16,3 +14,6 @@ var App = window.App = angular.module('App',
     });
   }
 );
+
+angular.module('App.Controllers', []);
+angular.module('App.Services', []);

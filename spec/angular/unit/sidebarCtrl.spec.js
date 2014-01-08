@@ -8,7 +8,7 @@ describe('Unit: Testing Controllers', function() {
     var ctrl, scope, service;
 
     beforeEach(angular.mock.module('App'));
-    beforeEach(angular.mock.module('App.SidebarCtrl'));
+    beforeEach(angular.mock.module('App.Controllers'));
     
     beforeEach(angular.mock.inject(function($controller, $rootScope, $httpBackend, domainService) {
       scope = $rootScope.$new();

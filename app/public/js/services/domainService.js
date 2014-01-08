@@ -1,4 +1,4 @@
-angular.module('App.domainService', [])
+angular.module('App.Services')
 
   .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
     'use strict';

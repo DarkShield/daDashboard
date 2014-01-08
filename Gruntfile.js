@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
+
     shell: {
       options: {
         stdout: true
@@ -105,10 +106,10 @@ module.exports = function(grunt) {
           'app/public/js/controllers/trafficCtrl.js',
           'app/public/js/services/domainService.js',
           'app/public/js/services/drilldownService.js',
-          'app/public/js/dashboard.js',
+          'app/public/js/dashboard.js'
           //place your JavaScript files here
         ]
-      },
+      }
     },
 
     watch: {
@@ -136,17 +137,17 @@ module.exports = function(grunt) {
 
     karma: {
       unit: {
-        configFile: './spec/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: false,
         singleRun: true
       },
       unit_auto: {
-        configFile: './spec/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: true,
         singleRun: false
       },
       unit_coverage: {
-        configFile: './spec/karma-unit.conf.js',
+        configFile: './config/karma.unit.conf.js',
         autoWatch: false,
         singleRun: true,
         reporters: ['progress', 'coverage'],
@@ -157,13 +158,20 @@ module.exports = function(grunt) {
           type : 'html',
           dir : 'coverage/'
         }
-      },
+      }
+    },
+
+    jasmine_node: {
+      useProjectRoot: true,
+      projectRoot: "./spec/node",
+      requirejs: false,
+      forceExit: true
     }
   });
 
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit']);
+  grunt.registerTask('test:unit', ['karma:unit', 'jasmine_node']);
   grunt.registerTask('test:e2e', ['connect:testserver','protractor:singlerun']);
 
   //autotest and watch tests
