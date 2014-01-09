@@ -1,11 +1,16 @@
 var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost', 'dashtest', function(err){
-//mongoose.connect('10.136.20.210', 'dashtest', function(err){
-  if (err) throw err;
-  console.log('Successfully connected to mongo');
-});
+if (process.env.NODE_ENV === 'development'){
+  mongoose.connect('localhost', 'vicetest');
+}
+else if (process.env.NODE_ENV === 'production'){
+  require('newrelic');
+  mongoose.connect('10.136.20.210', 'vicetest');
+}
+else {
+  mongoose.connect('10.136.20.210', 'dashtest');
+}
 
 describe('routes', function(){
   
@@ -116,6 +121,7 @@ describe('routes', function(){
       var res = {
         send: function(){}
       };
+      //Uncomment this next line if you'd like to create the test account.
       //routes.signup(req, res);
        //TODO: need to figure out a way to test the actual act of adding to the db
        //without actually adding to the db. Jasmine does provide interupt functions
