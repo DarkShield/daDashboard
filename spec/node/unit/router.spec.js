@@ -1,8 +1,8 @@
 var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
-//mongoose.connect('localhost', 'vicetest', function(err){
-mongoose.connect('10.136.20.210', 'dashtest', function(err){
+mongoose.connect('localhost', 'dashtest', function(err){
+//mongoose.connect('10.136.20.210', 'dashtest', function(err){
   if (err) throw err;
   console.log('Successfully connected to mongo');
 });
@@ -43,7 +43,7 @@ describe('routes', function(){
 
     it('should call redirect with argument "/home" when username and password are valid', function(){
       var req = {
-            body: { username: 'mattjay', password: 'mattjay' },
+            body: { username: 'testuser', password: 'testpassword' },
             session: { user: null }
           };
       var res = {
@@ -61,11 +61,11 @@ describe('routes', function(){
 
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
-        expect(res.redirect).toHaveBeenCalledWith('/home');
+        expect(res.redirect).toHaveBeenCalledWith('/');
         expect(routes.User.getAuthenticated).toHaveBeenCalled();
-	expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
-	expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
-	expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');	
+        expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('testuser');
+        expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('testpassword');
+        expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');
       });
     });
 
@@ -104,12 +104,19 @@ describe('routes', function(){
 
     it('should call send with an argument of "ok", 400 when user is created successfully', function(){
       var req = {
-            name : 'testy mctesterson',
-            email : 'test@email.com',
-            user : 'testuser',
-            pass: 'testpassword',
-            country : 'testmerica'
-          }
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          pass2: 'testpassword',
+          sites: 'test.com, test2.com'
+        }
+      }
+      var res = {
+        send: function(){}
+      };
+      //routes.signup(req, res);
        //TODO: need to figure out a way to test the actual act of adding to the db
        //without actually adding to the db. Jasmine does provide interupt functions
        //capabilites just need to figure out how to implement here.
@@ -219,6 +226,9 @@ describe('routes', function(){
     });
   });
 
-
+  setTimeout(function() {
+    console.log('disconnect');
+    mongoose.disconnect();
+  }, 3000);
 
 });
