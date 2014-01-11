@@ -234,9 +234,57 @@ describe('routes', function(){
     });
   });
 
+  describe('count.users route', function() {
+
+    it('should have a countUsers property that references method named countUsers', function() {
+      expect(typeof(routes.countUsers)).toBe('function');
+      expect(routes.countUsers.name).toBe('countUsers');
+    });
+
+    it('should respond with docs', function() {
+      var enddate = new Date();
+
+      var startdate = (function(){
+        var d = new Date();
+        d.setDate(d.getDate() - 30);
+        return d;
+      })();
+
+      var req = {
+        session: {
+          user: {
+            sites: [
+              {name: 'urbanhydro.org'},
+              {name: 'www.urbanhydro.org'}
+            ]
+          }
+        },
+        body: {
+          start: startdate.toISOString(),
+          end: enddate.toISOString()
+        }
+      };
+      var res = {
+        send: function(req, res){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.countUsers(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 4000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+  });
+
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 3000);
+  }, 5000);
 
 });

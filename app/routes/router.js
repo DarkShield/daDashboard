@@ -2,6 +2,7 @@ var User = exports.User = require('../model/user'),
     RequestStore = exports.RequestStore = require('../../lib/requestSchema'),
     EmailServer = exports.EmailServer = require('../../lib/emailserver'),
     ObjectId = require('mongoose').Types.ObjectId;
+var sys = require('sys');
 
 exports.loginpage = function loginpage(req, res) {
   res.sendfile('./public/html/login.html');
@@ -166,4 +167,42 @@ exports.toggleAttack = function toggleAttack (req, res) {
     });
     RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'false'}, respond);
   }
+};
+
+exports.countUsers = function countUsers (req, res) {
+  var sitesArray = [];
+  var ips = [];
+  var cookies = [];
+  var fullRange = [];
+
+  for (var site in req.session.user.sites) {
+    if (req.session.user.sites.hasOwnProperty(site)) {
+      var name = req.session.user.sites[site].name
+      sitesArray.push(name);
+    }
+    else sys.log('doesnt have prop');
+  }
+  var respond = function (err, docs) {
+    res.send(docs);
+  };
+
+  var start = new Date(req.body.start);
+  var end = new Date(req.body.end);
+
+  RequestStore.distinct('remoteIP', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, function(err, docs) {
+    if(!err) ips = docs;
+    else sys.log(err);
+
+    RequestStore.distinct('dstc', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, function(err, docs) {
+      if(!err) cookies = docs;
+      else sys.log(err);
+
+      RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP dstc attack requestedtimestamp -_id', function(err, docs) {
+        if(!err) fullRange = docs;
+        else sys.log(err);
+        res.send({ips: ips, cookies: cookies, fullRange: fullRange})
+      });
+    });
+  });
+
 };
