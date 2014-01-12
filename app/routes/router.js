@@ -174,33 +174,58 @@ exports.countUsers = function countUsers (req, res) {
   var ips = [];
   var cookies = [];
   var fullRange = [];
+  var counted = [];
+  var countValues = function (array) {
+    var obj = {}, i = array.length, j;
+    while( i-- ) {
+      j = obj[array[i]];
+      obj[array[i]] = j ? j+1 : 1;
+    }
+    return obj;
+  };
 
   for (var site in req.session.user.sites) {
     if (req.session.user.sites.hasOwnProperty(site)) {
-      var name = req.session.user.sites[site].name
+      var name = req.session.user.sites[site].name;
       sitesArray.push(name);
     }
     else sys.log('doesnt have prop');
   }
-  var respond = function (err, docs) {
-    res.send(docs);
-  };
 
   var start = new Date(req.body.start);
   var end = new Date(req.body.end);
 
   RequestStore.distinct('remoteIP', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, function(err, docs) {
-    if(!err) ips = docs;
+    if(!err) {
+      for (var doc in docs) {
+        counted.push({ip: docs[doc], cookies: [], counts: {}})
+      }
+      ips = docs;
+    }
     else sys.log(err);
 
     RequestStore.distinct('dstc', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, function(err, docs) {
       if(!err) cookies = docs;
       else sys.log(err);
 
-      RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP dstc attack requestedtimestamp -_id', function(err, docs) {
+      RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP attack dstc requestedtimestamp -_id', function(err, docs) {
         if(!err) fullRange = docs;
         else sys.log(err);
-        res.send({ips: ips, cookies: cookies, fullRange: fullRange})
+
+        for (var ip in counted) {
+          if (counted.hasOwnProperty(ip)) {
+            for (var x in fullRange) {
+              if (fullRange.hasOwnProperty(x)) {
+                if (counted[ip].ip == fullRange[x].remoteIP) {
+                  counted[ip].cookies.push(fullRange[x].dstc);
+                }
+              }
+            }
+            counted[ip].counts = countValues(counted[ip].cookies)
+          }
+        }
+
+        res.send(counted)
       });
     });
   });

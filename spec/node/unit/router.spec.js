@@ -274,7 +274,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 4000);
+      }, 'Send to be called', 2000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
@@ -285,6 +285,6 @@ describe('routes', function(){
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 5000);
+  }, 3000);
 
 });
