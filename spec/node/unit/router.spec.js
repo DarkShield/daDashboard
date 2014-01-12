@@ -236,9 +236,9 @@ describe('routes', function(){
 
   describe('count.users route', function() {
 
-    it('should have a countUsers property that references method named countUsers', function() {
-      expect(typeof(routes.countUsers)).toBe('function');
-      expect(routes.countUsers.name).toBe('countUsers');
+    it('should have a countCookies property that references method named countCookies', function() {
+      expect(typeof(routes.countCookies)).toBe('function');
+      expect(routes.countCookies.name).toBe('countCookies');
     });
 
     it('should respond with docs', function() {
@@ -270,7 +270,7 @@ describe('routes', function(){
       var done = false;
       spyOn(res, 'send').andCallThrough();
       runs(function(){
-        routes.countUsers(req, res);
+        routes.countCookies(req, res);
       });
       waitsFor(function() {
         return done;

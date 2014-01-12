@@ -129,7 +129,7 @@ exports.traffic = function getRange (req, res) {
   var sitesArray = [];
   for (var site in req.session.user.sites) {
     if (req.session.user.sites.hasOwnProperty(site)) {
-      var name = req.session.user.sites[site].name
+      var name = req.session.user.sites[site].name;
       sitesArray.push(name);
     }
     else console.log('doesnt have prop');
@@ -144,7 +144,7 @@ exports.traffic = function getRange (req, res) {
 exports.toggleAttack = function toggleAttack (req, res) {
   var respond = function (err, docs) {
     if (!err) res.send(docs);
-  }
+  };
   if (req.body.attack === 'false') {
     EmailServer.send({
       text: 'Missed Attack - ' + req.body.id,
@@ -169,10 +169,8 @@ exports.toggleAttack = function toggleAttack (req, res) {
   }
 };
 
-exports.countUsers = function countUsers (req, res) {
+exports.countCookies = function countCookies (req, res) {
   var sitesArray = [];
-  var ips = [];
-  var cookies = [];
   var fullRange = [];
   var counted = [];
   var countValues = function (array) {
@@ -198,35 +196,30 @@ exports.countUsers = function countUsers (req, res) {
   RequestStore.distinct('remoteIP', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, function(err, docs) {
     if(!err) {
       for (var doc in docs) {
-        counted.push({ip: docs[doc], cookies: [], counts: {}})
+        if (docs.hasOwnProperty(doc)) {
+          counted.push({ip: docs[doc], cookies: [], counts: {}})
+        }
       }
-      ips = docs;
     }
     else sys.log(err);
 
-    RequestStore.distinct('dstc', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, function(err, docs) {
-      if(!err) cookies = docs;
+    RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP attack dstc requestedtimestamp -_id', function(err, docs) {
+      if(!err) fullRange = docs;
       else sys.log(err);
 
-      RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP attack dstc requestedtimestamp -_id', function(err, docs) {
-        if(!err) fullRange = docs;
-        else sys.log(err);
-
-        for (var ip in counted) {
-          if (counted.hasOwnProperty(ip)) {
-            for (var x in fullRange) {
-              if (fullRange.hasOwnProperty(x)) {
-                if (counted[ip].ip == fullRange[x].remoteIP) {
-                  counted[ip].cookies.push(fullRange[x].dstc);
-                }
+      for (var ip in counted) {
+        if (counted.hasOwnProperty(ip)) {
+          for (var x in fullRange) {
+            if (fullRange.hasOwnProperty(x)) {
+              if (counted[ip].ip == fullRange[x].remoteIP) {
+                counted[ip].cookies.push(fullRange[x].dstc);
               }
             }
-            counted[ip].counts = countValues(counted[ip].cookies)
           }
+          counted[ip].counts = countValues(counted[ip].cookies)
         }
-
-        res.send(counted)
-      });
+      }
+      res.send(counted)
     });
   });
 
