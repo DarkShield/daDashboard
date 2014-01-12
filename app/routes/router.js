@@ -222,5 +222,8 @@ exports.countCookies = function countCookies (req, res) {
       res.send(counted)
     });
   });
+};
+
+exports.countUsers = function countUsers (req, res) {
 
 };

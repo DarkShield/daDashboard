@@ -234,7 +234,7 @@ describe('routes', function(){
     });
   });
 
-  describe('count.users route', function() {
+  describe('countCookies route', function() {
 
     it('should have a countCookies property that references method named countCookies', function() {
       expect(typeof(routes.countCookies)).toBe('function');
@@ -279,6 +279,13 @@ describe('routes', function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
       });
+    });
+  });
+
+  describe('countUsers route', function() {
+    it('should have a countUsers property that references a countUsers method', function() {
+      expect(typeof(routes.countUsers)).toBe('function');
+      expect(routes.countUsers.name).toBe('countUsers');
     });
   });
 
