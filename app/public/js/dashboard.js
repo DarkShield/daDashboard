@@ -10,7 +10,8 @@ var App = window.App = angular.module('App',
       controller: 'trafficCtrl'
     });
     $routeProvider.when('/', {
-      templateUrl: '../html/home.html'
+      templateUrl: '../html/home.html',
+      controller: 'homeCtrl'
     });
   }
 );
