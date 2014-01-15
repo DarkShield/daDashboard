@@ -104,5 +104,11 @@ describe("app", function(){
     expect(app.routes.post[6].callbacks[1].name).toBe('toggleAttack');
   });
 
+  it("should have a POST route to /count/users that calls the countUsers function if authenticated", function() {
+    expect(app.routes.post[7].path).toBe('/count/users');
+    expect(app.routes.post[7].callbacks[0].name).toBe('loadUser');
+    expect(app.routes.post[7].callbacks[1].name).toBe('countUsers');
+  })
+
 
 });
