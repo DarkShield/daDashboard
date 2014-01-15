@@ -5,7 +5,7 @@ var app = require('./server'),
 // $export NODE_ENV=development
 //or
 // $export NODE_ENV=production
-
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development'){
   mongoose.connect('localhost', 'vicetest');
 }
