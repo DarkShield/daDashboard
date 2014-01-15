@@ -90,9 +90,7 @@ var reasons = UserSchema.statics.failedLogin = {
 UserSchema.statics.addNewAccount = function(newData, callback) {
   var user = this;
   var data = user(newData);
-  console.log('here');
   user.findOne({user:newData.user}, function(e, o) {
-    console.log('here too');
     if (o){
       callback('username-taken', null);
     } else{
@@ -100,9 +98,8 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
         if (o){
           callback('email-taken', null);
         } else {
-          console.log('should save');
           data.save(function(err) {
-            if (err) { callback(err); }
+            if (err) { console.log('here ' + err); callback(err); }
             else { 
               console.log('account created');
               callback(null, 'account created');
