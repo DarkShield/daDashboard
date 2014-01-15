@@ -62,7 +62,7 @@ exports.signup = function addAccount(req, res) {
   }
   else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites) {
     User.addNewAccount(newAccountData, function (e) {
-      if (e) {
+      /*if (e) {
         res.send(e, 400);
       } else {
         EmailServer.send({
@@ -74,7 +74,7 @@ exports.signup = function addAccount(req, res) {
           console.log(err || message);
         });
         res.redirect('/login');
-      }
+      }*/
     });
   }
   else {
