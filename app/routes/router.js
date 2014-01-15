@@ -57,10 +57,12 @@ module.exports.buildAccountObj = buildAccountObj;
 
 exports.signup = function addAccount(req, res) {
   var newAccountData = buildAccountObj(req);
+  console.log('here');
   if (req.body.pass1 != req.body.pass2) {
     res.redirect('/signup');
   }
   else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites) {
+    console.log('here too');
     User.addNewAccount(newAccountData, function (e) {
       /*if (e) {
         res.send(e, 400);

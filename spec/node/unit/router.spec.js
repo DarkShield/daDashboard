@@ -46,7 +46,7 @@ describe('routes', function(){
       expect(routes.login.name).toBe('authenticate');
     });
 
-    it('should call redirect with argument "/home" when username and password are valid', function(){
+    it('should call redirect with argument "/" when username and password are valid', function(){
       var req = {
             body: { username: 'testuser', password: 'testpassword' },
             session: { user: null }
