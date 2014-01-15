@@ -225,5 +225,74 @@ exports.countCookies = function countCookies (req, res) {
 };
 
 exports.countUsers = function countUsers (req, res) {
+  var sitesArray = [];
+  var fullRange = [];
+  var countedByDate = [];
 
+  for (var i = 0; i <= 30; i++) {
+    var d = new Date();
+    d.setDate(d.getDate() - i);
+    countedByDate.push({
+      date: d,
+      allUsers: [],
+      allAttackers: [],
+      countedUsers: {},
+      countedAttackers: {},
+      totalUsers: 0,
+      totalAttackers: 0,
+      requests: 0,
+      attacks: 0
+    });
+  }
+
+  var countValues = function (array) {
+    var obj = {}, i = array.length, j;
+    while( i-- ) {
+      j = obj[array[i]];
+      obj[array[i]] = j ? j+1 : 1;
+    }
+    return obj;
+  };
+
+  for (var site in req.session.user.sites) {
+    if (req.session.user.sites.hasOwnProperty(site)) {
+      var name = req.session.user.sites[site].name;
+      sitesArray.push(name);
+    }
+    else sys.log('doesnt have prop');
+  }
+
+  var start = new Date(req.body.start);
+  var end = new Date(req.body.end);
+
+  RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, 'remoteIP attack requestedtimestamp -_id', function(err, docs) {
+    if(!err) fullRange = docs;
+    else sys.log(err);
+
+    for (var y in countedByDate) {
+      if (countedByDate.hasOwnProperty(y)) {
+        for (var x in fullRange) {
+          if (fullRange.hasOwnProperty(x)) {
+            var sortDate = new Date(countedByDate[y].date.getYear(), countedByDate[y].date.getMonth(), countedByDate[y].date.getDate());
+            var rangeDate = new Date(fullRange[x].requestedtimestamp.getYear(), fullRange[x].requestedtimestamp.getMonth(), fullRange[x].requestedtimestamp.getDate());
+
+            if (rangeDate.getYear() == sortDate.getYear() && rangeDate.getMonth() == sortDate.getMonth() && rangeDate.getDate() == sortDate.getDate()) {
+              console.log('here');
+              countedByDate[y].allUsers.push(fullRange[x].remoteIP);
+              countedByDate[y].requests += 1;
+              if (fullRange[x].attack === "true") {
+                countedByDate[y].allAttackers.push(fullRange[x].remoteIP);
+                countedByDate[y].attacks += 1;
+              }
+            }
+          }
+        }
+        countedByDate[y].countedUsers = countValues(countedByDate[y].allUsers);
+        countedByDate[y].countedAttackers = countValues(countedByDate[y].allAttackers);
+        countedByDate[y].totalUsers = Object.keys(countedByDate[y].countedUsers).length;
+        countedByDate[y].totalAttackers = Object.keys(countedByDate[y].countedAttackers).length
+      }
+    }
+    res.send(countedByDate);
+  });
 };
