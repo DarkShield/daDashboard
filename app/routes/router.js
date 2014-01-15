@@ -277,7 +277,6 @@ exports.countUsers = function countUsers (req, res) {
             var rangeDate = new Date(fullRange[x].requestedtimestamp.getYear(), fullRange[x].requestedtimestamp.getMonth(), fullRange[x].requestedtimestamp.getDate());
 
             if (rangeDate.getYear() == sortDate.getYear() && rangeDate.getMonth() == sortDate.getMonth() && rangeDate.getDate() == sortDate.getDate()) {
-              console.log('here');
               countedByDate[y].allUsers.push(fullRange[x].remoteIP);
               countedByDate[y].requests += 1;
               if (fullRange[x].attack === "true") {
@@ -288,11 +287,44 @@ exports.countUsers = function countUsers (req, res) {
           }
         }
         countedByDate[y].countedUsers = countValues(countedByDate[y].allUsers);
+        countedByDate[y].allUsers = [];
         countedByDate[y].countedAttackers = countValues(countedByDate[y].allAttackers);
+        countedByDate[y].allAttackers = [];
         countedByDate[y].totalUsers = Object.keys(countedByDate[y].countedUsers).length;
-        countedByDate[y].totalAttackers = Object.keys(countedByDate[y].countedAttackers).length
+        countedByDate[y].totalAttackers = Object.keys(countedByDate[y].countedAttackers).length;
       }
     }
+
+    var monthly = {
+      allMonthlyUsers: [],
+      allMonthlyAttackers: [],
+      countedMonthlyUsers: [],
+      countedMonthlyAttackers: [],
+      totalMonthlyUsers: 0,
+      totalMonthlyAttackers: 0,
+      monthlyRequests: 0,
+      monthlyAttacks: 0
+    };
+
+    for (x in fullRange) {
+      if (fullRange.hasOwnProperty(x)) {
+        monthly.allMonthlyUsers.push(fullRange[x].remoteIP);
+        monthly.monthlyRequests += 1;
+        if (fullRange[x].attack === "true") {
+          monthly.allMonthlyAttackers.push(fullRange[x].remoteIP);
+          monthly.monthlyAttacks += 1;
+        }
+      }
+    }
+
+    monthly.countedMonthlyUsers = countValues(monthly.allMonthlyUsers);
+    monthly.allMonthlyUsers = [];
+    monthly.countedMonthlyAttackers = countValues(monthly.allMonthlyAttackers);
+    monthly.allMonthlyAttackers = [];
+    monthly.totalMonthlyUsers = Object.keys(monthly.countedMonthlyUsers).length;
+    monthly.totalMonthlyAttackers = Object.keys(monthly.countedMonthlyAttackers).length;
+    countedByDate.push(monthly);
+
     res.send(countedByDate);
   });
 };
