@@ -46,7 +46,7 @@ describe('routes', function(){
       expect(routes.login.name).toBe('authenticate');
     });
 
-    it('should call redirect with argument "/home" when username and password are valid', function(){
+    it('should call redirect with argument "/" when username and password are valid', function(){
       var req = {
             body: { username: 'testuser', password: 'testpassword' },
             session: { user: null }
@@ -234,9 +234,105 @@ describe('routes', function(){
     });
   });
 
+  describe('countCookies route', function() {
+
+    it('should have a countCookies property that references method named countCookies', function() {
+      expect(typeof(routes.countCookies)).toBe('function');
+      expect(routes.countCookies.name).toBe('countCookies');
+    });
+
+    it('should respond with docs', function() {
+      var enddate = new Date();
+
+      var startdate = (function(){
+        var d = new Date();
+        d.setDate(d.getDate() - 30);
+        return d;
+      })();
+
+      var req = {
+        session: {
+          user: {
+            sites: [
+              {name: 'urbanhydro.org'},
+              {name: 'www.urbanhydro.org'}
+            ]
+          }
+        },
+        body: {
+          start: startdate.toISOString(),
+          end: enddate.toISOString()
+        }
+      };
+      var res = {
+        send: function(req, res){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.countCookies(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 2000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+  });
+
+  describe('countUsers route', function() {
+    it('should have a countUsers property that references a countUsers method', function() {
+      expect(typeof(routes.countUsers)).toBe('function');
+      expect(routes.countUsers.name).toBe('countUsers');
+    });
+
+    it('should respond with docs', function() {
+      var enddate = new Date();
+
+      var startdate = (function(){
+        var d = new Date();
+        d.setDate(d.getDate() - 30);
+        return d;
+      })();
+
+      var req = {
+        session: {
+          user: {
+            sites: [
+              {name: 'urbanhydro.org'},
+              {name: 'www.urbanhydro.org'}
+            ]
+          }
+        },
+        body: {
+          start: startdate.toISOString(),
+          end: enddate.toISOString()
+        }
+      };
+      var res = {
+        send: function(){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.countUsers(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 2000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+
+  });
+
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 3000);
+  }, 4000);
 
 });

@@ -43,7 +43,6 @@ angular.module('App.Services')
       });
     },
 
-
     getSelectedSite: function(){
       var selectedsite = {};
       for (var dom in domains.doms){
@@ -52,7 +51,13 @@ angular.module('App.Services')
         }
       }
       return selectedsite;
+    },
+
+    countUsers: function(range) {
+      $http.post('/count/users', range).success(function(body){
+        $rootScope.$broadcast('Users.count', body);
+      });
     }
-   }
+   };
    return domains;
   }]);
