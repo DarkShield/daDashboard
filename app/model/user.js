@@ -99,7 +99,7 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
           callback('email-taken', null);
         } else {
           data.save(function(err) {
-            if (err) { console.log('here ' + err); callback(err); }
+            if (err) { callback(err); }
             else { 
               console.log('account created');
               callback(null, 'account created');

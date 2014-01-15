@@ -123,7 +123,7 @@ describe('routes', function(){
       };
 
       //Uncomment this next line if you'd like to create the test account.
-      routes.signup(req, res);
+      //routes.signup(req, res);
 
        //TODO: need to figure out a way to test the actual act of adding to the db
        //without actually adding to the db. Jasmine does provide interupt functions
