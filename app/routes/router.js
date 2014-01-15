@@ -316,6 +316,7 @@ exports.countUsers = function countUsers (req, res) {
     }
 
     //count the unique IPs and zero out the long list total arrays before pass back
+    //monthly counts will always be last object in the countedByDate array
     monthly.countedMonthlyUsers = countValues(monthly.allMonthlyUsers);
     monthly.allMonthlyUsers = [];
     monthly.countedMonthlyAttackers = countValues(monthly.allMonthlyAttackers);
