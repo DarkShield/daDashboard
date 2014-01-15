@@ -16,7 +16,6 @@ exports.login = function authenticate(req, res) {
     if (user !== null) {
       req.session.user = user;
       req.session.user_id = user.id;
-      //res.sendfile('./routes/html/dashboard.html');
       res.redirect('/');
     } else {
       req.session.user = {'reason': reason, 'error': err};
@@ -124,8 +123,6 @@ exports.domains.info.lastday = function getLastDay (req, res) {
 };
 
 exports.traffic = function getRange (req, res) {
-  //var start = new Date(req.body.start);
-  //var end = new Date(req.body.end);
   var sitesArray = [];
   for (var site in req.session.user.sites) {
     if (req.session.user.sites.hasOwnProperty(site)) {
@@ -137,7 +134,7 @@ exports.traffic = function getRange (req, res) {
   var respond = function (err, docs) {
     res.send(docs);
   };
-  //console.log(sitesArray + ' & ' + start + ' & ' + end)
+
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
 };
 
@@ -306,6 +303,7 @@ exports.countUsers = function countUsers (req, res) {
       monthlyAttacks: 0
     };
 
+    //loop through entire month of requests and pull all the IPs and count total requests & attacks
     for (x in fullRange) {
       if (fullRange.hasOwnProperty(x)) {
         monthly.allMonthlyUsers.push(fullRange[x].remoteIP);
@@ -317,6 +315,7 @@ exports.countUsers = function countUsers (req, res) {
       }
     }
 
+    //count the unique IPs and zero out the long list total arrays before pass back
     monthly.countedMonthlyUsers = countValues(monthly.allMonthlyUsers);
     monthly.allMonthlyUsers = [];
     monthly.countedMonthlyAttackers = countValues(monthly.allMonthlyAttackers);
