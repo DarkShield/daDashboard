@@ -1,11 +1,16 @@
-var routes = require('../app/routes/router');
+var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost', 'vicetest', function(err){
-//mongoose.connect('10.192.198.253', 'vicetest', function(err){
-  if (err) throw err;
-  //console.log('Successfully connected to mongo');
-});
+if (process.env.NODE_ENV === 'development'){
+  mongoose.connect('localhost', 'vicetest');
+}
+else if (process.env.NODE_ENV === 'production'){
+  require('newrelic');
+  mongoose.connect('10.136.20.210', 'vicetest');
+}
+else {
+  mongoose.connect('10.136.20.210', 'dashtest');
+}
 
 describe('routes', function(){
   
@@ -43,7 +48,7 @@ describe('routes', function(){
 
     it('should call redirect with argument "/" when username and password are valid', function(){
       var req = {
-            body: { username: 'mattjay', password: 'mattjay' },
+            body: { username: 'testuser', password: 'testpassword' },
             session: { user: null }
           };
       var res = {
@@ -63,8 +68,8 @@ describe('routes', function(){
         expect(res.redirect).toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith('/');
         expect(routes.User.getAuthenticated).toHaveBeenCalled();
-        expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('mattjay');
-        expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('mattjay');
+        expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('testuser');
+        expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('testpassword');
         expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');
       });
     });
@@ -94,54 +99,6 @@ describe('routes', function(){
     });
   });
 
-  //nested describe for buildAccountObj
-  describe('buildAccountObj', function() {
-    it('should build correct newAccountData object with multiple sites', function(){
-      var req = {
-        body: {
-          name : 'testy mctesterson',
-          email : 'test@email.com',
-          user : 'testuser',
-          pass1: 'testpassword',
-          pass2: 'testpassword',
-          sites : 'test.com, test2.com, test3.com'
-        }
-      };
-
-      var newAccountData = routes.buildAccountObj(req);
-      expect(newAccountData.name).toBe('testy mctesterson');
-      expect(newAccountData.email).toBe('test@email.com');
-      expect(newAccountData.user).toBe('testuser');
-      expect(newAccountData.pass).toBe('testpassword');
-      expect(typeof(newAccountData.sites[0])).toBe('object');
-      expect(newAccountData.sites[0].name).toBe('test.com');
-      expect(newAccountData.sites[1].name).toBe('test2.com');
-      expect(newAccountData.sites[2].name).toBe('test3.com');
-    });
-
-    it('should build correct newAccount object with a single site', function() {
-      var req = {
-        body: {
-          name : 'testy mctesterson',
-          email : 'test@email.com',
-          user : 'testuser',
-          pass1: 'testpassword',
-          pass2: 'testpassword',
-          sites : 'test.com'
-        }
-      };
-
-      var newAccountData = routes.buildAccountObj(req);
-      expect(newAccountData.name).toBe('testy mctesterson');
-      expect(newAccountData.email).toBe('test@email.com');
-      expect(newAccountData.user).toBe('testuser');
-      expect(newAccountData.pass).toBe('testpassword');
-      expect(typeof(newAccountData.sites[0])).toBe('object');
-      expect(newAccountData.sites[0].name).toBe('test.com');
-      expect(newAccountData.sites[1]).toBeUndefined();
-    });
-  });
-
   //nested describe for signup route
   describe('signup route', function(){
 
@@ -149,33 +106,28 @@ describe('routes', function(){
       expect(typeof(routes.signup)).toBe('function');
       expect(routes.signup.name).toBe('addAccount');
     });
-    //TODO: need to figure out a way to test the actual act of adding to the db
-    //without actually adding to the db. Jasmine does provide interupt functions
-    //capabilites just need to figure out how to implement here.
-  });
 
-  //nested describe for logout route
-  describe('logout route', function(){
-
-    it('should have a logout property that references a method named logout', function(){
-      expect(typeof(routes.logout)).toBe('function');
-      expect(routes.logout.name).toBe('logout');
-    });
-
-    it('should call req.session.destroy and redirect to login page', function(){
+    it('should call send with an argument of "ok", 400 when user is created successfully', function(){
       var req = {
-        session: {
-          destroy: function(req, res){}
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          pass2: 'testpassword',
+          sites: 'test.com, test2.com'
         }
-      };
+      }
       var res = {
-        redirect: function(req, res){}
+        send: function(){}
       };
-      spyOn(req.session, 'destroy');
-      spyOn(res, 'redirect');
-      routes.logout(req, res);
-      expect(req.session.destroy).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith('/login');
+
+      //Uncomment this next line if you'd like to create the test account.
+      //routes.signup(req, res);
+
+       //TODO: need to figure out a way to test the actual act of adding to the db
+       //without actually adding to the db. Jasmine does provide interupt functions
+       //capabilites just need to figure out how to implement here.
     });
   });
   
@@ -234,7 +186,7 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(){ done = true; }
+            send: function(req, res){ done = true; }
           };
       var done = false;
       spyOn(res, 'send').andCallThrough();
@@ -265,68 +217,8 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(){ done = true; }
+            send: function(req, res){ done = true; }
           };
-      var done = false;
-      spyOn(res, 'send').andCallThrough();
-      runs(function(){
-        routes.domains.attacks(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function(){
-        expect(res.send).toHaveBeenCalled();
-        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
-      });
-    });
-  });
-
-  //nested describe for domain.info.lastday route
-  describe('domains.info.lastday route', function() {
-
-    it('should have a domains.info.lastday property that references a mehtod named getLastDay', function(){
-      expect(typeof(routes.domains.info.lastday)).toBe('function');
-      expect(routes.domains.info.lastday.name).toBe('getLastDay');
-    });
-
-    it('should call send with argument docs', function(){
-      var req = {
-        body: { name: 'test.com'  }
-      };
-      var res = {
-        send: function(){ done = true; }
-      };
-      var done = false;
-      spyOn(res, 'send').andCallThrough();
-      runs(function(){
-        routes.domains.info.lastday(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function(){
-        expect(res.send).toHaveBeenCalled();
-        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
-      });
-    });
-  });
-
-  //nested describe for domain.traffic route
-  describe('traffic route', function() {
-
-    it('should have a domains.traffic property that references a mehtod named getAllTrafficRange', function(){
-      expect(typeof(routes.traffic)).toBe('function');
-      expect(routes.traffic.name).toBe('getAllTrafficRange');
-    });
-
-    it('should call send with argument docs', function(){
-      var req = {
-        body: { start: '2013, 9, 1', end: '2013, 10, 1'  }
-      };
-      var res = {
-        send: function(req, res){ done = true; }
-      };
       var done = false;
       spyOn(res, 'send').andCallThrough();
       runs(function(){
@@ -341,5 +233,106 @@ describe('routes', function(){
       });
     });
   });
+
+  describe('countCookies route', function() {
+
+    it('should have a countCookies property that references method named countCookies', function() {
+      expect(typeof(routes.countCookies)).toBe('function');
+      expect(routes.countCookies.name).toBe('countCookies');
+    });
+
+    it('should respond with docs', function() {
+      var enddate = new Date();
+
+      var startdate = (function(){
+        var d = new Date();
+        d.setDate(d.getDate() - 30);
+        return d;
+      })();
+
+      var req = {
+        session: {
+          user: {
+            sites: [
+              {name: 'urbanhydro.org'},
+              {name: 'www.urbanhydro.org'}
+            ]
+          }
+        },
+        body: {
+          start: startdate.toISOString(),
+          end: enddate.toISOString()
+        }
+      };
+      var res = {
+        send: function(req, res){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.countCookies(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 2000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+  });
+
+  describe('countUsers route', function() {
+    it('should have a countUsers property that references a countUsers method', function() {
+      expect(typeof(routes.countUsers)).toBe('function');
+      expect(routes.countUsers.name).toBe('countUsers');
+    });
+
+    it('should respond with docs', function() {
+      var enddate = new Date();
+
+      var startdate = (function(){
+        var d = new Date();
+        d.setDate(d.getDate() - 30);
+        return d;
+      })();
+
+      var req = {
+        session: {
+          user: {
+            sites: [
+              {name: 'urbanhydro.org'},
+              {name: 'www.urbanhydro.org'}
+            ]
+          }
+        },
+        body: {
+          start: startdate.toISOString(),
+          end: enddate.toISOString()
+        }
+      };
+      var res = {
+        send: function(){ done = true; }
+      };
+      var done = false;
+      spyOn(res, 'send').andCallThrough();
+      runs(function(){
+        routes.countUsers(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 2000);
+      runs(function(){
+        expect(res.send).toHaveBeenCalled();
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+      });
+    });
+
+  });
+
+  setTimeout(function() {
+    console.log('disconnect');
+    mongoose.disconnect();
+  }, 4000);
 
 });

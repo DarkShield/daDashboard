@@ -1,4 +1,4 @@
-angular.module('App.domainService', [])
+angular.module('App.Services')
 
   .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
     'use strict';
@@ -43,7 +43,6 @@ angular.module('App.domainService', [])
       });
     },
 
-
     getSelectedSite: function(){
       var selectedsite = {};
       for (var dom in domains.doms){
@@ -52,7 +51,13 @@ angular.module('App.domainService', [])
         }
       }
       return selectedsite;
+    },
+
+    countUsers: function(range) {
+      $http.post('/count/users', range).success(function(body){
+        $rootScope.$broadcast('Users.count', body);
+      });
     }
-   }
+   };
    return domains;
   }]);

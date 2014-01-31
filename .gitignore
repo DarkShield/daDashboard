@@ -1,0 +1,8 @@
+.DS_Store
+node_modules
+bower_components
+/selenium
+/coverage
+/app/assets
+.idea
+*.orig

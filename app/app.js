@@ -6,18 +6,15 @@ var app = require('./server'),
 //or
 // $export NODE_ENV=production
 
-if (process.env.NODE_ENV === 'development') {
-  app.set('db uri', 'localhost');
-  app.set('db name', 'vicetest');
+if (process.env.NODE_ENV === 'development'){
+  mongoose.connect('localhost', 'vicetest');
 }
-
-else {
+else if (process.env.NODE_ENV === 'production'){
   require('newrelic');
-  app.set('db uri', '10.136.20.210');
-  app.set('db name', 'vicetest');
+  mongoose.connect('10.136.20.210', 'vicetest');
+}
+else {
+  mongoose.connect('10.136.20.210', 'dashtest');
 }
 
-console.log(app.get('db name'));
-
-mongoose.connect(app.get('db uri'), app.get('db name'));
 app.listen(1337);
