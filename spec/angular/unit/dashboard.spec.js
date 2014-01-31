@@ -19,7 +19,7 @@ describe('Dashboard  Module:', function() {
       expect(hasModule('App.Controllers')).toBe(true);
     });
 
-    it('should have App.Servicesgtu as a dependency', function(){
+    it('should have App.Services as a dependency', function(){
       expect(hasModule('App.Services')).toBe(true);
     });
   });
