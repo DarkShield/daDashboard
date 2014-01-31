@@ -117,7 +117,7 @@ describe('routes', function(){
           pass2: 'testpassword',
           sites: 'test.com, test2.com'
         }
-      }
+      };
       var res = {
         send: function(){}
       };
@@ -186,7 +186,7 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(req, res){ done = true; }
+            send: function(){ done = true; }
           };
       var done = false;
       spyOn(res, 'send').andCallThrough();
@@ -217,7 +217,7 @@ describe('routes', function(){
             body: { name: 'test.com'  }
           };
       var res = {
-            send: function(req, res){ done = true; }
+            send: function(){ done = true; }
           };
       var done = false;
       spyOn(res, 'send').andCallThrough();
