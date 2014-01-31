@@ -15,6 +15,10 @@ describe('Dashboard  Module:', function() {
       deps = App.value('appName').requires;
      });
 
+    it('should have ui.bootstrap as a dependency', function(){
+      expect(hasModule('ui.bootstrap')).toBe(true);
+    });
+
     it('should have App.Controllers as a dependency', function(){
       expect(hasModule('App.Controllers')).toBe(true);
     });
