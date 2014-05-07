@@ -9,7 +9,7 @@ else if (process.env.NODE_ENV === 'production'){
   mongoose.connect('10.136.20.210', 'vicetest');
 }
 else {
-  mongoose.connect('10.136.20.210', 'dashtest');
+  mongoose.connect('10.136.20.210', 'vicetest');
 }
 
 describe('routes', function(){
