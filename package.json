@@ -13,7 +13,7 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/bower/bin/bower install",
-    "test": "grunt test:unit"
+    "test": "jasmine-node spec/node"
   },
   "devDependencies": {
     "jasmine-node": "~1.12.0",
