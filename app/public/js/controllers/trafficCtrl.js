@@ -1,12 +1,18 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', function($scope, $filter, domainService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', function($scope, $filter, domainService, paginationService) {
 
     $scope.domains = domainService.doms;
     $scope.getDomains = domainService.getDomains;
     $scope.drillsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
+
+    $scope = paginationService.init($scope);
+
+    $scope.paginate = function(dataset) {
+      $scope.pagedItems = paginationService.paginate(dataset, $scope);
+    };
 
     $scope.showButtonDisplay = function(rowstate){
       return (rowstate) ? 'Hide' : 'Show'
@@ -57,28 +63,6 @@ angular.module('App.Controllers')
     });
 
     //Pagination and sorting
-    $scope.pagedItems = [];
-    $scope.items = [];
-    $scope.totalItems = 0;
-    $scope.currentPage = 1;
-    $scope.maxSize = 5;
-    $scope.defaultItemsPerPage = $scope.itemsPerPage = 10;
-
-    $scope.paginate = function(dataset) {
-      $scope.pagedItems = [];
-      $scope.totalItems = dataset.length;
-      $scope.lastPage = Math.ceil($scope.totalItems / $scope.itemsPerPage);
-      var start = ($scope.currentPage * $scope.itemsPerPage) - $scope.itemsPerPage;
-      var end = $scope.currentPage * $scope.itemsPerPage - 1;
-      if($scope.currentPage === $scope.lastPage && $scope.totalItems % $scope.itemsPerPage !== 0){
-        $scope.itemsPerPage = $scope.totalItems % $scope.itemsPerPage;
-        end = start + $scope.itemsPerPage -1;
-      }
-      for(var i=start;i<=end;i++){
-        $scope.pagedItems.push(dataset[i]);
-      }
-    };
-
     $scope.doFilter = function(){
       var domainfilter = $filter('filter')($scope.items, $scope.drillsite);
       var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
@@ -115,6 +99,4 @@ angular.module('App.Controllers')
         $scope.doFilter();
       }
     })
-
-
 }]);
