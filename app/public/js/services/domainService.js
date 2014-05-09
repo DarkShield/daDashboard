@@ -8,16 +8,20 @@ angular.module('App.Services')
         //{name: 'test', selected: '', requestData:{}}
       ],
 
-      toggleAttack: function(id, attack) {
-        $http.post('/toggle/attack', {'id': id, 'attack': attack});
-      },
+    toggleAttack: function(id, attack) {
+      $http.post('/toggle/attack', {'id': id, 'attack': attack});
+    },
 
     getDomains: function(){
       domains.doms = [];
       $http.get('/domains').success(function(body){
         domains.doms = body;
-        $rootScope.$broadcast('Domain.data', body);
+        //$rootScope.$broadcast('Domain.data', body);
       });
+    },
+
+    getDoms: function(){
+      return domains.doms
     },
 
     getRequestData: function(domain){

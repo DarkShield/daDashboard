@@ -2,30 +2,11 @@ angular.module('App.Controllers')
 
   .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', function($scope, $filter, domainService, paginationService) {
 
-    $scope.domains = domainService.doms;
+    $scope.domains = domainService.getDoms;
     $scope.getDomains = domainService.getDomains;
     $scope.drillsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
-
-    $scope = paginationService.init($scope);
-
-    $scope.paginate = function(dataset) {
-      $scope.pagedItems = paginationService.paginate(dataset, $scope);
-    };
-
-    $scope.showButtonDisplay = function(rowstate){
-      return (rowstate) ? 'Hide' : 'Show'
-    }
-
-    $scope.markButtonDisplay = function(item){
-      return (item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
-    }
-
-    $scope.toggleAttack = function(item){
-      domainService.toggleAttack(item._id, item.attack);
-      item.attack = (item.attack === 'false') ? 'true' : 'false'
-    };
 
     $scope.enddate = new Date();
 
@@ -38,6 +19,25 @@ angular.module('App.Controllers')
     $scope.requestrange = {
       start: $scope.startdate.toISOString(),
       end: $scope.enddate.toISOString()
+    };
+
+    $scope = paginationService.init($scope);
+
+    $scope.paginate = function(dataset) {
+      $scope.pagedItems = paginationService.paginate(dataset, $scope);
+    };
+
+    $scope.toggleAttack = function(item){
+      domainService.toggleAttack(item._id, item.attack);
+      item.attack = (item.attack === 'false') ? 'true' : 'false'
+    };
+
+    $scope.showButtonDisplay = function(rowstate){
+      return (rowstate) ? 'Hide' : 'Show'
+    };
+
+    $scope.markButtonDisplay = function(item){
+      return (item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
     };
 
     $scope.getRequestData = function(){
@@ -55,11 +55,6 @@ angular.module('App.Controllers')
     $scope.$on('Request.data', function(event, body) {
       $scope.items = body;
       $scope.paginate($scope.items);
-
-    });
-
-    $scope.$on('Domain.data', function(event, body){
-      $scope.domains = body;
     });
 
     //Pagination and sorting
