@@ -2,7 +2,8 @@ var App = window.App = angular.module('App',
   [
     'ui.bootstrap',
     'App.Controllers',
-    'App.Services'
+    'App.Services',
+    'App.Filters'
   ],
   function ($routeProvider, $locationProvider) {
     $routeProvider.when('/traffic', {
@@ -17,3 +18,4 @@ var App = window.App = angular.module('App',
 
 angular.module('App.Controllers', []);
 angular.module('App.Services', []);
+angular.module('App.Filters', []);
