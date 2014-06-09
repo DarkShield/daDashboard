@@ -3,7 +3,7 @@
  */
 angular.module('App.Filters')
 
-  .filter('domainFilter', function() {
+  .filter('domain', function() {
     return function(items, domain) {
       if (domain === undefined) {
         return items;

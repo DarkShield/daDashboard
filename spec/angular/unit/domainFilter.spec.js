@@ -8,13 +8,13 @@ describe('Domain Filter', function() {
     angular.mock.module('App');
     angular.mock.module('App.Filters');
 
-    /*inject(function(domainFilter) {
+    inject(function(domainFilter) {
       domFilter = domainFilter;
-    });*/
+    });
   });
 
   it('should filter based on domain', function() {
-    //expect(domFilter).not.toBe(undefined);
+    expect(domFilter).not.toBe(undefined);
   });
 
 });
