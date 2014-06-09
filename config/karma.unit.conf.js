@@ -25,6 +25,7 @@ module.exports = function(config) {
             './app/public/js/dashboard.js',
             './app/public/js/services/*.js',
             './app/public/js/controllers/*.js',
+            './app/public/js/filters/*.js',
 
             //Include Unit Tests
             './spec/angular/unit/*.spec.js'

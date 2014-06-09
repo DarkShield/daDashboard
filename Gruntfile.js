@@ -80,7 +80,8 @@ module.exports = function(grunt) {
         'app/public/js/{,*/}*.js',
         'app/public/js/controllers/{,*/}*.js',
         'app/public/js/directives/{,*/}*.js',
-        'app/public/js/services/{,*/}*.js'
+        'app/public/js/services/{,*/}*.js',
+        'app/public/js/filters/{,*/}*.js'
       ]
     },
 
@@ -106,6 +107,7 @@ module.exports = function(grunt) {
           'app/public/js/controllers/trafficCtrl.js',
           'app/public/js/services/domainService.js',
           'app/public/js/services/drilldownService.js',
+          'app/public/js/filters/domainFilter.js',
           'app/public/js/dashboard.js'
           //place your JavaScript files here
         ]

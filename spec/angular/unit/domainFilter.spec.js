@@ -1,14 +1,20 @@
 /**
  * Created by mattjohansen on 6/9/14.
  */
-describe('Filters', function() {
+describe('Domain Filter', function() {
+  var domFilter = null;
 
-  beforeEach(module('App.Filters'));
+  beforeEach(function() {
+    angular.mock.module('App');
+    angular.mock.module('App.Filters');
 
-  describe('domainFilter', function() {
-    it('should filter based on domain', inject(function(domainFilter) {
+    /*inject(function(domainFilter) {
+      domFilter = domainFilter;
+    });*/
+  });
 
-    }));
+  it('should filter based on domain', function() {
+    //expect(domFilter).not.toBe(undefined);
   });
 
 });

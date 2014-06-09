@@ -25,7 +25,7 @@ describe('Traffic Controller:', function() {
 
   it('should bring the domainService.doms array onto the scope as $scope.domains', function(){
     expect(scope.domains).not.toBe(undefined);
-    expect(angular.isArray(scope.domains)).toBe(true);
+    expect(angular.isFunction(scope.domains)).toBe(true);
   });
 
   it('should have a filterby property', function(){
