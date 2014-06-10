@@ -4,17 +4,10 @@
 describe('Domain Filter', function() {
   var domFilter = null;
 
-  beforeEach(function() {
-    angular.mock.module('App');
-    angular.mock.module('App.Filters');
+  beforeEach(module('App.Filters'));
 
-    inject(function(domainFilter) {
-      domFilter = domainFilter;
-    });
-  });
-
-  it('should filter based on domain', function() {
-    expect(domFilter).not.toBe(undefined);
-  });
+  it('should filter based on domain', inject(function(domainFilter) {
+    expect(domainFilter).not.toBe(undefined);
+  }));
 
 });
