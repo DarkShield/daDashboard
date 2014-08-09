@@ -32,6 +32,11 @@ angular.module('App.Controllers')
       item.attack = (item.attack === 'false') ? 'true' : 'false'
     };
 
+    $scope.toggleBlock = function(item) {
+      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked);
+      item.blocked = (item.blocked === 'false') ? 'true': 'false'
+    };
+
     $scope.showButtonDisplay = function(rowstate){
       return (rowstate) ? 'Hide' : 'Show'
     };

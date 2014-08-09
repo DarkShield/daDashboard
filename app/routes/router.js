@@ -1,7 +1,8 @@
 var User = exports.User = require('../model/user'),
-    RequestStore = exports.RequestStore = require('../../lib/requestSchema'),
-    EmailServer = exports.EmailServer = require('../../lib/emailserver'),
-    ObjectId = require('mongoose').Types.ObjectId;
+  RequestStore = exports.RequestStore = require('../../lib/requestSchema'),
+  EmailServer = exports.EmailServer = require('../../lib/emailserver'),
+  Host = exports.Host = require('../../lib/hostSchema'),
+  ObjectId = require('mongoose').Types.ObjectId;
 var sys = require('sys');
 
 exports.loginpage = function loginpage(req, res) {
@@ -141,6 +142,7 @@ exports.traffic = function getRange (req, res) {
 exports.toggleAttack = function toggleAttack (req, res) {
   var respond = function (err, docs) {
     if (!err) res.send(docs);
+    else res.send(err);
   };
   if (req.body.attack === 'false') {
     EmailServer.send({
@@ -164,6 +166,52 @@ exports.toggleAttack = function toggleAttack (req, res) {
     });
     RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'false'}, respond);
   }
+};
+
+exports.toggleBlock = function toggleBlock (req, res) {
+  var respond = function (err, docs) {
+    if (!err) res.send(docs);
+    else res.send(err);
+
+    var allowed, blocked = false;
+    var host = req.body.host.replace(/\./g, "");
+    for (var i = 0; i <= req.session.sites.length; i++) {
+      if(req.session.sites[i] === host) {
+        allowed = true;
+      }
+    }
+
+    if(allowed) {
+      if (req.body.blocked === false) {
+        Host.findOne({hostname: host}, function(err, doc) {
+          for(var x = 0; x <= doc.blacklist.length; x++) {
+            if (doc.blacklist[x].ip === req.body.ip) {
+              blocked = true;
+            }
+          }
+          if (blocked) {
+            res.send('all ready blocked', 400);
+          }
+          else {
+            Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }})
+          }
+        });
+      }
+      else {
+        Host.findOne({hostname: host}, function(err, doc) {
+          for (var y = 0; y <= doc.blacklist.length; y++) {
+            if(doc.blacklist[y].ip === req.body.ip) {
+              blocked = true;
+            }
+          }
+          if(blocked) {
+
+          }
+        })
+      }
+    }
+
+  };
 };
 
 exports.countCookies = function countCookies (req, res) {
