@@ -183,7 +183,7 @@ describe('routes', function(){
 
     it('should call send with argument docs', function(){
       var req = {
-            body: { name: 'test.com'  }
+            body: { name: 'www.supercroppers.com'  }
           };
       var res = {
             send: function(){ done = true; }
@@ -214,7 +214,7 @@ describe('routes', function(){
 
     it('should call send with argument docs', function(){
       var req = {
-            body: { name: 'test.com'  }
+            body: { name: 'www.supercroppers.com'  }
           };
       var res = {
             send: function(){ done = true; }
