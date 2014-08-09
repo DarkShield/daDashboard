@@ -169,10 +169,6 @@ exports.toggleAttack = function toggleAttack (req, res) {
 };
 
 exports.toggleBlock = function toggleBlock (req, res) {
-  var respond = function (err, docs) {
-    if (!err) res.send(docs);
-    else res.send(err);
-
     var allowed, blocked = false;
     var host = req.body.host.replace(/\./g, "");
     for (var i = 0; i <= req.session.sites.length; i++) {
@@ -227,8 +223,6 @@ exports.toggleBlock = function toggleBlock (req, res) {
         })
       }
     }
-
-  };
 };
 
 exports.countCookies = function countCookies (req, res) {
