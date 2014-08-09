@@ -220,6 +220,9 @@ exports.toggleBlock = function toggleBlock (req, res) {
               else res.send('unblocked', 200);
             })
           }
+          else {
+            res.send('all ready not blocked', 400);
+          }
         })
       }
     }
