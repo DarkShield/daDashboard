@@ -176,10 +176,10 @@ module.exports = function(grunt) {
       },
       options: {
         forceExit: true,
-        match: '.',
+        match: './spec/node/unit',
         matchall: false,
         extensions: 'js',
-        specNameMatcher: 'spec.unit',
+        specNameMatcher: 'spec',
         junitreport: {
           report: false,
           savePath : "./build/reports/jasmine/",
