@@ -1,6 +1,7 @@
 /**
  * Created by mattjohansen on 1/1/14.
  */
+
 module.exports = function(grunt) {
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -164,10 +165,28 @@ module.exports = function(grunt) {
     },
 
     jasmine_node: {
-      useProjectRoot: true,
-      projectRoot: "./spec/node",
-      requirejs: false,
-      forceExit: true
+      coverage: {
+        options : {
+          failTask: true,
+          branches : 83 ,
+          functions: 98,
+          statements:99,
+          lines:99
+        }
+      },
+      options: {
+        forceExit: true,
+        match: '.',
+        matchall: false,
+        extensions: 'js',
+        specNameMatcher: 'spec.unit',
+        junitreport: {
+          report: false,
+          savePath : "./build/reports/jasmine/",
+          useDotNotation: true,
+          consolidate: true
+        }
+      }
     }
   });
 
@@ -187,13 +206,10 @@ module.exports = function(grunt) {
 
   //installation-related
   grunt.registerTask('install', ['update','shell:protractor_install']);
-  grunt.registerTask('update', ['shell:npm_install', 'concat']);
 
   //defaults
   grunt.registerTask('default', ['dev']);
 
-  //development
-  grunt.registerTask('dev', ['update', 'connect:devserver', 'open:devserver', 'watch:assets']);
 
   //server daemon
   grunt.registerTask('serve', ['connect:webserver']);

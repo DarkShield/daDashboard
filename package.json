@@ -5,10 +5,10 @@
   "private": true,
   "author": "Mattjay & ProZachJ",
   "dependencies": {
-    "express": "~3.3.5",
-    "mongoose": "~3.6.17",
     "connect": "~2.8.5",
-    "emailjs": "~0.3.5"
+    "emailjs": "~0.3.5",
+    "express": "~3.3.5",
+    "mongoose": "~3.6.17"
   },
   "scripts": {
     "postinstall": "node ./node_modules/bower/bin/bower install && npm install bcrypt",
@@ -39,7 +39,8 @@
     "protractor": "~0.14.0",
     "grunt-protractor-runner": "~0.1.6",
     "grunt-shell-spawn": "~0.3.0",
+    "grunt-jasmine-node-coverage-validation": "0.0.4",
     "grunt-jasmine-node": "~0.1.0"
   },
-  "engine": "node>=0.10.24"
+  "engine": "node>=0.10.30"
 }
