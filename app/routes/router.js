@@ -1,7 +1,7 @@
 var User = exports.User = require('../model/user'),
-  RequestStore = exports.RequestStore = require('../../lib/requestSchema'),
+  RequestStore = exports.RequestStore = require('../model/requestSchema'),
   EmailServer = exports.EmailServer = require('../../lib/emailserver'),
-  Host = exports.Host = require('../../lib/hostSchema'),
+  Host = exports.Host = require('../model/hostSchema'),
   ObjectId = require('mongoose').Types.ObjectId;
 var sys = require('sys');
 

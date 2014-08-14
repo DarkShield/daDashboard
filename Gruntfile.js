@@ -152,15 +152,7 @@ module.exports = function(grunt) {
       unit_coverage: {
         configFile: './config/karma.unit.conf.js',
         autoWatch: false,
-        singleRun: true,
-        reporters: ['progress', 'coverage'],
-        preprocessors: {
-          'app/scripts/*.js': ['coverage']
-        },
-        coverageReporter: {
-          type : 'html',
-          dir : 'coverage/'
-        }
+        singleRun: true
       }
     },
 
@@ -175,24 +167,20 @@ module.exports = function(grunt) {
         }
       },
       options: {
+        specFolders: ['./spec/node/unit'],
         forceExit: true,
-        match: './spec/node/unit',
+        verbose: true,
+        match: '.',
         matchall: false,
         extensions: 'js',
-        specNameMatcher: 'spec',
-        junitreport: {
-          report: false,
-          savePath : "./build/reports/jasmine/",
-          useDotNotation: true,
-          consolidate: true
-        }
+        specNameMatcher: 'unit'
       }
     }
   });
 
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit', 'jasmine_node']);
+  grunt.registerTask('test:unit', ['karma:unit_coverage', 'jasmine_node']);
   grunt.registerTask('test:e2e', ['connect:testserver','protractor:singlerun']);
 
   //autotest and watch tests
