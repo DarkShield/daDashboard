@@ -8,11 +8,13 @@
     "connect": "~2.8.5",
     "emailjs": "~0.3.5",
     "express": "~3.3.5",
+    "pm2": "0.6.8",
     "mongoose": "~3.6.17"
   },
   "scripts": {
     "postinstall": "node ./node_modules/bower/bin/bower install && npm install bcrypt",
-    "test": "grunt test:unit"
+    "test": "grunt test:unit",
+    "start": "./node_modules/pm2/bin/pm2 start ./app/app.js -i max -u root && ./node_modules/pm2/bin/pm2 logs"
   },
   "devDependencies": {
     "bower": "~1.3.3",
