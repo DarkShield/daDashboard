@@ -12,7 +12,7 @@
     "mongoose": "~3.6.17"
   },
   "scripts": {
-    "postinstall": "node ./node_modules/bower/bin/bower install && npm install bcrypt",
+    "postinstall": "sudo node ./node_modules/bower/bin/bower install && sudo npm install bcrypt",
     "test": "grunt test:unit",
     "start": "./node_modules/pm2/bin/pm2 start ./app/app.js -i max -u root && ./node_modules/pm2/bin/pm2 logs"
   },
