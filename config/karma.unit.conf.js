@@ -14,7 +14,6 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-
             //Include Vendor Files
             './app/public/js/vendor/angular/angular.js',
             './app/public/js/vendor/angular/angular-mocks.js',
@@ -34,14 +33,29 @@ module.exports = function(config) {
 
         // list of files to exclude
         exclude: [
-
+          './spec/*'
         ],
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
 
+        preprocessors: {
+          // source files, that you wanna generate coverage for
+          // do not include tests or libraries
+          // (these files will be instrumented by Istanbul)
+          './app/public/js/dashboard.js': ['coverage'],
+          './app/public/js/controllers/*': ['coverage'],
+          './app/public/js/directives/*': ['coverage'],
+          './app/public/js/filters/*': ['coverage'],
+          './app/public/js/services/*': ['coverage']
+        },
+
+        coverageReporter: {
+          type : "html",
+          dir : "coverage/"
+        },
 
         // web server port
         port: 9876,

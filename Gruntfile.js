@@ -1,6 +1,7 @@
 /**
  * Created by mattjohansen on 1/1/14.
  */
+
 module.exports = function(grunt) {
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -151,29 +152,35 @@ module.exports = function(grunt) {
       unit_coverage: {
         configFile: './config/karma.unit.conf.js',
         autoWatch: false,
-        singleRun: true,
-        reporters: ['progress', 'coverage'],
-        preprocessors: {
-          'app/scripts/*.js': ['coverage']
-        },
-        coverageReporter: {
-          type : 'html',
-          dir : 'coverage/'
-        }
+        singleRun: true
       }
     },
 
     jasmine_node: {
-      useProjectRoot: true,
-      projectRoot: "./spec/node",
-      requirejs: false,
-      forceExit: true
+      coverage: {
+        options : {
+          failTask: false,
+          branches : 83 ,
+          functions: 98,
+          statements:99,
+          lines:99
+        }
+      },
+      options: {
+        specFolders: ['./spec/node/unit'],
+        forceExit: true,
+        verbose: true,
+        match: '.',
+        matchall: false,
+        extensions: 'js',
+        specNameMatcher: 'unit'
+      }
     }
   });
 
   //single run tests
   grunt.registerTask('test', ['jshint','test:unit', 'test:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit', 'jasmine_node']);
+  grunt.registerTask('test:unit', ['karma:unit_coverage', 'jasmine_node']);
   grunt.registerTask('test:e2e', ['connect:testserver','protractor:singlerun']);
 
   //autotest and watch tests
@@ -187,13 +194,10 @@ module.exports = function(grunt) {
 
   //installation-related
   grunt.registerTask('install', ['update','shell:protractor_install']);
-  grunt.registerTask('update', ['shell:npm_install', 'concat']);
 
   //defaults
   grunt.registerTask('default', ['dev']);
 
-  //development
-  grunt.registerTask('dev', ['update', 'connect:devserver', 'open:devserver', 'watch:assets']);
 
   //server daemon
   grunt.registerTask('serve', ['connect:webserver']);
