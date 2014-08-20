@@ -4,10 +4,6 @@ var mongoose = require('mongoose');
 if (process.env.NODE_ENV === 'development'){
   mongoose.connect('localhost', 'vicetest');
 }
-else if (process.env.NODE_ENV === 'production'){
-  require('newrelic');
-  mongoose.connect('10.136.20.210', 'vicetest');
-}
 else {
   mongoose.connect('10.136.20.210', 'dashtest');
 }
@@ -29,9 +25,9 @@ describe('routes', function(){
     it('should call sendfile with argument "./public/html/login.html"', function(){
       var req = {};
       var res = {
-            sendfile: function(req, res){}
+            sendfile: jasmine.createSpy('sendfile')
           };
-      spyOn(res, 'sendfile');
+      //spyOn(res, 'sendfile');
       routes.loginpage(req, res);
       expect(res.sendfile).toHaveBeenCalled();
       expect(res.sendfile).toHaveBeenCalledWith('./public/html/login.html');
@@ -49,15 +45,15 @@ describe('routes', function(){
     it('should call redirect with argument "/" when username and password are valid', function(){
       var req = {
             body: { username: 'test', password: 'test' },
-            session: {}
+            session: {user: null}
           };
       var res = {
-            redirect: function(req, res){}
+            redirect: jasmine.createSpy('redirect')
           };
-      spyOn(res, 'redirect');
-      spyOn(routes.User,'getAuthenticated').andCallThrough();
+      spyOn(routes.User,'getAuthenticated');
       runs(function(){
         routes.login(req, res);
+        routes.User.getAuthenticated.calls[0].args[2](null, {id:1234});
       });
 
       waitsFor(function() {
@@ -65,12 +61,7 @@ describe('routes', function(){
       }, 'User should be set', 750);
 
       runs(function() {
-        //expect(res.redirect).toHaveBeenCalled();
-        //expect(res.redirect).toHaveBeenCalledWith('/');
-        //expect(routes.User.getAuthenticated).toHaveBeenCalled();
-        //expect(routes.User.getAuthenticated.calls[0].args[0]).toBe('testuser');
-        //expect(routes.User.getAuthenticated.calls[0].args[1]).toBe('testpassword');
-        //expect(routes.User.getAuthenticated.calls[0].args[2].name).toBe('respond');
+        expect(res.redirect).toHaveBeenCalledWith('/');
       });
     });
 
@@ -80,9 +71,9 @@ describe('routes', function(){
             session: { user: null }
           };
       var res = {
-            redirect: function(req, res){}
+            redirect: jasmine.createSpy('redirect')
           };
-      spyOn(res, 'redirect');
+      //spyOn(res, 'redirect');
       runs(function(){
         routes.login(req, res);
       });
@@ -119,7 +110,7 @@ describe('routes', function(){
         }
       };
       var res = {
-        send: function(){}
+        send: jasmine.createSpy('send')
       };
 
       //Uncomment this next line if you'd like to create the test account.
@@ -142,9 +133,9 @@ describe('routes', function(){
     it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
       var req = {};
       var res = {
-            sendfile: function(req, res){}
+            sendfile: jasmine.createSpy('sendfile')
           };
-      spyOn(res, 'sendfile');
+      //spyOn(res, 'sendfile');
       routes.home(req, res);
       expect(res.sendfile).toHaveBeenCalled();
       expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
@@ -164,9 +155,9 @@ describe('routes', function(){
             session: { user: {} }
           };
       var res = {
-            send: function(req, res){}
+            send: jasmine.createSpy('send')
           };
-      spyOn(res, 'send');
+      //spyOn(res, 'send');
       routes.domains(req, res);
       expect(res.send).toHaveBeenCalled();
       expect(res.send).toHaveBeenCalledWith(req.session.user.sites);

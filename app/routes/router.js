@@ -1,14 +1,13 @@
 var User = exports.User = require('../model/user'),
-  RequestStore = exports.RequestStore = require('../model/requestSchema'),
-  EmailServer = exports.EmailServer = require('../lib/emailserver'),
-  Host = exports.Host = require('../model/hostSchema'),
-  ObjectId = require('mongoose').Types.ObjectId;
-var sys = require('sys');
+    RequestStore = exports.RequestStore = require('../model/requestSchema'),
+    EmailServer = exports.EmailServer = require('../lib/emailserver'),
+    Host = exports.Host = require('../model/hostSchema'),
+    ObjectId = require('mongoose').Types.ObjectId,
+    sys = require('sys');
 
 exports.loginpage = function loginpage(req, res) {
   res.sendfile('./public/html/login.html');
 };
-
 
 exports.login = function authenticate(req, res) {
   var username = req.body.username;
@@ -29,32 +28,6 @@ exports.login = function authenticate(req, res) {
 exports.signuppage = function signuppage(req, res) {
   res.sendfile('./public/html/register.html');
 };
-
-var buildAccountObj = function (req) {
-  //var sitesArray = [];
-  var tmpObj = {};
-  var newAccountData = {
-    name: req.body.name,
-    email: req.body.email,
-    user: req.body.user,
-    pass: req.body.pass1,
-    sites: []
-  };
-
-  if (req.body.sites.split(', ')) {
-    var splitArray = req.body.sites.split(', ');
-    for (var i = 0; i < splitArray.length; i++) {
-      tmpObj = {'name': splitArray[i]};
-      newAccountData.sites.push(tmpObj);
-    }
-  }
-  else {
-    tmpObj = {'name': req.body.sites};
-    newAccountData.sites.push(tmpObj);
-  }
-  return newAccountData;
-};
-module.exports.buildAccountObj = buildAccountObj;
 
 exports.signup = function addAccount(req, res) {
   var newAccountData = buildAccountObj(req);
@@ -282,3 +255,29 @@ exports.countCookies = function countCookies (req, res) {
     });
   });
 };
+
+var buildAccountObj = function (req) {
+  //var sitesArray = [];
+  var tmpObj = {};
+  var newAccountData = {
+    name: req.body.name,
+    email: req.body.email,
+    user: req.body.user,
+    pass: req.body.pass1,
+    sites: []
+  };
+
+  if (req.body.sites.split(', ')) {
+    var splitArray = req.body.sites.split(', ');
+    for (var i = 0; i < splitArray.length; i++) {
+      tmpObj = {'name': splitArray[i]};
+      newAccountData.sites.push(tmpObj);
+    }
+  }
+  else {
+    tmpObj = {'name': req.body.sites};
+    newAccountData.sites.push(tmpObj);
+  }
+  return newAccountData;
+};
+module.exports.buildAccountObj = buildAccountObj;
