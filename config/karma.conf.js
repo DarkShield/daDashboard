@@ -15,31 +15,42 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
 
-        //Include Vendor Files
-        '../app/public/js/vendor/angular/angular.js',
-        '../app/public/js/vendor/angular/angular-mocks.js',
-        './app/public/js/directives/angular-strap/dist/angular-strap.js',
+      //Include Vendor Files
+      './app/public/js/vendor/angular/angular.js',
+      './app/public/js/vendor/angular/angular-mocks.js',
+      './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
+      './app/public/js/directives/angular-strap/dist/angular-strap.js',
 
-        //Include App Code
-        './app/public/js/dashboard.js',
-        './app/public/js/services/*.js',
-        './app/public/js/controllers/*.js',
+      //Include App Code
+      './app/public/js/dashboard.js',
+      './app/public/js/services/*.js',
+      './app/public/js/controllers/*.js',
+      './app/public/js/filters/*.js',
 
-        //Include Unit Tests
-        './spec/angular/unit/*.spec.js'
+      //Include Unit Tests
+      './spec/angular/unit/*.spec.js'
     ],
+
+    reporters: ['progress', 'coverage'],
+
+    preprocessors: {
+      './app/public/js/*.js': ['coverage'],
+      './app/public/js/services/*.js': ['coverage'],
+      './app/public/js/controllers/*.js': ['coverage'],
+      './app/public/js/filters/*.js': ['coverage']
+    },
+
+    // optionally, configure the reporter
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
 
 
     // list of files to exclude
     exclude: [
-      
+
     ],
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
-
 
     // web server port
     port: 9876,
@@ -66,7 +77,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['PhantomJS'],
 
 
     // If browser does not capture in given timeout [ms], kill it
