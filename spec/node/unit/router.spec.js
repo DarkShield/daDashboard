@@ -105,7 +105,73 @@ describe('routes', function(){
       expect(routes.signup.name).toBe('addAccount');
     });
 
-    it('should call send with an argument of "ok", 400 when user is created successfully', function(){
+    it('should redirect back to the signup page when passwords don\'t match', function(){
+      var req = {
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          pass2: 'testpassword123',
+          sites: 'test.com, test2.com'
+        }
+      };
+      var res = {
+        redirect: jasmine.createSpy('redirect')
+      };
+      spyOn(routes.User,'addNewAccount');
+      routes.signup(req, res);
+      expect(res.redirect).toHaveBeenCalledWith('/signup');
+      expect(routes.User.addNewAccount).not.toHaveBeenCalled();
+    });
+
+    it('should call send with the error, 400 when user is not created successfully', function(){
+      var req = {
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          pass2: 'testpassword',
+          sites: 'test.com, test2.com'
+        }
+      };
+      var res = {
+        send: jasmine.createSpy('send')
+      };
+      spyOn(routes.User,'addNewAccount');
+
+      routes.signup(req, res);
+      routes.User.addNewAccount.calls[0].args[1]({error:'could not create user'});
+
+      expect(res.send).toHaveBeenCalledWith('Could not create user, please retry.', 400);
+    });
+
+    it('should send and email to admins and redirect to login when an account is created', function(){
+      var req = {
+        body: {
+          name : 'testy mctesterson',
+          email : 'test@email.com',
+          user : 'testuser',
+          pass1: 'testpassword',
+          pass2: 'testpassword',
+          sites: 'test.com, test2.com'
+        }
+      };
+      var res = {
+        redirect: jasmine.createSpy('redirect')
+      };
+      spyOn(routes.User,'addNewAccount');
+      spyOn(routes.EmailServer, 'send');
+
+      routes.signup(req, res);
+      routes.User.addNewAccount.calls[0].args[1]();
+      expect(routes.EmailServer.send).toHaveBeenCalled();
+      routes.EmailServer.send.calls[0].args[1]('error', 'message');
+      expect(res.redirect).toHaveBeenCalledWith('/login');
+    });
+
+    xit('should send and email to admins and redirect to login when an account is created', function(){
       var req = {
         body: {
           name : 'testy mctesterson',
@@ -120,13 +186,12 @@ describe('routes', function(){
         send: jasmine.createSpy('send')
       };
 
-      //Uncomment this next line if you'd like to create the test account.
-      //routes.signup(req, res);
+      spyOn(routes, 'buildAccountObj').andReturn({name:false});
 
-       //TODO: need to figure out a way to test the actual act of adding to the db
-       //without actually adding to the db. Jasmine does provide interupt functions
-       //capabilites just need to figure out how to implement here.
+      routes.signup(req, res);
+      expect(routes.buildAccountObj).toHaveBeenCalled();
     });
+
   });
   
   //nested describe for home route

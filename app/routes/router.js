@@ -31,13 +31,15 @@ exports.signuppage = function signuppage(req, res) {
 
 exports.signup = function addAccount(req, res) {
   var newAccountData = buildAccountObj(req);
+  console.log(newAccountData);
   if (req.body.pass1 != req.body.pass2) {
     res.redirect('/signup');
   }
   else if (newAccountData.name && newAccountData.email && newAccountData.user && newAccountData.pass && newAccountData.sites) {
     User.addNewAccount(newAccountData, function (e) {
       if (e) {
-        res.send(e, 400);
+        sys.log(e);
+        res.send('Could not create user, please retry.', 400);
       } else {
         EmailServer.send({
           text: 'Registration: Name - ' + newAccountData.name + ', Email - ' + newAccountData.email + ', User - ' + newAccountData.user + ', Sites - ' + JSON.stringify(newAccountData.sites),
@@ -45,7 +47,7 @@ exports.signup = function addAccount(req, res) {
           to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
           subject: 'Registration ' + newAccountData.name + ', ' + newAccountData.user
         }, function (err, message) {
-          console.log(err || message);
+          sys.log(err || message);
         });
         res.redirect('/login');
       }
@@ -256,7 +258,9 @@ exports.countCookies = function countCookies (req, res) {
   });
 };
 
-var buildAccountObj = function (req) {
+exports.buildAccountObj = buildAccountObj
+
+function buildAccountObj (req) {
   //var sitesArray = [];
   var tmpObj = {};
   var newAccountData = {
@@ -280,4 +284,3 @@ var buildAccountObj = function (req) {
   }
   return newAccountData;
 };
-module.exports.buildAccountObj = buildAccountObj;
