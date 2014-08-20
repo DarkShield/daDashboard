@@ -294,6 +294,56 @@ describe('routes', function(){
       })
     });
 
+    it('should unblock when asked to and is blocked in db', function() {
+      var req = {
+        body: {
+          host: 'www.supercroppers.com',
+          blocked: true,
+          ip: '1.2.3.4'
+        },
+        session : {
+          sites : [
+            'wwwmattjaycom']
+        }
+      }
+      runs(function() {
+        routes.toggleBlock(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 1000);
+      runs(function() {
+        expect(res.send).toHaveBeenCalled();
+        expect(res.send.mostRecentCall.args[0]).toBe('unblocked')
+        expect(res.send.mostRecentCall.args[1]).toBe(200);
+      })
+    });
+
+    it('should not unblock when asked to and is all ready not blocked in db', function() {
+      var req = {
+        body: {
+          host: 'www.supercroppers.com',
+          blocked: true,
+          ip: '1.2.3.4'
+        },
+        session : {
+          sites : [
+            'wwwmattjaycom']
+        }
+      }
+      runs(function() {
+        routes.toggleBlock(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 1000);
+      runs(function() {
+        expect(res.send).toHaveBeenCalled();
+        expect(res.send.mostRecentCall.args[0]).toBe('none unblocked')
+        expect(res.send.mostRecentCall.args[1]).toBe(400);
+      })
+    });
+
   });
 
   setTimeout(function() {
