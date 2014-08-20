@@ -90,6 +90,13 @@ describe('routes', function(){
     });
   });
 
+  describe('signuppage', function(){
+    var req = {},
+        res = {sendfile:jasmine.createSpy('sendfile')};
+    routes.signuppage(req, res);
+    expect(res.sendfile).toHaveBeenCalledWith('./public/html/register.html');
+  });
+
   //nested describe for signup route
   describe('signup route', function(){
 
