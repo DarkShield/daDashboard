@@ -234,6 +234,43 @@ describe('routes', function(){
     });
   });
 
+  describe('domains.toggleBlock route', function() {
+    var done, res;
+    beforeEach(function() {
+      res = {
+        send: function() { done = true; }
+      };
+      done = false;
+      spyOn(res, 'send').andCallThrough();
+    });
+
+    it('should block when asked to and not all ready blocked', function() {
+      var req = {
+        body: {
+          host: 'www.supercroppers.com',
+          blocked: false,
+          ip: '1.2.3.4'
+        },
+        session : {
+          sites : [
+          'wwwmattjaycom']
+        }
+      }
+      runs(function() {
+        routes.toggleBlock(req, res);
+      });
+      waitsFor(function() {
+        return done;
+      }, 'Send to be called', 1000);
+      runs(function() {
+        expect(res.send).toHaveBeenCalled();
+        expect(res.send.mostRecentCall.args[0]).toBe('blocked')
+        expect(res.send.mostRecentCall.args[1]).toBe(200);
+      })
+    });
+
+  });
+
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
