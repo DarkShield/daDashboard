@@ -401,60 +401,52 @@ describe('routes', function(){
       expect(res.send.mostRecentCall.args[1]).toBe(200);
     });
 
-    /*it('should not block when asked to and all ready blocked in db', function() {
+    it('should not block when asked to and all ready blocked in db', function() {
       var req = {
         body: {
-          host: 'www.supercroppers.com',
+          host: 'www.mattjay.com',
           blocked: false,
-          ip: '1.2.3.4'
+          ip: '5.6.7.8'
         },
         session : {
           sites : [
             'wwwmattjaycom']
         }
       }
-      runs(function() {
-        routes.toggleBlock(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function() {
-        expect(res.send).toHaveBeenCalled();
-        expect(res.send.mostRecentCall.args[0]).toBe('all ready blocked')
-        expect(res.send.mostRecentCall.args[1]).toBe(400);
-      })
+      routes.toggleBlock(req, res);
+      expect(routes.Host.findOne).toHaveBeenCalled();
+      routes.Host.findOne.calls[0].args[1](null, doc);
+      expect(res.send).toHaveBeenCalled();
+      expect(res.send.mostRecentCall.args[0]).toBe('all ready blocked')
+      expect(res.send.mostRecentCall.args[1]).toBe(400);
     });
 
     it('should unblock when asked to and is blocked in db', function() {
       var req = {
         body: {
-          host: 'www.supercroppers.com',
+          host: 'www.mattjay.com',
           blocked: true,
-          ip: '1.2.3.4'
+          ip: '5.6.7.8'
         },
         session : {
           sites : [
             'wwwmattjaycom']
         }
       }
-      runs(function() {
-        routes.toggleBlock(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function() {
-        expect(res.send).toHaveBeenCalled();
-        expect(res.send.mostRecentCall.args[0]).toBe('unblocked')
-        expect(res.send.mostRecentCall.args[1]).toBe(200);
-      })
+      routes.toggleBlock(req, res);
+      expect(routes.Host.findOne).toHaveBeenCalled();
+      routes.Host.findOne.calls[0].args[1](null, doc);
+      expect(routes.Host.update).toHaveBeenCalled();
+      routes.Host.update.calls[0].args[2](null, 1);
+      expect(res.send).toHaveBeenCalled();
+      expect(res.send.mostRecentCall.args[0]).toBe('unblocked')
+      expect(res.send.mostRecentCall.args[1]).toBe(200);
     });
 
     it('should not unblock when asked to and is all ready not blocked in db', function() {
       var req = {
         body: {
-          host: 'www.supercroppers.com',
+          host: 'www.mattjay.com',
           blocked: true,
           ip: '1.2.3.4'
         },
@@ -462,19 +454,14 @@ describe('routes', function(){
           sites : [
             'wwwmattjaycom']
         }
-      }
-      runs(function() {
-        routes.toggleBlock(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function() {
-        expect(res.send).toHaveBeenCalled();
-        expect(res.send.mostRecentCall.args[0]).toBe('none unblocked')
-        expect(res.send.mostRecentCall.args[1]).toBe(400);
-      })
-    });*/
+      };
+      routes.toggleBlock(req, res);
+      expect(routes.Host.findOne).toHaveBeenCalled();
+      routes.Host.findOne.calls[0].args[1](null, doc);
+      expect(res.send).toHaveBeenCalled();
+      expect(res.send.mostRecentCall.args[0]).toBe('all ready not blocked')
+      expect(res.send.mostRecentCall.args[1]).toBe(400);
+    });
 
   });
 

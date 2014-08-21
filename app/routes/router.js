@@ -178,7 +178,7 @@ exports.toggleBlock = function toggleBlock (req, res) {
       }
       else {
         Host.findOne({hostname: host}, function(err, doc) {
-          for (var y = 0; y <= doc.blacklist.length; y++) {
+          for (var y = 0; y < doc.blacklist.length; y++) {
             if(doc.blacklist[y].ip === req.body.ip) {
               blocked = true;
             }
