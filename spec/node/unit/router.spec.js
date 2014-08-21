@@ -312,6 +312,31 @@ describe('routes', function(){
     });
   });
 
+  describe('domains.info.lastday', function(){
+    var req = {
+      body:{
+        name:'www.test.com'
+      }
+    };
+    var res = {
+      send:jasmine.createSpy('send')
+    };
+    var docs = {doc:'testdoc'};
+    beforeEach(function(){
+      spyOn(routes.RequestStore, 'find');
+      routes.domains.info.lastday(req, res);
+    });
+
+    it('should should query the db for the last24 for a domain', function(){
+      expect(routes.RequestStore.find).toHaveBeenCalled();
+    });
+
+    it('should respond with the returned documents', function(){
+      routes.RequestStore.find.calls[0].args[2](null, docs);
+      expect(res.send).toHaveBeenCalledWith(docs);
+    });
+  });
+
   xdescribe('domains.toggleBlock route', function() {
     var done, res;
     beforeEach(function() {
