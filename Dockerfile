@@ -11,7 +11,6 @@ run   apt-get -y install libexpat1-dev libexpat1 libicu-dev
 run   wget -O - http://nodejs.org/dist/v0.10.30/node-v0.10.30-linux-x64.tar.gz | tar -C /usr/local/ --strip-components=1 -zxv
 
 ADD   ./app /src/build/app
-ADD   ./lib /src/build/lib
 ADD   ./package.json /src/build/package.json
 
 run   cd /src/build; npm install --production
