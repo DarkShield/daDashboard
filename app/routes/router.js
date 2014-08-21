@@ -155,21 +155,24 @@ exports.toggleBlock = function toggleBlock (req, res) {
     if(allowed) {
       if (req.body.blocked === false) {
         Host.findOne({hostname: host}, function(err, doc) {
-          for(var x = 0; x <= doc.blacklist.length; x++) {
-            if (doc.blacklist[x].ip === req.body.ip) {
-              blocked = true;
+          if(doc != null && doc.blacklist){
+            for(var x = 0; x <= doc.blacklist.length; x++) {
+              if (doc.blacklist[x].ip === req.body.ip) {
+                blocked = true;
+              }
+            }
+            if (blocked) {
+              res.send('all ready blocked', 400);
+            }
+            else {
+              Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }}, function(err, numAffected) {
+                if (err) res.send(err, 400);
+                else if (numAffected === 0) res.send('none blocked', 400);
+                else res.send('blocked', 200);
+              })
             }
           }
-          if (blocked) {
-            res.send('all ready blocked', 400);
-          }
-          else {
-            Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }}, function(err, numAffected) {
-              if (err) res.send(err, 400);
-              else if (numAffected === 0) res.send('none blocked', 400);
-              else res.send('blocked', 200);
-            })
-          }
+
         });
       }
       else {
