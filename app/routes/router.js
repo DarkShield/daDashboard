@@ -205,6 +205,7 @@ exports.toggleBlock = function toggleBlock (req, res) {
         })
       }
     }
+  else res.send('nope!', 400);
 };
 
 exports.countCookies = function countCookies (req, res) {

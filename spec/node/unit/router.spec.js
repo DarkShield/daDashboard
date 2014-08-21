@@ -397,7 +397,7 @@ describe('routes', function(){
       expect(routes.Host.update).toHaveBeenCalled();
       routes.Host.update.calls[0].args[2](null, 1);
       expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('blocked')
+      expect(res.send.mostRecentCall.args[0]).toBe('blocked');
       expect(res.send.mostRecentCall.args[1]).toBe(200);
     });
 
@@ -417,7 +417,7 @@ describe('routes', function(){
       expect(routes.Host.findOne).toHaveBeenCalled();
       routes.Host.findOne.calls[0].args[1](null, doc);
       expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('all ready blocked')
+      expect(res.send.mostRecentCall.args[0]).toBe('all ready blocked');
       expect(res.send.mostRecentCall.args[1]).toBe(400);
     });
 
@@ -439,7 +439,7 @@ describe('routes', function(){
       expect(routes.Host.update).toHaveBeenCalled();
       routes.Host.update.calls[0].args[2](null, 1);
       expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('unblocked')
+      expect(res.send.mostRecentCall.args[0]).toBe('unblocked');
       expect(res.send.mostRecentCall.args[1]).toBe(200);
     });
 
@@ -459,7 +459,26 @@ describe('routes', function(){
       expect(routes.Host.findOne).toHaveBeenCalled();
       routes.Host.findOne.calls[0].args[1](null, doc);
       expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('all ready not blocked')
+      expect(res.send.mostRecentCall.args[0]).toBe('all ready not blocked');
+      expect(res.send.mostRecentCall.args[1]).toBe(400);
+    });
+
+    it('should not allow a change when the site is not owned by that user', function() {
+      var req = {
+        body: {
+          host: 'www.google.com',
+          blocked: true,
+          ip: '1.2.3.4'
+        },
+        session : {
+          sites : [
+            'wwwmattjaycom']
+        }
+      };
+      routes.toggleBlock(req, res);
+      expect(routes.Host.findOne).not.toHaveBeenCalled();
+      expect(res.send).toHaveBeenCalled();
+      expect(res.send.mostRecentCall.args[0]).toBe('nope!');
       expect(res.send.mostRecentCall.args[1]).toBe(400);
     });
 
