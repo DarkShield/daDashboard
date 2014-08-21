@@ -368,20 +368,21 @@ describe('routes', function(){
     });
   });
 
-  xdescribe('domains.toggleBlock route', function() {
-    var done, res;
+  describe('domains.toggleBlock route', function() {
+    var res;
+    var doc = {blacklist:[{ip: '5.6.7.8'}]};
     beforeEach(function() {
       res = {
-        send: function() { done = true; }
+        send: jasmine.createSpy('send')
       };
-      done = false;
-      spyOn(res, 'send').andCallThrough();
+      spyOn(routes.Host, 'findOne');
+      spyOn(routes.Host, 'update');
     });
 
     it('should block when asked to and not all ready blocked in db', function() {
       var req = {
         body: {
-          host: 'www.supercroppers.com',
+          host: 'www.mattjay.com',
           blocked: false,
           ip: '1.2.3.4'
         },
@@ -389,21 +390,18 @@ describe('routes', function(){
           sites : [
           'wwwmattjaycom']
         }
-      }
-      runs(function() {
-        routes.toggleBlock(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function() {
-        expect(res.send).toHaveBeenCalled();
-        expect(res.send.mostRecentCall.args[0]).toBe('blocked')
-        expect(res.send.mostRecentCall.args[1]).toBe(200);
-      })
+      };
+      routes.toggleBlock(req, res);
+      expect(routes.Host.findOne).toHaveBeenCalled();
+      routes.Host.findOne.calls[0].args[1](null, doc);
+      expect(routes.Host.update).toHaveBeenCalled();
+      routes.Host.update.calls[0].args[2](null, 1);
+      expect(res.send).toHaveBeenCalled();
+      expect(res.send.mostRecentCall.args[0]).toBe('blocked')
+      expect(res.send.mostRecentCall.args[1]).toBe(200);
     });
 
-    it('should not block when asked to and all ready blocked in db', function() {
+    /*it('should not block when asked to and all ready blocked in db', function() {
       var req = {
         body: {
           host: 'www.supercroppers.com',
@@ -476,7 +474,7 @@ describe('routes', function(){
         expect(res.send.mostRecentCall.args[0]).toBe('none unblocked')
         expect(res.send.mostRecentCall.args[1]).toBe(400);
       })
-    });
+    });*/
 
   });
 
