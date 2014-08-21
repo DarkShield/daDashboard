@@ -193,6 +193,25 @@ describe('routes', function(){
     });
 
   });
+
+  //nested describe for  logout route
+  describe('logout route', function(){
+
+    it('should destroy the session and redirect to login', function(){
+      var req = {
+        session: {
+          destroy: jasmine.createSpy('destroy')
+        }
+      };
+      var res = {
+        redirect: jasmine.createSpy('redirect')
+      };
+      routes.logout(req, res);
+      expect(req.session.destroy).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith('/login');
+    })
+
+  });
   
   //nested describe for home route
   describe('home route', function(){
@@ -269,31 +288,27 @@ describe('routes', function(){
 
   //nested describe for domain.attacks route
   describe('domains.attacks route', function() {
-
-    it('should have a domains.attacks property that references a mehtod named getDomainAttacks', function(){
-      expect(typeof(routes.domains.attacks)).toBe('function');
-      expect(routes.domains.attacks.name).toBe('getDomainAttacks');
+    var req = {
+      body:{
+        name:'www.test.com'
+      }
+    };
+    var res = {
+      send:jasmine.createSpy('send')
+    };
+    var doc = {doc:'thisisadoc'}
+    beforeEach(function(){
+      spyOn(routes.RequestStore, 'find');
+      routes.domains.attacks(req, res);
     });
 
-    it('should call send with argument docs', function(){
-      var req = {
-            body: { name: 'www.supercroppers.com'  }
-          };
-      var res = {
-            send: function(){ done = true; }
-          };
-      var done = false;
-      spyOn(res, 'send').andCallThrough();
-      runs(function(){
-        routes.domains.info(req, res);
-      });
-      waitsFor(function() {
-        return done;
-      }, 'Send to be called', 1000);
-      runs(function(){
-        expect(res.send).toHaveBeenCalled();
-        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
-      });
+    it('should query the db with the provided domain', function(){
+      expect(routes.RequestStore.find.calls[0].args[0]).toEqual({'headers.host': 'www.test.com', 'attack': 'true'})
+    });
+
+    it('should respond with the result documents', function(){
+      routes.RequestStore.find.calls[0].args[1](null, doc);
+      expect(res.send).toHaveBeenCalledWith(doc);
     });
   });
 
