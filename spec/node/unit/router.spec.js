@@ -337,6 +337,37 @@ describe('routes', function(){
     });
   });
 
+  describe('traffic route', function(){
+    var req = {
+      session:{
+        user:{
+          sites:['www.test.com']
+        }
+      },
+      body:{
+        name:'www.test.com'
+      }
+    };
+    var res = {
+    send:jasmine.createSpy('send')
+    };
+    var doc = {doc:'thisisadoc'}
+    beforeEach(function(){
+      spyOn(routes.RequestStore, 'find');
+      routes.traffic(req, res);
+    });
+
+    it('should query the db for a range specified by the user', function(){
+        console.log('this test needs improvment');
+        expect(routes.RequestStore.find).toHaveBeenCalled();
+    });
+
+    it('should respond with the documents', function(){
+        routes.RequestStore.find.calls[0].args[1](null, doc);
+        expect(res.send).toHaveBeenCalledWith(doc);
+    });
+  });
+
   xdescribe('domains.toggleBlock route', function() {
     var done, res;
     beforeEach(function() {
