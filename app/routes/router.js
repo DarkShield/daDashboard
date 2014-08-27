@@ -195,7 +195,7 @@ exports.toggleBlock = function toggleBlock (req, res) {
   else res.send('nope!', 400);
 };
 
-exports.countCookies = function countCookies (req, res) {
+/* exports.countCookies = function countCookies (req, res) {
   var sitesArray = [];
   var fullRange = [];
   var counted = [];
@@ -249,6 +249,7 @@ exports.countCookies = function countCookies (req, res) {
     });
   });
 };
+*/
 
 exports.buildAccountObj = buildAccountObj
 
