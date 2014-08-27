@@ -368,6 +368,66 @@ describe('routes', function(){
     });
   });
 
+  describe('toggleAttack route', function(){
+    var req = {
+      session:{
+        user:{
+          sites:['www.test.com']
+        }
+      },
+      body:{
+        id: 1234
+      }
+    };
+    var res = {
+      send:jasmine.createSpy('send')
+    };
+    var doc = {doc:'thisisadoc'};
+
+    beforeEach(function(){
+      spyOn(routes.RequestStore, 'update');
+      spyOn(routes.EmailServer, 'send');
+
+    });
+
+    it('should update the db with a properly configured object (true case)', function(){
+      req.body.attack = 'true';
+      routes.toggleAttack(req, res);
+      expect(routes.RequestStore.update).toHaveBeenCalled();
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('true');
+
+    });
+    it('should update the db with a properly configured object (false case)', function(){
+      req.body.attack = 'false';
+      routes.toggleAttack(req, res);
+      expect(routes.RequestStore.update).toHaveBeenCalled();
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('false');
+    });
+
+    it('should send an email with the correct info (true case)', function(){
+      req.body.attack = 'true';
+      routes.toggleAttack(req, res);
+      expect(routes.EmailServer.send).toHaveBeenCalled();
+      expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('Missed Attack');
+    });
+
+    it('should send an email with the correct info (false case)', function(){
+      req.body.attack = 'false';
+      routes.toggleAttack(req, res);
+      expect(routes.EmailServer.send).toHaveBeenCalled();
+      expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('False Positive');
+    });
+
+    it('should respond with any doc returned by the update', function(){
+      req.body.attack = 'false';
+      routes.toggleAttack(req, res);
+      routes.RequestStore.update.calls[0].args[2](null, doc);
+      expect(res.send).toHaveBeenCalledWith(doc);
+      routes.EmailServer.send.calls[0].args[1](null,'test');
+    });
+
+  });
+
   describe('domains.toggleBlock route', function() {
     var res;
     var doc = {blacklist:[{ip: '5.6.7.8'}]};
