@@ -103,4 +103,10 @@ describe("app", function(){
     expect(app.routes.post[6].callbacks[0].name).toBe('loadUser');
     expect(app.routes.post[6].callbacks[1].name).toBe('toggleAttack');
   });
+
+  it("should have a POST route to /toggle/block that calls the toggleBlock function if authenticated", function(){
+    expect(app.routes.post[7].path).toBe('/toggle/block');
+    expect(app.routes.post[7].callbacks[0].name).toBe('loadUser');
+    expect(app.routes.post[7].callbacks[1].name).toBe('toggleBlock');
+  });
 });
