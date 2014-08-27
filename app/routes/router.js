@@ -133,8 +133,8 @@ exports.toggleAttack = function toggleAttack (req, res) {
 exports.toggleBlock = function toggleBlock (req, res) {
     var allowed, blocked = false;
     var host = req.body.host.replace(/\./g, "");
-    for (var i = 0; i <= req.session.sites.length; i++) {
-      if(req.session.sites[i] === host) {
+    for (var i = 0; i <= req.body.domains.length; i++) {
+      if(req.body.domains[i] === host) {
         allowed = true;
       }
     }

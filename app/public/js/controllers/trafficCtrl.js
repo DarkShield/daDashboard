@@ -33,8 +33,10 @@ angular.module('App.Controllers')
     };
 
     $scope.toggleBlock = function(item) {
-      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked);
-      item.blocked = (item.blocked === 'false') ? 'true': 'false'
+      console.log(item);
+      console.log(item.blocked);
+      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked, $scope.domains);
+      item.blocked = (item.blocked === false) ? true : false
     };
 
     $scope.showButtonDisplay = function(rowstate){
@@ -43,6 +45,10 @@ angular.module('App.Controllers')
 
     $scope.markButtonDisplay = function(item){
       return (item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
+    };
+
+    $scope.blockButtonDisplay = function(item){
+      return (item.blocked === true) ? 'Unblock' : 'Block'
     };
 
     $scope.getRequestData = function(){
