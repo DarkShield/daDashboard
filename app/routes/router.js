@@ -116,31 +116,18 @@ exports.traffic = function getRange (req, res) {
 
 exports.toggleAttack = function toggleAttack (req, res) {
   var respond = function (err, docs) {
-    if (!err) res.send(docs);
-    else res.send(err);
+    res.send(docs);
   };
-  if (req.body.attack === 'false') {
-    EmailServer.send({
-      text: 'Missed Attack - ' + req.body.id,
-      from: 'Admin <vicet3ch@gmail.com>',
-      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
-      subject: 'Missed Attack'
-    }, function (err, message) {
-      console.log(err || message);
-    });
-    RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'true'}, respond);
-  }
-  else if (req.body.attack === 'true') {
-    EmailServer.send({
-      text: 'False Positive - ' + req.body.id,
-      from: 'Admin <vicet3ch@gmail.com>',
-      to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
-      subject: 'False Positive'
-    }, function (err, message) {
-      console.log(err || message);
-    });
-    RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': 'false'}, respond);
-  }
+  var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
+  RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
+  EmailServer.send({
+    text: text + ' - ' + req.body.id,
+    from: 'Admin <vicet3ch@gmail.com>',
+    to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+    subject: text
+  }, function (err, message) {
+    console.log(err || message);
+  });
 };
 
 exports.toggleBlock = function toggleBlock (req, res) {
