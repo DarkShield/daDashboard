@@ -12,14 +12,15 @@ angular.module('App.Services')
         $http.post('/toggle/attack', {id: id, attack: attack});
       },
 
-      toggleBlock: function(ip, host, blocked, domains) {
+      toggleBlock: function(ip, host, blocked) {
         console.log(blocked);
-        var data = {ip: ip, host: host, blocked: blocked, domains: domains};
+        var allowedHosts = domains.getDoms();
+        var data = {ip: ip, host: host, blocked: blocked, domains: allowedHosts};
         $http({
           method: 'POST',
           url: '/toggle/block',
-          data: data,
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+          data: data //{ip: ip, host: host, blocked: blocked, domains: domains.doms},
+          //headers: {'Content-Type': 'application/json'}
         });
         //$http.post('/toggle/block', {ip: ip, host: host, blocked: blocked, domains: domains});
       },

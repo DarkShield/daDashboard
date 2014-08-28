@@ -133,8 +133,9 @@ exports.toggleAttack = function toggleAttack (req, res) {
 exports.toggleBlock = function toggleBlock (req, res) {
     var allowed, blocked = false;
     var host = req.body.host.replace(/\./g, "");
-    for (var i = 0; i <= req.body.domains.length; i++) {
-      if(req.body.domains[i] === host) {
+
+    for (var i = 0; i < req.body.domains.length; i++) {
+      if(req.body.domains[i].name === req.body.host) {
         allowed = true;
       }
     }
@@ -142,53 +143,61 @@ exports.toggleBlock = function toggleBlock (req, res) {
     if(allowed) {
       if (req.body.blocked === false) {
         Host.findOne({hostname: host}, function(err, doc) {
-          if(doc != null && doc.blacklist){
-            for(var x = 0; x < doc.blacklist.length; x++) {
-              console.log(doc.blacklist);
-              if (doc.blacklist[x].ip === req.body.ip) {
-                blocked = true;
+          if(!err){
+            if(doc != null && doc.blacklist){
+              for(var x = 0; x < doc.blacklist.length; x++) {
+                console.log(doc.blacklist);
+                if (doc.blacklist[x].ip === req.body.ip) {
+                  blocked = true;
+                }
+              }
+              if (blocked) {
+                res.send('all ready blocked', 400);
+              }
+              else {
+                Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }}, function(err, numAffected) {
+                  if (err) res.send(err, 400);
+                  else if (numAffected === 0) res.send('none blocked', 400);
+                  else res.send('blocked', 200);
+                })
               }
             }
-            if (blocked) {
-              res.send('all ready blocked', 400);
-            }
-            else {
-              Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }}, function(err, numAffected) {
-                if (err) res.send(err, 400);
-                else if (numAffected === 0) res.send('none blocked', 400);
-                else res.send('blocked', 200);
-              })
-            }
           }
-
+          else res.send(err, 400);
         });
       }
       else {
         Host.findOne({hostname: host}, function(err, doc) {
-          for (var y = 0; y < doc.blacklist.length; y++) {
-            if(doc.blacklist[y].ip === req.body.ip) {
-              blocked = true;
-            }
-          }
-          if(blocked) {
-            var index;
-            doc.blacklist.forEach(function(i) {
-              if (i.ip === req.body.ip) {
-                index = doc.blacklist.indexOf(i);
-                if (index >= 0){
-                  doc.blacklist.splice(index,1);
+          if(!err) {
+            if(doc) {
+              for (var y = 0; y < doc.blacklist.length; y++) {
+                if(doc.blacklist[y].ip === req.body.ip) {
+                  blocked = true;
                 }
               }
-            });
-            Host.update({hostname: host}, doc, function(err, numAffected) {
-              if(err) res.send(err, 400);
-              else if (numAffected === 0) res.send('none unblocked', 400);
-              else res.send('unblocked', 200);
-            })
+              if(blocked) {
+                var index;
+                doc.blacklist.forEach(function(i) {
+                  if (i.ip === req.body.ip) {
+                    index = doc.blacklist.indexOf(i);
+                    if (index >= 0){
+                      doc.blacklist.splice(index,1);
+                    }
+                  }
+                });
+                Host.update({hostname: host}, doc, function(err, numAffected) {
+                  if(err) res.send(err, 400);
+                  else if (numAffected === 0) res.send('none unblocked', 400);
+                  else res.send('unblocked', 200);
+                })
+              }
+              else {
+                res.send('all ready not blocked', 400);
+              }
+            }
+            else res.send('host not found', 400);
           }
-          else {
-            res.send('all ready not blocked', 400);
-          }
+          else res.send(err, 400);
         })
       }
     }

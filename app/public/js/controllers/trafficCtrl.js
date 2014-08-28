@@ -33,10 +33,9 @@ angular.module('App.Controllers')
     };
 
     $scope.toggleBlock = function(item) {
-      console.log(item);
       console.log(item.blocked);
-      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked, $scope.domains);
-      item.blocked = (item.blocked === false) ? true : false
+      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked);
+      item.blocked = (item.blocked === false);
     };
 
     $scope.showButtonDisplay = function(rowstate){
