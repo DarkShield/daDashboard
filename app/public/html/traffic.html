@@ -81,7 +81,7 @@
                                     <h4>Attack Info:</h4>
                                     <li data-ng-repeat="attack in item.attacks">{{attack.type}} - Confidence Level: {{attack.score}}</li><br>
                                     <li>
-                                        <button class="btn btn-sm btn-warning" ng-click="toggleBlock(item)">
+                                        <button class="btn btn-sm btn-warning" data-ng-click="toggleBlock(item)">
                                             {{blockButtonDisplay(item)}}
                                         </button>
                                     </li>

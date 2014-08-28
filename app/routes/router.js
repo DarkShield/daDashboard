@@ -167,6 +167,7 @@ exports.toggleBlock = function toggleBlock (req, res) {
         });
       }
       else {
+        console.log(host);
         Host.findOne({hostname: host}, function(err, doc) {
           if(!err) {
             if(doc) {

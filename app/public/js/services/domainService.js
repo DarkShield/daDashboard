@@ -15,7 +15,7 @@ angular.module('App.Services')
       toggleBlock: function(ip, host, blocked) {
         console.log(blocked);
         var allowedHosts = domains.getDoms();
-        var data = {ip: ip, host: host, blocked: blocked, domains: allowedHosts};
+        var data = {blocked: blocked, ip: ip, host: host, domains: allowedHosts};
         $http({
           method: 'POST',
           url: '/toggle/block',
