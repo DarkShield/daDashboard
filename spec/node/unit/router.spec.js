@@ -442,13 +442,10 @@ describe('routes', function(){
     it('should block when asked to and not all ready blocked in db', function() {
       var req = {
         body: {
-          host: 'www.mattjay.com',
+          host: 'www.supercroppers.com',
           blocked: false,
-          ip: '1.2.3.4'
-        },
-        session : {
-          sites : [
-          'wwwmattjaycom']
+          ip: '1.2.3.4',
+          domains: [{name:'www.supercroppers.com'}]
         }
       };
       routes.toggleBlock(req, res);
@@ -464,13 +461,10 @@ describe('routes', function(){
     it('should not block when asked to and all ready blocked in db', function() {
       var req = {
         body: {
-          host: 'www.mattjay.com',
+          host: 'www.supercroppers.com',
           blocked: false,
-          ip: '5.6.7.8'
-        },
-        session : {
-          sites : [
-            'wwwmattjaycom']
+          ip: '5.6.7.8',
+          domains: [{name:'www.supercroppers.com'}]
         }
       }
       routes.toggleBlock(req, res);
@@ -484,13 +478,10 @@ describe('routes', function(){
     it('should unblock when asked to and is blocked in db', function() {
       var req = {
         body: {
-          host: 'www.mattjay.com',
+          host: 'www.supercroppers.com',
           blocked: true,
-          ip: '5.6.7.8'
-        },
-        session : {
-          sites : [
-            'wwwmattjaycom']
+          ip: '5.6.7.8',
+          domains: [{name:'www.supercroppers.com'}]
         }
       }
       routes.toggleBlock(req, res);
@@ -506,13 +497,10 @@ describe('routes', function(){
     it('should not unblock when asked to and is all ready not blocked in db', function() {
       var req = {
         body: {
-          host: 'www.mattjay.com',
+          host: 'www.supercroppers.com',
           blocked: true,
-          ip: '1.2.3.4'
-        },
-        session : {
-          sites : [
-            'wwwmattjaycom']
+          ip: '1.2.3.4',
+          domains: [{name:'www.supercroppers.com'}]
         }
       };
       routes.toggleBlock(req, res);
@@ -528,11 +516,8 @@ describe('routes', function(){
         body: {
           host: 'www.google.com',
           blocked: true,
-          ip: '1.2.3.4'
-        },
-        session : {
-          sites : [
-            'wwwmattjaycom']
+          ip: '1.2.3.4',
+          domains: [{name:'www.supercroppers.com'}]
         }
       };
       routes.toggleBlock(req, res);
