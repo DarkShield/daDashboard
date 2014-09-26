@@ -130,138 +130,36 @@ exports.toggleAttack = function toggleAttack (req, res) {
   });
 };
 
+//currently is only a block route need to add unblocking
 exports.toggleBlock = function toggleBlock (req, res) {
-    var allowed, blocked = false;
-    var host = req.body.host.replace(/\./g, "");
-
-    for (var i = 0; i < req.body.domains.length; i++) {
-      if(req.body.domains[i].name === req.body.host) {
-        allowed = true;
-      }
+  var respond = function(err, doc, numaffected){
+    if(numaffected){
+      res.send({blocked: true});
+    }else{
+      console.log(err, err.doc);
+      res.send({blocked: false});
     }
-
-    if(allowed) {
-      if (req.body.blocked === false) {
-        Host.findOne({hostname: host}, function(err, doc) {
-          if(!err){
-            if(doc != null && doc.blacklist){
-              for(var x = 0; x < doc.blacklist.length; x++) {
-                console.log(doc.blacklist);
-                if (doc.blacklist[x].ip === req.body.ip) {
-                  blocked = true;
-                }
-              }
-              if (blocked) {
-                res.send('all ready blocked', 400);
-              }
-              else {
-                Host.update({hostname: host}, {$push: {blacklist: {ip: req.body.ip, time: 1000} }}, function(err, numAffected) {
-                  if (err) res.send(err, 400);
-                  else if (numAffected === 0) res.send('none blocked', 400);
-                  else res.send('blocked', 200);
-                })
-              }
-            }
-          }
-          else res.send(err, 400);
-        });
-      }
-      else {
-        console.log(host);
-        Host.findOne({hostname: host}, function(err, doc) {
-          if(!err) {
-            if(doc) {
-              for (var y = 0; y < doc.blacklist.length; y++) {
-                if(doc.blacklist[y].ip === req.body.ip) {
-                  blocked = true;
-                }
-              }
-              if(blocked) {
-                var index;
-                doc.blacklist.forEach(function(i) {
-                  if (i.ip === req.body.ip) {
-                    index = doc.blacklist.indexOf(i);
-                    if (index >= 0){
-                      doc.blacklist.splice(index,1);
-                    }
-                  }
-                });
-                Host.update({hostname: host}, doc, function(err, numAffected) {
-                  if(err) res.send(err, 400);
-                  else if (numAffected === 0) res.send('none unblocked', 400);
-                  else res.send('unblocked', 200);
-                })
-              }
-              else {
-                res.send('all ready not blocked', 400);
-              }
-            }
-            else res.send('host not found', 400);
-          }
-          else res.send(err, 400);
-        })
-      }
-    }
-  else res.send('nope!', 400);
-};
-
-/* exports.countCookies = function countCookies (req, res) {
-  var sitesArray = [];
-  var fullRange = [];
-  var counted = [];
-  var countValues = function (array) {
-    var obj = {}, i = array.length, j;
-    while( i-- ) {
-      j = obj[array[i]];
-      obj[array[i]] = j ? j+1 : 1;
-    }
-    return obj;
   };
+  //needs validation
+  var ip = req.body.ip;
+  var hostname = req.body.host.replace(/\./g, "");
+  var authorized = false;
 
-  for (var site in req.session.user.sites) {
-    if (req.session.user.sites.hasOwnProperty(site)) {
-      var name = req.session.user.sites[site].name;
-      sitesArray.push(name);
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.hostname === req.body.host){
+      authorized = true;
+      Host.blockHostIP(hostname, ip, respond);
     }
-    else sys.log('doesnt have prop');
-  }
-
-  var start = new Date(req.body.start);
-  var end = new Date(req.body.end);
-
-  RequestStore.distinct('remoteIP', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, function(err, docs) {
-    if(!err) {
-      for (var doc in docs) {
-        if (docs.hasOwnProperty(doc)) {
-          counted.push({ip: docs[doc], cookies: [], counts: {}})
-        }
-      }
-    }
-    else sys.log(err);
-
-    RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP attack dstc requestedtimestamp -_id', function(err, docs) {
-      if(!err) fullRange = docs;
-      else sys.log(err);
-
-      for (var ip in counted) {
-        if (counted.hasOwnProperty(ip)) {
-          for (var x in fullRange) {
-            if (fullRange.hasOwnProperty(x)) {
-              if (counted[ip].ip == fullRange[x].remoteIP) {
-                counted[ip].cookies.push(fullRange[x].dstc);
-              }
-            }
-          }
-          counted[ip].counts = countValues(counted[ip].cookies)
-        }
-      }
-      res.send(counted)
-    });
   });
+  if(!authorized){
+    var err = 'Not authorized to modify blacklist for host' + req.session.user._id;
+    respond(err);
+  }
 };
-*/
 
-exports.buildAccountObj = buildAccountObj
+
+exports.buildAccountObj = buildAccountObj;
 
 function buildAccountObj (req) {
   //var sitesArray = [];
@@ -286,4 +184,60 @@ function buildAccountObj (req) {
     newAccountData.sites.push(tmpObj);
   }
   return newAccountData;
-};
+}
+
+/* exports.countCookies = function countCookies (req, res) {
+ var sitesArray = [];
+ var fullRange = [];
+ var counted = [];
+ var countValues = function (array) {
+ var obj = {}, i = array.length, j;
+ while( i-- ) {
+ j = obj[array[i]];
+ obj[array[i]] = j ? j+1 : 1;
+ }
+ return obj;
+ };
+
+ for (var site in req.session.user.sites) {
+ if (req.session.user.sites.hasOwnProperty(site)) {
+ var name = req.session.user.sites[site].name;
+ sitesArray.push(name);
+ }
+ else sys.log('doesnt have prop');
+ }
+
+ var start = new Date(req.body.start);
+ var end = new Date(req.body.end);
+
+ RequestStore.distinct('remoteIP', {'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : start, $lt : end } }, function(err, docs) {
+ if(!err) {
+ for (var doc in docs) {
+ if (docs.hasOwnProperty(doc)) {
+ counted.push({ip: docs[doc], cookies: [], counts: {}})
+ }
+ }
+ }
+ else sys.log(err);
+
+ RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, 'remoteIP attack dstc requestedtimestamp -_id', function(err, docs) {
+ if(!err) fullRange = docs;
+ else sys.log(err);
+
+ for (var ip in counted) {
+ if (counted.hasOwnProperty(ip)) {
+ for (var x in fullRange) {
+ if (fullRange.hasOwnProperty(x)) {
+ if (counted[ip].ip == fullRange[x].remoteIP) {
+ counted[ip].cookies.push(fullRange[x].dstc);
+ }
+ }
+ }
+ counted[ip].counts = countValues(counted[ip].cookies)
+ }
+ }
+ res.send(counted)
+ });
+ });
+ };
+ */

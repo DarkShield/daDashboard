@@ -34,7 +34,11 @@ angular.module('App.Controllers')
 
     $scope.toggleBlock = function(item) {
       console.log(item.blocked);
-      domainService.toggleBlock(item.remoteIP, item.headers.host, item.blocked);
+      if (item.blocked === undefined){
+        item.blocked = false;
+      }
+      console.log(item.blocked);
+      domainService.toggleBlock(item.remoteIP);
       item.blocked = (item.blocked === false);
     };
 

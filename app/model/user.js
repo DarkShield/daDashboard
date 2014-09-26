@@ -84,6 +84,7 @@ var reasons = UserSchema.statics.failedLogin = {
 //add new account
 UserSchema.statics.addNewAccount = function(newData, callback) {
   var user = this;
+  //instantiate model
   var data = user(newData);
   user.findOne({user:newData.user}, function(e, o) {
     if (o){
@@ -93,6 +94,7 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
         if (o){
           callback('email-taken', null);
         } else {
+          //persist model
           data.save(function(err) {
             if (err) { callback(err); }
             else { 
