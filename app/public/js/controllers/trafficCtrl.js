@@ -51,7 +51,8 @@ angular.module('App.Controllers')
     };
 
     $scope.blockButtonDisplay = function(item){
-      return (item.blocked === true) ? 'Unblock' : 'Block'
+      //return (item.blocked === true) ? 'Unblock' : 'Block'
+      return 'Block'
     };
 
     $scope.getRequestData = function(){
