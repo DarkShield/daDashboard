@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var hostSchema = mongoose.Schema({
   hostname: String,
   status: String,
-  blacklist: [{ip: String, time: Number}]
+  blacklist: [{ip: String, time: Number, _id: false}]
 });
 
 hostSchema.statics.blockHostIP = function(hostname, ip, cb){
@@ -14,7 +14,9 @@ hostSchema.statics.blockHostIP = function(hostname, ip, cb){
     if(!err && host){
       host.blockIP(ip, cb)
     }else{
-      err.host = host;
+      if(host){
+        err.host = host;
+      }
       cb(err);
     }
   });

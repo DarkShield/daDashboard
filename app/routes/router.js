@@ -147,13 +147,13 @@ exports.toggleBlock = function toggleBlock (req, res) {
 
   //make sure hostname is owned by user
   req.session.user.sites.forEach(function(site){
-    if(site.hostname === req.body.host){
+    if(site.name === req.body.host){
       authorized = true;
       Host.blockHostIP(hostname, ip, respond);
     }
   });
   if(!authorized){
-    var err = 'Not authorized to modify blacklist for host' + req.session.user._id;
+    var err = 'Not authorized to modify blacklist for host ' + req.session.user._id;
     respond(err);
   }
 };
