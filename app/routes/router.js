@@ -136,12 +136,12 @@ exports.toggleBlock = function toggleBlock (req, res) {
     if(numaffected){
       res.send({blocked: true});
     }else{
-      console.log(err, err.doc);
+      console.log(err);
       res.send({blocked: false});
     }
   };
   //needs validation
-  var ip = req.body.ip;
+  var ip = req.body.ip
   var hostname = req.body.host.replace(/\./g, "");
   var authorized = false;
 

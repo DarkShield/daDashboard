@@ -14,7 +14,7 @@ hostSchema.statics.blockHostIP = function(hostname, ip, cb){
     if(!err && host){
       host.blockIP(ip, cb)
     }else{
-      err.doc = doc;
+      err.host = host;
       cb(err);
     }
   });

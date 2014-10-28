@@ -75,7 +75,6 @@ app.post('/domains/info/lastday', loadUser, Routes.domains.info.lastday);
 app.post('/traffic', loadUser, Routes.traffic);
 app.post('/toggle/attack', loadUser, Routes.toggleAttack);
 app.post('/toggle/block', loadUser, Routes.toggleBlock);
-app.post('/block', loadUser, Routes.blockIP);
 
 app.use(function(req, res){
   res.status(404).sendfile('./public/html/404.html');;

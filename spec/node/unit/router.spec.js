@@ -171,7 +171,7 @@ describe('routes', function(){
       expect(res.redirect).toHaveBeenCalledWith('/login');
     });
 
-    xit('should send and email to admins and redirect to login when an account is created', function(){
+    it('should send and email to admins and redirect to login when an account is created', function(){
       var req = {
         body: {
           name : 'testy mctesterson',
@@ -428,105 +428,87 @@ describe('routes', function(){
 
   });
 
-  describe('domains.toggleBlock route', function() {
-    var res;
-    var doc = {blacklist:[{ip: '5.6.7.8'}]};
+  describe('toggleBlock route', function() {
+    var req,
+        res;
     beforeEach(function() {
       res = {
         send: jasmine.createSpy('send')
       };
-      spyOn(routes.Host, 'findOne');
-      spyOn(routes.Host, 'update');
-    });
-
-    it('should block when asked to and not all ready blocked in db', function() {
-      var req = {
+      req = {
         body: {
-          host: 'www.supercroppers.com',
-          blocked: false,
           ip: '1.2.3.4',
-          domains: [{name:'www.supercroppers.com'}]
+          host: 'www.mattjay.com'
+        },
+        session: {
+          user: {
+            sites: [{hostname: 'www.mattjay.com'}
+            ]
+          }
         }
       };
-      routes.toggleBlock(req, res);
-      expect(routes.Host.findOne).toHaveBeenCalled();
-      routes.Host.findOne.calls[0].args[1](null, doc);
-      expect(routes.Host.update).toHaveBeenCalled();
-      routes.Host.update.calls[0].args[2](null, 1);
-      expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('blocked');
-      expect(res.send.mostRecentCall.args[1]).toBe(200);
+      spyOn(routes.Host, 'blockHostIP');
     });
 
-    it('should not block when asked to and all ready blocked in db', function() {
-      var req = {
-        body: {
-          host: 'www.supercroppers.com',
-          blocked: false,
-          ip: '5.6.7.8',
-          domains: [{name:'www.supercroppers.com'}]
-        }
-      }
-      routes.toggleBlock(req, res);
-      expect(routes.Host.findOne).toHaveBeenCalled();
-      routes.Host.findOne.calls[0].args[1](null, doc);
-      expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('all ready blocked');
-      expect(res.send.mostRecentCall.args[1]).toBe(400);
+    it('should call blockHostIP with the correct arguments when the host is owned by the user', function(){
+        expect(routes.Host.blockHostIP).not.toHaveBeenCalled();
+        routes.toggleBlock(req, res);
+        expect(routes.Host.blockHostIP).toHaveBeenCalled();
+        expect(routes.Host.blockHostIP.calls[0].args[0]).toEqual('wwwmattjaycom');
+        expect(routes.Host.blockHostIP.calls[0].args[1]).toEqual('1.2.3.4');
+        expect(typeof(routes.Host.blockHostIP.calls[0].args[2])).toEqual('function');
     });
 
-    it('should unblock when asked to and is blocked in db', function() {
-      var req = {
-        body: {
-          host: 'www.supercroppers.com',
-          blocked: true,
-          ip: '5.6.7.8',
-          domains: [{name:'www.supercroppers.com'}]
-        }
-      }
+    it('should not call blockHostIP when the host is not owned by the user', function(){
+      req.session.user.sites = [];
+      expect(routes.Host.blockHostIP).not.toHaveBeenCalled();
       routes.toggleBlock(req, res);
-      expect(routes.Host.findOne).toHaveBeenCalled();
-      routes.Host.findOne.calls[0].args[1](null, doc);
-      expect(routes.Host.update).toHaveBeenCalled();
-      routes.Host.update.calls[0].args[2](null, 1);
-      expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('unblocked');
-      expect(res.send.mostRecentCall.args[1]).toBe(200);
+      expect(routes.Host.blockHostIP).not.toHaveBeenCalled();
     });
 
-    it('should not unblock when asked to and is all ready not blocked in db', function() {
-      var req = {
-        body: {
-          host: 'www.supercroppers.com',
-          blocked: true,
-          ip: '1.2.3.4',
-          domains: [{name:'www.supercroppers.com'}]
-        }
-      };
-      routes.toggleBlock(req, res);
-      expect(routes.Host.findOne).toHaveBeenCalled();
-      routes.Host.findOne.calls[0].args[1](null, doc);
-      expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('all ready not blocked');
-      expect(res.send.mostRecentCall.args[1]).toBe(400);
-    });
+    describe('respond function', function(){
+      var req,
+          res;
+      beforeEach(function(){
+        res = {
+          send: jasmine.createSpy('send')
+        };
+        req = {
+          body: {
+            ip: '1.2.3.4',
+            host: 'www.mattjay.com'
+          },
+          session: {
+            user: {
+              sites: [{hostname: 'www.mattjay.com'}
+              ]
+            }
+          }
+        };
+        routes.toggleBlock(req, res);
+      });
 
-    it('should not allow a change when the site is not owned by that user', function() {
-      var req = {
-        body: {
-          host: 'www.google.com',
-          blocked: true,
-          ip: '1.2.3.4',
-          domains: [{name:'www.supercroppers.com'}]
-        }
-      };
-      routes.toggleBlock(req, res);
-      expect(routes.Host.findOne).not.toHaveBeenCalled();
-      expect(res.send).toHaveBeenCalled();
-      expect(res.send.mostRecentCall.args[0]).toBe('nope!');
-      expect(res.send.mostRecentCall.args[1]).toBe(400);
-    });
+      it('should say that it has blocked the host when a record is affected', function(){
+        expect(routes.Host.blockHostIP).toHaveBeenCalled();
+        expect(res.send).not.toHaveBeenCalled();
+        routes.Host.blockHostIP.calls[0].args[2](null,{},1);
+        expect(res.send).toHaveBeenCalledWith({blocked: true});
+      });
 
+      it('should say that it has not blocked the host when a record is not affected',function(){
+        expect(routes.Host.blockHostIP).toHaveBeenCalled();
+        expect(res.send).not.toHaveBeenCalled();
+        routes.Host.blockHostIP.calls[0].args[2](null,{},0);
+        expect(res.send).toHaveBeenCalledWith({blocked: false});
+      });
+
+      it('should say that it has not blocked the host wehen there was a db error', function(){
+        expect(routes.Host.blockHostIP).toHaveBeenCalled();
+        expect(res.send).not.toHaveBeenCalled();
+        routes.Host.blockHostIP.calls[0].args[2]({msg:'errortest'},null,null);
+        expect(res.send).toHaveBeenCalledWith({blocked: false});
+      })
+    });
   });
 
   setTimeout(function() {
