@@ -13,7 +13,7 @@ run   wget -O - http://nodejs.org/dist/v0.10.31/node-v0.10.31-linux-x64.tar.gz |
 ADD   ./app /src/build/app
 ADD   ./package.json /src/build/package.json
 
-run   chown $USER /src/build
+run   chown root /src/build
 run   chmod 700 /src/build
 run   cd /src/build && npm install --production
 
