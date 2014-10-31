@@ -17,4 +17,4 @@ run   chown root /src/build
 run   chmod 700 /src/build
 run   cd /src/build && npm install --production
 
-CMD   npm start /src/build && /src/build/node_modules/pm2/bin/pm2 logs
+CMD   npm start /src/build &&
