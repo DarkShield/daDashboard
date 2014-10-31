@@ -15,5 +15,6 @@ ADD   ./bower_components /src/build/bower/components
 ADD   ./package.json /src/build/package.json
 
 run   cd /src/build && npm install --production
+run   cd /src/build && npm install bcrypt
 
 CMD   npm start /src/build &&
