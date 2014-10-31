@@ -13,7 +13,8 @@ run   wget -O - http://nodejs.org/dist/v0.10.31/node-v0.10.31-linux-x64.tar.gz |
 ADD   ./app /src/build/app
 ADD   ./package.json /src/build/package.json
 
-run   chown /src/build
+run   chown $USER /src/build
+run   chmod 700 /src/build
 run   cd /src/build && npm install --production
 
 CMD   npm start /src/build && /src/build/node_modules/pm2/bin/pm2 logs
