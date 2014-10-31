@@ -163,32 +163,13 @@ describe('routes', function(){
       };
       spyOn(routes.User,'addNewAccount');
       spyOn(routes.EmailServer, 'send');
+      spyOn(routes, 'buildAccountObj').andCallThrough();
 
       routes.signup(req, res);
       routes.User.addNewAccount.calls[0].args[1]();
       expect(routes.EmailServer.send).toHaveBeenCalled();
       routes.EmailServer.send.calls[0].args[1]('error', 'message');
       expect(res.redirect).toHaveBeenCalledWith('/login');
-    });
-
-    it('should send and email to admins and redirect to login when an account is created', function(){
-      var req = {
-        body: {
-          name : 'testy mctesterson',
-          email : 'test@email.com',
-          user : 'testuser',
-          pass1: 'testpassword',
-          pass2: 'testpassword',
-          sites: 'test.com, test2.com'
-        }
-      };
-      var res = {
-        send: jasmine.createSpy('send')
-      };
-
-      spyOn(routes, 'buildAccountObj').andReturn({name:false});
-
-      routes.signup(req, res);
       expect(routes.buildAccountObj).toHaveBeenCalled();
     });
 
@@ -442,7 +423,7 @@ describe('routes', function(){
         },
         session: {
           user: {
-            sites: [{hostname: 'www.mattjay.com'}
+            sites: [{name: 'www.mattjay.com'}
             ]
           }
         }
@@ -467,28 +448,9 @@ describe('routes', function(){
     });
 
     describe('respond function', function(){
-      var req,
-          res;
-      beforeEach(function(){
-        res = {
-          send: jasmine.createSpy('send')
-        };
-        req = {
-          body: {
-            ip: '1.2.3.4',
-            host: 'www.mattjay.com'
-          },
-          session: {
-            user: {
-              sites: [{hostname: 'www.mattjay.com'}
-              ]
-            }
-          }
-        };
-        routes.toggleBlock(req, res);
-      });
 
       it('should say that it has blocked the host when a record is affected', function(){
+        routes.toggleBlock(req, res);
         expect(routes.Host.blockHostIP).toHaveBeenCalled();
         expect(res.send).not.toHaveBeenCalled();
         routes.Host.blockHostIP.calls[0].args[2](null,{},1);
@@ -496,6 +458,7 @@ describe('routes', function(){
       });
 
       it('should say that it has not blocked the host when a record is not affected',function(){
+        routes.toggleBlock(req, res);
         expect(routes.Host.blockHostIP).toHaveBeenCalled();
         expect(res.send).not.toHaveBeenCalled();
         routes.Host.blockHostIP.calls[0].args[2](null,{},0);
@@ -503,6 +466,7 @@ describe('routes', function(){
       });
 
       it('should say that it has not blocked the host wehen there was a db error', function(){
+        routes.toggleBlock(req, res);
         expect(routes.Host.blockHostIP).toHaveBeenCalled();
         expect(res.send).not.toHaveBeenCalled();
         routes.Host.blockHostIP.calls[0].args[2]({msg:'errortest'},null,null);

@@ -30,8 +30,7 @@ exports.signuppage = function signuppage(req, res) {
 };
 
 exports.signup = function addAccount(req, res) {
-  var newAccountData = buildAccountObj(req);
-  console.log(newAccountData);
+  var newAccountData = exports.buildAccountObj(req);
   if (req.body.pass1 != req.body.pass2) {
     res.redirect('/signup');
   }
@@ -159,9 +158,7 @@ exports.toggleBlock = function toggleBlock (req, res) {
 };
 
 
-exports.buildAccountObj = buildAccountObj;
-
-function buildAccountObj (req) {
+exports.buildAccountObj = function (req) {
   //var sitesArray = [];
   var tmpObj = {};
   var newAccountData = {
@@ -184,7 +181,7 @@ function buildAccountObj (req) {
     newAccountData.sites.push(tmpObj);
   }
   return newAccountData;
-}
+};
 
 /* exports.countCookies = function countCookies (req, res) {
  var sitesArray = [];
