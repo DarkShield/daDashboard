@@ -5,10 +5,11 @@
   "private": true,
   "author": "Mattjay & ProZachJ",
   "dependencies": {
-    "express": "~3.3.5",
-    "mongoose": "~3.6.17",
+    "bower": "1.3.12",
     "connect": "~2.8.5",
     "emailjs": "~0.3.5",
+    "express": "~3.3.5",
+    "mongoose": "~3.6.17",
     "pm2": "0.9.4"
   },
   "scripts": {
@@ -17,7 +18,6 @@
     "start": "./node_modules/pm2/bin/pm2 start app.js -i max"
   },
   "devDependencies": {
-    "bower": "~1.3.3",
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "~0.5.0",
