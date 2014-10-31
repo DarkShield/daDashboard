@@ -13,9 +13,9 @@
     "pm2": "0.9.4"
   },
   "scripts": {
-    "postinstall": "node ./node_modules/bower/bin/bower install && npm install bcrypt",
+    "postinstall": "node node_modules/bower/bin/bower install && npm install bcrypt",
     "test": "grunt test:unit",
-    "start": "./node_modules/pm2/bin/pm2 start app/app.js -i max"
+    "start": "node_modules/pm2/bin/pm2 start app/app.js -i max"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
