@@ -11,10 +11,9 @@ run   apt-get -y install libexpat1-dev libexpat1 libicu-dev
 run   wget -O - http://nodejs.org/dist/v0.10.31/node-v0.10.31-linux-x64.tar.gz | tar -C /usr/local/ --strip-components=1 -zxv
 
 ADD   ./app /src/build/app
+ADD   ./bower_components /src/build/bower/components
 ADD   ./package.json /src/build/package.json
 
-run   chown root /src/build
-run   chmod 700 /src/build
 run   cd /src/build && npm install --production
 
 CMD   npm start /src/build &&
