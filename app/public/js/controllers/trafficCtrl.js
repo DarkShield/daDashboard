@@ -1,9 +1,7 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', function($scope, $filter, domainService, paginationService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', 'trafficService', function($scope, $filter, domainService, paginationService, trafficService) {
 
-    $scope.domains = domainService.getDoms;
-    $scope.getDomains = domainService.getDomains;
     $scope.drillsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
@@ -23,12 +21,16 @@ angular.module('App.Controllers')
 
     $scope = paginationService.init($scope);
 
-    $scope.paginate = function(dataset) {
-      $scope.pagedItems = paginationService.paginate(dataset, $scope);
+    $scope.getDomains = domainService.fetchDomains;
+
+    $scope.domains = domainService.getDomains;
+
+    $scope.getRequestData = function(){
+      trafficService.getRange($scope.requestrange);
     };
 
     $scope.toggleAttack = function(item){
-      domainService.toggleAttack(item._id, item.attack);
+      trafficService.toggleAttack(item._id, item.attack);
       item.attack = (item.attack === 'false') ? 'true' : 'false'
     };
 
@@ -37,7 +39,7 @@ angular.module('App.Controllers')
         item.blocked = false;
       }
       if (item.blocked === false){
-        domainService.toggleBlock(item.remoteIP, item.headers.host);
+        trafficService.toggleBlock(item.remoteIP, item.headers.host);
         item.blocked = true;
       }
     };
@@ -47,16 +49,12 @@ angular.module('App.Controllers')
     };
 
     $scope.markButtonDisplay = function(item){
-      return (item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
+      return (item && item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'
     };
 
     $scope.blockButtonDisplay = function(item){
       //return (item.blocked === true) ? 'Unblock' : 'Block'
       return 'Block'
-    };
-
-    $scope.getRequestData = function(){
-      domainService.getRange($scope.requestrange);
     };
 
     $scope.siteDisplay = function(){
@@ -67,10 +65,14 @@ angular.module('App.Controllers')
       return ($scope.attackview.length === 0) ? 'All Traffic' : 'Attacks'
     };
 
-    $scope.$on('Request.data', function(event, body) {
-      $scope.items = body;
-      $scope.paginate($scope.items);
-    });
+    $scope.paginate = function(dataset) {
+      $scope.pagedItems = paginationService.paginate(dataset, $scope);
+    };
+
+    $scope.getPagedItems = function(){
+      $scope.paginate(trafficService.getRequests());
+      return $scope.pagedItems
+    };
 
     //Pagination and sorting
     $scope.doFilter = function(){

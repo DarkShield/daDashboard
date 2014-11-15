@@ -1,6 +1,6 @@
 angular.module('App.Services')
 
-  .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
+  .factory('domainService', ['$http', function($http){
     'use strict';
 
     var domains = {
@@ -8,30 +8,20 @@ angular.module('App.Services')
         //{name: 'test', selected: '', requestData:{}}
       ],
 
-      toggleAttack: function(id, attack) {
-        $http.post('/toggle/attack', {id: id, attack: attack});
-      },
-
-      toggleBlock: function(ip, host) {
-        $http.post('/toggle/block', {ip: ip, host: host});
-      },
-
-      getDomains: function(){
+      fetchDomains: function(){
         domains.doms = [];
         $http.get('/domains').success(function(body){
           domains.doms = body;
-          //$rootScope.$broadcast('Domain.data', body);
         });
       },
 
-      getDoms: function(){
+      getDomains: function(){
         return domains.doms
       },
 
       getRequestData: function(domain){
         $http.post('/domains/info', domain).success(function(body){
           domain.requestData = body;
-          $rootScope.$broadcast('Request.data', body);
         });
         $http.post('/domains/attacks', domain).success(function(body){
           domain.attacks = body;
@@ -41,13 +31,6 @@ angular.module('App.Services')
       getLastDay: function(domain){
         $http.post('/domains/info/lastday', domain).success(function(body){
           domain.requestData = body;
-          $rootScope.$broadcast('Request.data', body);
-        });
-      },
-
-      getRange: function(range){
-        $http.post('/traffic', range).success(function(body){
-          $rootScope.$broadcast('Request.data', body);
         });
       },
 
@@ -59,12 +42,6 @@ angular.module('App.Services')
           }
         }
         return selectedsite;
-      },
-
-      countUsers: function(range) {
-        $http.post('/count/users', range).success(function(body){
-          $rootScope.$broadcast('Users.count', body);
-        });
       }
    };
    return domains;
