@@ -1,6 +1,6 @@
 angular.module('App.Services')
 
-  .factory('trafficService', ['$http', function($http){
+  .factory('trafficService', ['$http', '$rootScope', function($http){
     'use strict';
 
     var traffic = {
@@ -18,10 +18,6 @@ angular.module('App.Services')
         $http.post('/traffic', range).success(function(body){
           traffic.requests = body;
         });
-      },
-
-      getRequests: function(){
-        return traffic.requests
       }
    };
    return traffic;

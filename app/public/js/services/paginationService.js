@@ -1,10 +1,11 @@
 angular.module('App.Services')
 
-  .factory('paginationService', ['$http', '$rootScope', function($http, $rootScope){
+  .factory('paginationService', ['$http', function($http){
 
   var pages = {
     maxSize : 10,
     itemsPerPage : 10,
+
 
     init: function(controllerScope){
       controllerScope.items = [];
@@ -17,24 +18,36 @@ angular.module('App.Services')
       return controllerScope
     },
 
-    paginate: function(dataset, controllerScope){
+    groupedObjectToArray: function(dataset){
+      var dataArray = [];
+      for(var prop in dataset){
+        if(dataset.hasOwnProperty(prop)){
+          var obj = {}
+          obj[prop] = dataset[prop];
+          dataArray.push(obj);
+        }
+      }
+      return dataArray
+    },
+
+
+    paginate: function(data, controllerScope){
       var currentPageItems = [];
+      var dataset = data
       controllerScope.totalItems = dataset.length;
       controllerScope.lastPage = Math.ceil(controllerScope.totalItems / pages.itemsPerPage);
       var startItem = (controllerScope.currentPage * pages.itemsPerPage) - pages.itemsPerPage;
-      var endItem = controllerScope.currentPage * pages.itemsPerPage - 1;
+      var endItem = (controllerScope.totalItems <= 10) ? controllerScope.totalItems : (controllerScope.currentPage * pages.itemsPerPage) - 1;
       if(controllerScope.currentPage === controllerScope.lastPage && controllerScope.totalItems % pages.itemsPerPage !== 0){
         var lastPageLength = controllerScope.totalItems % pages.itemsPerPage;
         endItem = startItem + lastPageLength -1;
       }
-
       //create pagedItem set
       for(var i=startItem;i<=endItem;i++){
         currentPageItems.push(dataset[i]);
       }
       return currentPageItems;
     }
-
   };
 
   return pages;

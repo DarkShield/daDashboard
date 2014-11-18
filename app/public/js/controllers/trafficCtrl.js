@@ -70,12 +70,12 @@ angular.module('App.Controllers')
     };
 
     $scope.getPagedItems = function(){
-      $scope.paginate(trafficService.getRequests());
+      $scope.paginate(trafficService.requests);
       return $scope.pagedItems
     };
 
     //Pagination and sorting
-    $scope.doFilter = function(){
+    $scope.applyFilter = function(){
       var domainfilter = $filter('filter')($scope.items, $scope.drillsite);
       var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
       var searchfilter = $filter('filter')(attackfilter, $scope.query);
@@ -85,30 +85,30 @@ angular.module('App.Controllers')
     $scope.selectAll = function(type){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       $scope[type] = [];
-      $scope.doFilter();
+      $scope.applyFilter();
     };
 
     $scope.pickDomain = function(domain){
       $scope.drillsite = domain;
-      $scope.doFilter();
+      $scope.applyFilter();
     };
 
     $scope.showAttacks = function(){
       $scope.attackview = {attack: 'true'};
-      $scope.doFilter();
+      $scope.applyFilter();
     };
 
     $scope.$watch('currentPage', function(newValue, oldValue) {
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-        $scope.doFilter();
+        $scope.applyFilter();
       }
     });
 
     $scope.$watch('query', function(newValue, oldValue){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       if(newValue !== oldValue){
-        $scope.doFilter();
+        $scope.applyFilter();
       }
     })
 }]);

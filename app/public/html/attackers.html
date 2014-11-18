@@ -1,7 +1,8 @@
+
 <div class="content" data-ng-init="getRequestData()">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-title">Traffic Report<small>Request Data</small></h2>
+            <h2 class="page-title">Attackers<small></small></h2>
         </div>
     </div>
     <div class="row">
@@ -24,16 +25,6 @@
                                         <li><a href="" data-ng-click="selectAll('drillsite')">All Sites</a></li>
                                     </ul>
                                 </div>
-                                <div class="input-group-btn">
-                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                        {{attackDisplay()}}
-                                        <i class="icon-caret-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="" data-ng-click="showAttacks()">Show Attacks</a></li>
-                                        <li><a href="" data-ng-click="selectAll('attackview')">Show All Traffic</a></li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
                         <div class="col-sm-5 pull left">
@@ -44,32 +35,29 @@
                     <table class="table table-striped table-images" style="table-layout: fixed; width: 100%">
                         <thead>
                         <tr>
-                            <th class="hidden-xs-portrait">Date</th>
-                            <th style="width:5%">Method</th>
-                            <th style="width:35%">URL</th>
-                            <th>From</th>
+                            <th class="hidden-xs-portrait">IP</th>
+                            <th>Attack Count</th>
+                            <th>Attack Types</th>
+                            <th></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody data-ng-repeat="item in getPagedItems() track by $index" ng-switch="row.show" ng-init="row={}">
-                            <tr>
-                                <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
-                                <td>{{item.method}}</td>
-                                <td style="word-wrap: break-word;"><div style="width:100%;height:100%;overflow:auto;">{{item.headers.host}}{{item.url}}</div></td>
-                                <td>{{item.remoteIP}}</td>
+                            <tr data-ng-repeat="(ip, requests) in item">
+                                <td class="hidden-xs-portrait">{{ip}}</td>
+                                <td>{{requests.length}}</td>
+                                <td>XSS, SQLi</td>
+                                <td/>
                                 <td>
                                     <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show">
-                                        {{showButtonDisplay(row.show)}}
-                                    </button>
-                                    <button class="btn btn-sm btn-warning" ng-click="toggleAttack(item)">
-                                        {{markButtonDisplay(item)}}
+                                    {{showButtonDisplay(row.show)}}
                                     </button>
                                 </td>
                             </tr>
                             <tr data-ng-switch-when="true">
-                                <td class="hidden-xs-portrait" colspan="5">{{item.body}}</td>
+                                <td class="hidden-xs-portrait" colspan="5">{{request.body}}</td>
                             </tr>
-                            <tr data-ng-switch-when="true" >
+                            <!--<tr data-ng-switch-when="true" >
                                 <td colspan="5" class="well-white" style="word-wrap: break-word">
                                     <ul>
                                         <h4>Full URL:</h4>
@@ -87,7 +75,7 @@
                                         </li>
                                     </ul>
                                 </td>
-                            </tr>
+                            </tr>-->
                         </tbody>
                     </table>
                     <!--<div class="clearfix">
