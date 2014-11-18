@@ -1,6 +1,6 @@
 angular.module('App.Services')
 
-  .factory('trafficService', ['$http', '$rootScope', function($http){
+  .factory('trafficService', ['$http', '$filter', function($http, $filter){
     'use strict';
 
     var traffic = {
@@ -18,7 +18,22 @@ angular.module('App.Services')
         $http.post('/traffic', range).success(function(body){
           traffic.requests = body;
         });
+      },
+
+      getSessions: function(){
+        return $filter('groupBy')(traffic.requests, 'dstc')
+      },
+
+      getIPs: function(){
+        return $filter('groupBy')(traffic.requests, 'remoteIP')
+      },
+
+      getAttacks: function(){
+        var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
+        return groupedByAttackBool.true
       }
+
+
    };
    return traffic;
   }]);

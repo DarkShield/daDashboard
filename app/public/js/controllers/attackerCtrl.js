@@ -31,11 +31,9 @@ angular.module('App.Controllers')
     };
 
     $scope.applyFilter = function(){
-      var attackdata = $filter('attack')($scope.items, 'Attacks');
-      var groupIP = $filter('groupBy')(attackdata, 'remoteIP');
-      groupIP = paginationService.groupedObjectToArray(groupIP);
-      var searchdata = $filter('filter')(groupIP, $scope.query);
-      $scope.pagedItems = paginationService.paginate(searchdata, $scope);
+      var groupIP = $filter('groupBy')(trafficService.getAttacks(), 'remoteIP');
+      var searchData = $filter('filter')(groupIP, $scope.query);
+      $scope.pagedItems = paginationService.paginate(searchData, $scope);
     };
 
     //Table ng-repeat

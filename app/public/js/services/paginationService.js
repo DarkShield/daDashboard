@@ -18,6 +18,7 @@ angular.module('App.Services')
       return controllerScope
     },
 
+    //allows paginate to accept array or object
     groupedObjectToArray: function(dataset){
       var dataArray = [];
       for(var prop in dataset){
@@ -33,7 +34,7 @@ angular.module('App.Services')
 
     paginate: function(data, controllerScope){
       var currentPageItems = [];
-      var dataset = data
+      var dataset = (data && data.length) ? data : pages.groupedObjectToArray(data)
       controllerScope.totalItems = dataset.length;
       controllerScope.lastPage = Math.ceil(controllerScope.totalItems / pages.itemsPerPage);
       var startItem = (controllerScope.currentPage * pages.itemsPerPage) - pages.itemsPerPage;
