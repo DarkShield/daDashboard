@@ -114,10 +114,16 @@ exports.traffic = function getRange (req, res) {
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {
-  var respond = function (err, docs) {
-    res.send(docs);
+  var respond = function (err, numUpdated) {
+    if(err){
+      console.log(err);
+      res.send(500);
+    }
+    console.log(numUpdated);
+    res.send(200);
   };
   var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
+  req.body.attack = (req.body.attack === "false")
   RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
   EmailServer.send({
     text: text + ' - ' + req.body.id,
