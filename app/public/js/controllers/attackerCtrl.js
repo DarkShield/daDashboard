@@ -2,8 +2,7 @@ angular.module('App.Controllers')
 
   .controller('attackerCtrl',['$scope', '$filter', 'domainService', 'paginationService', 'trafficService', 'ipFilter', 'attackFilter', function($scope, $filter, domainService, paginationService, trafficService, ipFilter, attackFilter) {
 
-    $scope.drillsite = [];
-    $scope.attackview = [];
+    $scope.selectedsite = [];
     $scope.filterby ='';
 
     $scope = paginationService.init($scope);
@@ -31,8 +30,10 @@ angular.module('App.Controllers')
     };
 
     $scope.applyFilter = function(){
-      var groupIP = $filter('groupBy')(trafficService.getAttacks(), 'remoteIP');
+      var activeDomains = $filter('filterBy')(trafficService.getAttacks(), ['headers.host'], $scope.selectedsite);
+      var groupIP = $filter('groupBy')(activeDomains, 'remoteIP');
       var searchData = $filter('filter')(groupIP, $scope.query);
+
       $scope.pagedItems = paginationService.paginate(searchData, $scope);
     };
 
@@ -71,7 +72,7 @@ angular.module('App.Controllers')
 
     //Dropdown
     $scope.pickDomain = function(domain){
-      $scope.drillsite = domain;
+      $scope.selectedsite = domain;
       $scope.applyFilter();
     };
 
@@ -114,7 +115,7 @@ angular.module('App.Controllers')
       return 'Block'
     };
     $scope.siteDisplay = function(){
-      return ($scope.drillsite.length === 0) ? 'All Sites' : $scope.drillsite
+      return ($scope.selectedsite.length === 0) ? 'All Sites' : $scope.selectedsite
     };
     $scope.attackDisplay = function(){
       return ($scope.attackview.length === 0) ? 'All Traffic' : 'Attacks'

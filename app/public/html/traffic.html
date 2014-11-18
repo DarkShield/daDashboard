@@ -82,7 +82,7 @@
                                         <li data-ng-repeat="attack in item.attacks">{{attack.type}} - Confidence Level: {{attack.score}}</li><br>
                                         <li>
                                             <button class="btn btn-sm btn-warning" data-ng-click="toggleBlock(item)">
-                                                {{blockButtonDisplay(item)}}
+                                                {{blockButtonDisplay(item)}} {{item.remoteIP}}
                                             </button>
                                         </li>
                                     </ul>
