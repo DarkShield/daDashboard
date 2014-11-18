@@ -38,7 +38,7 @@
                             <th class="hidden-xs-portrait">IP</th>
                             <th>Attack Count</th>
                             <th>Attack Types</th>
-                            <th></th>
+                            <th>Sessions</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -46,8 +46,16 @@
                             <tr data-ng-repeat="(ip, requests) in item">
                                 <td class="hidden-xs-portrait">{{ip}}</td>
                                 <td>{{requests.length}}</td>
-                                <td>XSS, SQLi</td>
-                                <td/>
+                                <td>
+                                    <ul data-ng-repeat="(attackTypes, requests) in displayAttackTypes(requests)">
+                                    <li>{{attackTypes}}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>{{getSessionCount(requests)}}</li>
+                                    </ul>
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show">
                                     {{showButtonDisplay(row.show)}}

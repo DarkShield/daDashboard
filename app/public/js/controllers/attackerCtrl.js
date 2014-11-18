@@ -93,9 +93,20 @@ angular.module('App.Controllers')
       }
     });
 
+    $scope.getSessionCount = function(filteredData){
+      var uniqueDSTC = $filter('unique')(filteredData,'dstc');
+      return uniqueDSTC.length
+    };
+
+    $scope.displayAttackTypes = function(filteredData){
+      var types = $filter('groupBy')(filteredData,'attacks[0].type');
+      delete types.undefined
+      return types
+    };
+
     //Text and CSS formatting
     $scope.showButtonDisplay = function(rowstate){
-      return (rowstate) ? 'Hide' : 'Show'
+      return (rowstate) ? 'Hide' : 'More info...'
     };
     $scope.markButtonDisplay = function(item){
       return (item && item.attack === 'true') ? 'Un-Mark as Attack' : 'Mark as Attack'

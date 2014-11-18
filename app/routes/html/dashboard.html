@@ -120,20 +120,20 @@
         </li>
         <li class="{{panelstates.attackers}}" data-ng-click="setActivePanel('attackers')">
             <a class="accordion-toggle collapsed" data-toggle="collapse"
-               data-parent="#side-nav" href="#forms-collapse"><i class="icon-edit"></i> <span class="name">Attackers</span></a>
+               data-parent="#side-nav" href="#/attackers"><i class="icon-edit"></i> <span class="name">Attackers</span></a>
             <ul id="forms-collapse" class="panel-collapse collapse">
-                <li><a href="#">Report Cards</a></li>
-                <li><a href="#">Response</a></li>
+                <li><a href="#/attackers">By IP</a></li>
+                <li><a href="#/attackers">By Session</a></li>
                 <li><a href="#/attackers">History</a></li>
             </ul>
         </li>
         <li class="{{panelstates.sites}}" data-ng-click="setActivePanel('sites')">
             <a class="accordion-toggle collapsed" data-toggle="collapse"
-               data-parent="#side-nav" href="#ui-collapse"><i class="icon-magic"></i> <span class="name">Sites</span></a>
+               data-parent="#side-nav" href="#/traffic"><i class="icon-magic"></i> <span class="name">Traffic</span></a>
             <ul id="ui-collapse" class="panel-collapse collapse" >
                 <li><a href="#">Attacks</a></li>
-                <li><a href="#/traffic">Traffic</a></li>
-                <li><a href="#">Response Report</a></li>
+                <li><a href="#/traffic">Sessions</a></li>
+                <li><a href="#"></a></li>
             </ul>
         </li>
         <li class="{{panelstates.statistics}}" data-ng-click="setActivePanel('statistics')">
