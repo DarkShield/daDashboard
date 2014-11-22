@@ -25,7 +25,7 @@ angular.module('App.Controllers')
       return (requestsByIP && requestsByIP.length) ? requestsByIP.length : 'Loading...'
     };
 
-    $scope.getAttackers = function(){
+    $scope.getAttackerCount = function(){
       $scope.attacks = trafficService.getAttacks();
       var attackers = $filter('groupBy')($scope.attacks, 'remoteIP');
       attackers = $filter('toArray')(attackers);
@@ -33,9 +33,27 @@ angular.module('App.Controllers')
       return (attackers && attackers.length) ? attackers.length : 'Loading'
     };
 
+    $scope.getAttackers = function(){
+      $scope.attacks = trafficService.getAttacks();
+      var attackers = $filter('groupBy')($scope.attacks, 'remoteIP');
+      //attackers = $filter('toArray')(attackers);
+      attackers = $filter('limitTo')(attackers, 5);
+      return (attackers) ? attackers : []
+    };
+
+    $scope.getLastSeen = function(attacks){
+      var sorted = $filter('orderBy')(attacks, 'requestedtimestamp');
+      var reversed = $filter('reverse')(sorted);
+      var now = new Date();
+      var date = new Date(reversed[0].requestedtimestamp);
+      var timesincelastseen = (now - date) / 60;
+
+      return (date) ? date : 'Loading'
+    };
+
     $scope.getRequestCount = function(){
       return (trafficService.requests && trafficService.requests.length) ?  trafficService.requests.length : 'Loading...'
-    }
+    };
 
     $scope.getAttackCount = function(){
       var attacks = $filter('toArray')(trafficService.getAttacks());
