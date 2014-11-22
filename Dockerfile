@@ -16,5 +16,6 @@ ADD   ./package.json /src/build/package.json
 
 run   cd /src/build && npm install --production
 run   cd /src/build && npm install bcrypt
+run   cd /src/build && npm install newrelic
 
 CMD   npm start /src/build
