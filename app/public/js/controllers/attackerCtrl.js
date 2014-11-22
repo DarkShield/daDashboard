@@ -97,6 +97,14 @@ angular.module('App.Controllers')
       return uniqueDSTC.length
     };
 
+    $scope.getAttackersImproved = function(filteredData){
+      var DSTC = $filter('groupBy')(filteredData,'dstc');
+      var IP = $filter('groupBy')(filteredData,'remoteIP');
+      angular.forEach(IP,function(value, key){
+        if(DSTC[value.dstc])
+      });
+    }
+
     $scope.displayAttackTypes = function(filteredData){
       var types = $filter('groupBy')(filteredData,'attacks[0].type');
       delete types.undefined
