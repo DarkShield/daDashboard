@@ -1,6 +1,6 @@
-angular.module('App.domainService', [])
+angular.module('App.Services')
 
-  .factory('domainService', ['$http', '$rootScope', function($http, $rootScope){
+  .factory('domainService', ['$http', function($http){
     'use strict';
 
     var domains = {
@@ -8,51 +8,41 @@ angular.module('App.domainService', [])
         //{name: 'test', selected: '', requestData:{}}
       ],
 
-      toggleAttack: function(id, attack) {
-        $http.post('/toggle/attack', {'id': id, 'attack': attack});
+      fetchDomains: function(){
+        domains.doms = [];
+        $http.get('/domains').success(function(body){
+          domains.doms = body;
+        });
       },
 
-    getDomains: function(){
-      domains.doms = [];
-      $http.get('/domains').success(function(body){
-        domains.doms = body;
-        $rootScope.$broadcast('Domain.data', body);
-      });
-    },
+      getDomains: function(){
+        return domains.doms
+      },
 
-    getRequestData: function(domain){
-      $http.post('/domains/info', domain).success(function(body){
-        domain.requestData = body;
-        $rootScope.$broadcast('Request.data', body);
-      });
-      $http.post('/domains/attacks', domain).success(function(body){
-        domain.attacks = body;
-      });
-    },
+      getRequestData: function(domain){
+        $http.post('/domains/info', domain).success(function(body){
+          domain.requestData = body;
+        });
+        $http.post('/domains/attacks', domain).success(function(body){
+          domain.attacks = body;
+        });
+      },
 
-    getLastDay: function(domain){
-      $http.post('/domains/info/lastday', domain).success(function(body){
-        domain.requestData = body;
-        $rootScope.$broadcast('Request.data', body);
-      });
-    },
+      getLastDay: function(domain){
+        $http.post('/domains/info/lastday', domain).success(function(body){
+          domain.requestData = body;
+        });
+      },
 
-    getRange: function(range){
-      $http.post('/traffic', range).success(function(body){
-        $rootScope.$broadcast('Request.data', body);
-      });
-    },
-
-
-    getSelectedSite: function(){
-      var selectedsite = {};
-      for (var dom in domains.doms){
-        if(domains.doms[dom].selected === 'active'){
-          selectedsite = domains.doms[dom];
+      getSelectedSite: function(){
+        var selectedsite = {};
+        for (var dom in domains.doms){
+          if(domains.doms[dom].selected === 'active'){
+            selectedsite = domains.doms[dom];
+          }
         }
+        return selectedsite;
       }
-      return selectedsite;
-    }
-   }
+   };
    return domains;
   }]);

@@ -28,11 +28,6 @@ UserSchema.virtual('isLocked').get(function() {
     return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
-/*mongoose.connect('10.192.198.253', 'accounts', function(err){
-	if (err) throw err;
-	console.log('Successfully connected to mongo');
-});*/
-
 UserSchema.pre('save', function(next) {
     var user = this;
 
@@ -89,6 +84,7 @@ var reasons = UserSchema.statics.failedLogin = {
 //add new account
 UserSchema.statics.addNewAccount = function(newData, callback) {
   var user = this;
+  //instantiate model
   var data = user(newData);
   user.findOne({user:newData.user}, function(e, o) {
     if (o){
@@ -98,6 +94,7 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
         if (o){
           callback('email-taken', null);
         } else {
+          //persist model
           data.save(function(err) {
             if (err) { callback(err); }
             else { 
@@ -109,7 +106,7 @@ UserSchema.statics.addNewAccount = function(newData, callback) {
       });
     }
   });
-}
+};
 
 UserSchema.statics.getAuthenticated = function(username, password, cb) {
     this.findOne({ user: username }, function(err, user) {
@@ -156,17 +153,5 @@ UserSchema.statics.getAuthenticated = function(username, password, cb) {
         });
     });
 };
-
-/*module.exports = (function (){
-
-    var model = mongoose.model('Account', UserSchema);
-
-    model.disconnect = function(){
-        mongoose.disconnect();
-    };
-
-    return model;
-
-})();*/
 
 module.exports = mongoose.model('Account', UserSchema);

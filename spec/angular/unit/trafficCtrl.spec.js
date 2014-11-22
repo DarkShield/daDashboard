@@ -3,7 +3,7 @@ describe('Traffic Controller:', function() {
 
   beforeEach(function(){
     angular.mock.module('App');
-    angular.mock.module('App.trafficCtrl');
+    angular.mock.module('App.Controllers');
     angular.mock.inject(function($controller, $rootScope, domainService) {
 
       scope = $rootScope.$new();
@@ -25,12 +25,7 @@ describe('Traffic Controller:', function() {
 
   it('should bring the domainService.doms array onto the scope as $scope.domains', function(){
     expect(scope.domains).not.toBe(undefined);
-    expect(angular.isArray(scope.domains)).toBe(true);
-  });
-
-  it('should should have a drillsite property that calls domainService.getSelectedSite', function(){
-    expect(scope.drillsite.name).toBe('test.com');
-    expect(dS.getSelectedSite).toHaveBeenCalled();
+    expect(angular.isFunction(scope.domains)).toBe(true);
   });
 
   it('should have a filterby property', function(){

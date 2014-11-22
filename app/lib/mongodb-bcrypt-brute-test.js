@@ -1,7 +1,7 @@
 //test anti-bruteforce
 
 var mongoose = require('mongoose'),
-    User = require('./user');
+    User = require('./../model/user');
 
 var connStr = 'mongodb://localhost:27017/mongoose-bcrypt-test';
 mongoose.connect(connStr, function(err) {
