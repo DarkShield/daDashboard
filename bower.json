@@ -1,6 +1,6 @@
 {
   "name": "DarkShield-Dashboard",
-  "version":"0.0.1",
+  "version": "0.0.1",
   "dependencies": {
     "jquery": "~2.0.3",
     "angular": "1.2.5",
@@ -8,6 +8,7 @@
     "angular-mocks": "1.2.5",
     "nvd3": "1.1.15-beta",
     "backbone": "1.1.0",
-    "bootstrap": "3.0.3"
+    "bootstrap": "3.0.3",
+    "angular-filter": "~0.5.1"
   }
 }
