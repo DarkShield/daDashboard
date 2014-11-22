@@ -12,7 +12,7 @@
                 <i class="icon-group"></i>
                 Traffic
                 <small>
-                    Based on last 30 days of data
+                    Based on last 24 hours of data
                 </small>
             </h4>
         </header>
@@ -24,19 +24,19 @@
                 <div class="row">
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="eicon-users"></i> Total Visitors</div>
-                        <div class="value">{{getVisitors()}}<i class="icon-caret-up color-green"></i></div>
+                        <div class="value">{{ getVisitors() }}<i class="icon-caret-up color-green"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="eicon-user"></i> Unique Attackers</div>
-                        <div class="value">14 778 <i class="icon-caret-down color-red"></i></div>
+                        <div class="value">{{ getAttackers() }}<i class="icon-caret-down color-red"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="icon-plus-sign-alt"></i> Attacker %</div>
-                        <div class="value">3% <i class="icon-caret-up color-green"></i></div>
+                        <div class="value">{{ getAttackers() | percent: getVisitors() }} <i class="icon-caret-up color-green"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="icon-user"></i> Attack %</div>
-                        <div class="value">12% <i class="icon-caret-down color-red"></i></div>
+                        <div class="value">{{ getAttackCount() | percent: getRequestCount(): true  }}<i class="icon-caret-down color-red"></i></div>
                     </div>
                 </div>
             </div>
