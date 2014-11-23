@@ -19,4 +19,4 @@ run   cd /src/build && npm install --production
 run   cd /src/build && npm install bcrypt
 run   cd /src/build && npm install newrelic
 
-CMD   cd /src/build/app && npm start
+CMD   cd /src/build && npm start
