@@ -18,6 +18,6 @@ ADD   ./bower.json /src/build/bower.json
 run   cd /src/build && npm install --production
 run   cd /src/build && npm install bcrypt
 run   cd /src/build && npm install newrelic
-run   cd /src/build && node_modules/bower/bin/bower install
+run   cd /src/build && node_modules/bower/bin/bower install --allow-root
 
 CMD   cd /src/build && npm start
