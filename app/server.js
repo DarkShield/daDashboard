@@ -78,6 +78,6 @@ app.post('/toggle/attack', loadUser, Routes.toggleAttack);
 app.post('/toggle/block', loadUser, Routes.toggleBlock);
 
 app.use(function(req, res){
-  res.status(404).sendfile('./public/html/404.html');;
+  res.status(404).sendfile('./app/public/html/404.html');;
 });
 module.exports = app;

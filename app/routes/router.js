@@ -6,7 +6,7 @@ var User = exports.User = require('../model/user'),
     sys = require('sys');
 
 exports.loginpage = function loginpage(req, res) {
-  res.sendfile('./public/html/login.html');
+  res.sendfile('./app/public/html/login.html');
 };
 
 exports.login = function authenticate(req, res) {
@@ -26,7 +26,7 @@ exports.login = function authenticate(req, res) {
 };
 
 exports.signuppage = function signuppage(req, res) {
-  res.sendfile('./public/html/register.html');
+  res.sendfile('./app/public/html/register.html');
 };
 
 exports.signup = function addAccount(req, res) {
@@ -63,7 +63,7 @@ exports.logout = function logout(req, res){
 };
 
 exports.home = function homePage(req, res) {
-  res.sendfile('./routes/html/dashboard.html');
+  res.sendfile('./app/routes/html/dashboard.html');
 };
 
 exports.domains = function getDomains(req, res) {
