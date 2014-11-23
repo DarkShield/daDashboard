@@ -13,9 +13,10 @@ run   wget -O - http://nodejs.org/dist/v0.10.31/node-v0.10.31-linux-x64.tar.gz |
 ADD   ./app /src/build/app
 ADD   ./bower_components /src/build/bower/components
 ADD   ./package.json /src/build/package.json
+ADD   ./newrelic.js /src/build/newrelic.js
 
 run   cd /src/build && npm install --production
 run   cd /src/build && npm install bcrypt
 run   cd /src/build && npm install newrelic
 
-CMD   npm start /src/build
+CMD   cd /src/build && npm start
