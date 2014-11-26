@@ -107,10 +107,23 @@ exports.traffic = function getRange (req, res) {
     else console.log('doesnt have prop');
   }
   var respond = function (err, docs) {
+    docs.forEach(function(value){
+      value.headers = {};
+      value.body = '';
+    });
     res.send(JSON.stringify(docs));
   };
 
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
+};
+exports.requestDetails = function (req, res) {
+
+  var respond = function (err, doc) {
+    console.log(err,doc);
+    res.send(JSON.stringify(doc));
+  };
+  console.log(req.body.id);
+  RequestStore.findById(req.body.id, respond);
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {

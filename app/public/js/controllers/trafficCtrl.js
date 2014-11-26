@@ -29,6 +29,12 @@ angular.module('App.Controllers')
       trafficService.getRange($scope.requestrange);
     };
 
+    $scope.showDetails = function(show, id){
+      if(show) {
+        trafficService.getDetails(id);
+      }
+    };
+
     $scope.toggleAttack = function(item){
       trafficService.toggleAttack(item._id, item.attack);
       item.attack = (item.attack === 'false') ? 'true' : 'false'
