@@ -65,7 +65,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="(IP, attacks) in getAttackers() | limitTo: 5 | orderBy: 'attacks.length'">
+                <tr data-ng-repeat="(IP, attacks) in getAttackers() | orderBy: 'attacks.length' | limitTo: 5">
                     <td><span class="label label-important">{{attacks[0].remoteIP}}</span></td>
                     <td>{{attacks.length}}</td>
                     <td><strong class="color-green">{{getLastSeen(attacks) | date: 'mediumTime'}}</strong></td>
