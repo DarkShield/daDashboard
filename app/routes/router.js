@@ -73,7 +73,7 @@ exports.domains = function getDomains(req, res) {
 exports.domains.info = function getDomainData (req, res){
    var domainName = req.body.name;
    var respond = function (err, docs){
-     res.send(docs);
+     res.send(JSON.stringify(docs));
    };
    RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
 };
@@ -81,7 +81,7 @@ exports.domains.info = function getDomainData (req, res){
 exports.domains.attacks = function getDomainAttacks(req, res){
    var domainName = req.body.name;
    var respond = function (err, docs) {
-     res.send(docs);
+     res.send(JSON.stringify(docs));
    };
    RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
 };
@@ -92,7 +92,7 @@ exports.domains.info.lastday = function getLastDay (req, res) {
   yesterday.setDate(yesterday.getDate() - 1);
   var yesterdayISO = yesterday.toISOString();
   var respond = function (err, docs) {
-    res.send(docs);
+    res.send(JSON.stringify(docs));
   };
   RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
 };
@@ -107,7 +107,7 @@ exports.traffic = function getRange (req, res) {
     else console.log('doesnt have prop');
   }
   var respond = function (err, docs) {
-    res.send(docs);
+    res.send(JSON.stringify(docs));
   };
 
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
