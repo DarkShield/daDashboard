@@ -18,13 +18,33 @@ angular.module('App.Controllers')
       start: $scope.startdate.toISOString(),
       end: $scope.enddate.toISOString()
     };
-
-    $scope = paginationService.init($scope);
-
+    //ng-init
     $scope.getDomains = domainService.fetchDomains;
 
+    //ng-repeat
     $scope.domains = domainService.getDomains;
 
+    //Pagination and sorting
+    $scope = paginationService.init($scope);
+
+    $scope.applyFilter = function(){
+      var domainfilter = $filter('domain')($scope.items, $scope.selectedsite);
+      var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
+      var searchfilter = $filter('filter')(attackfilter, $scope.query);
+      $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
+    };
+
+    $scope.watchHandler = function(newValue, oldValue) {
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
+      if(newValue !== oldValue){
+        $scope.applyFilter();
+      }
+    };
+
+    $scope.$watch('currentPage', $scope.watchHandler );
+    $scope.$watch('query', $scope.watchHandler);
+
+    //Below called from view
     $scope.getRequestData = function(){
       trafficService.getRange($scope.requestrange);
     };
@@ -79,14 +99,6 @@ angular.module('App.Controllers')
       return $scope.pagedItems
     };
 
-    //Pagination and sorting
-    $scope.applyFilter = function(){
-      var domainfilter = $filter('filter')($scope.items, $scope.selectedsite);
-      var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
-      var searchfilter = $filter('filter')(attackfilter, $scope.query);
-      $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
-    };
-
     $scope.selectAll = function(type){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       $scope[type] = [];
@@ -102,18 +114,4 @@ angular.module('App.Controllers')
       $scope.attackview = {attack: 'true'};
       $scope.applyFilter();
     };
-
-    $scope.$watch('currentPage', function(newValue, oldValue) {
-      $scope.itemsPerPage = $scope.defaultItemsPerPage;
-      if(newValue !== oldValue){
-        $scope.applyFilter();
-      }
-    });
-
-    $scope.$watch('query', function(newValue, oldValue){
-      $scope.itemsPerPage = $scope.defaultItemsPerPage;
-      if(newValue !== oldValue){
-        $scope.applyFilter();
-      }
-    })
 }]);
