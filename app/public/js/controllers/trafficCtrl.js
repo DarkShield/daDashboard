@@ -1,6 +1,6 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', 'trafficService', function($scope, $filter, domainService, paginationService, trafficService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', function($scope, $filter, domainService, domainFilter, paginationService, trafficService) {
 
     $scope.selectedsite = [];
     $scope.attackview = [];
@@ -28,8 +28,8 @@ angular.module('App.Controllers')
     $scope = paginationService.init($scope);
 
     $scope.applyFilter = function(){
-      var domainfilter = $filter('domain')($scope.items, $scope.selectedsite);
-      var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
+      var domainfiltered = $filter('domain')($scope.items, $scope.selectedsite);
+      var attackfilter = $filter('filter')(domainfiltered, $scope.attackview);
       var searchfilter = $filter('filter')(attackfilter, $scope.query);
       $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
     };

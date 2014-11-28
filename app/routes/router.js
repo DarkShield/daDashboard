@@ -108,7 +108,7 @@ exports.traffic = function getRange (req, res) {
   }
   var respond = function (err, docs) {
     docs.forEach(function(value){
-      value.headers = {};
+      value.headers = {host: value.headers.host};
       value.body = '';
     });
     res.send(JSON.stringify(docs));
