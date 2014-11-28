@@ -46,7 +46,9 @@ angular.module('App.Controllers')
 
     //Below called from view
     $scope.getRequestData = function(){
-      trafficService.getRange($scope.requestrange);
+      if(trafficService.requests.length !== 0) {
+        trafficService.getRange($scope.requestrange);
+      }
     };
 
     $scope.showDetails = function(show, id){
