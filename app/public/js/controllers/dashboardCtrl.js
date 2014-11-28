@@ -37,7 +37,6 @@ angular.module('App.Controllers')
       $scope.attacks = trafficService.getAttacks();
       var attackers = $filter('groupBy')($scope.attacks, 'remoteIP');
       attackers = $filter('toArray')(attackers);
-      //attackers = $filter('limitTo')(attackers, 5);
       return (attackers) ? attackers : []
     };
 
