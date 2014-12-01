@@ -7,6 +7,7 @@ var app = express();
 var Routes = require('./routes/router');
 
 //middleware order matters
+app.use(express.compress());
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/../bower_components'));;
 app.use(express.bodyParser());
@@ -74,10 +75,11 @@ app.post('/domains/info', loadUser, Routes.domains.info);
 app.post('/domains/attacks', loadUser, Routes.domains.attacks);
 app.post('/domains/info/lastday', loadUser, Routes.domains.info.lastday);
 app.post('/traffic', loadUser, Routes.traffic);
+app.post('/traffic/request-details', loadUser, Routes.requestDetails);
 app.post('/toggle/attack', loadUser, Routes.toggleAttack);
 app.post('/toggle/block', loadUser, Routes.toggleBlock);
 
 app.use(function(req, res){
-  res.status(404).sendfile('./public/html/404.html');;
+  res.status(404).sendfile('./app/public/html/404.html');;
 });
 module.exports = app;

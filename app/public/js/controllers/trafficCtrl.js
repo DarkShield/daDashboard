@@ -1,10 +1,11 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'paginationService', 'trafficService', function($scope, $filter, domainService, paginationService, trafficService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', '$sce', function($scope, $filter, domainService, domainFilter, paginationService, trafficService, $sce) {
 
     $scope.selectedsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
+    $scope.selectedItem = [];
 
     $scope.enddate = new Date();
 
@@ -18,15 +19,48 @@ angular.module('App.Controllers')
       start: $scope.startdate.toISOString(),
       end: $scope.enddate.toISOString()
     };
-
-    $scope = paginationService.init($scope);
-
+    //ng-init
     $scope.getDomains = domainService.fetchDomains;
 
+    //ng-repeat
     $scope.domains = domainService.getDomains;
 
+    //Pagination and sorting
+    $scope = paginationService.init($scope);
+
+    $scope.applyFilter = function(){
+      var domainfiltered = $filter('domain')($scope.items, $scope.selectedsite);
+      var attackfilter = $filter('filter')(domainfiltered, $scope.attackview);
+      var searchfilter = $filter('filter')(attackfilter, $scope.query);
+      var ordered = $filter('orderBy')(searchfilter, 'requestedtimestamp', true);
+      $scope.pagedItems = paginationService.paginate(ordered, $scope);
+    };
+
+    $scope.watchHandler = function(newValue, oldValue) {
+      $scope.itemsPerPage = $scope.defaultItemsPerPage;
+      if(newValue !== oldValue){
+        $scope.applyFilter();
+      }
+    };
+
+    $scope.$watch('currentPage', $scope.watchHandler );
+    $scope.$watch('query', $scope.watchHandler);
+
+    //Below called from view
     $scope.getRequestData = function(){
-      trafficService.getRange($scope.requestrange);
+      if(trafficService.requests.length === 0) {
+        trafficService.getRange($scope.requestrange);
+      }
+    };
+
+    $scope.getRequestData();
+
+    $scope.showDetails = function(show, id, key){
+      if(show) {
+        trafficService.getDetails(id).then(function(request){
+          $scope.pagedItems[key] = request;
+        });
+      }
     };
 
     $scope.toggleAttack = function(item){
@@ -73,14 +107,6 @@ angular.module('App.Controllers')
       return $scope.pagedItems
     };
 
-    //Pagination and sorting
-    $scope.applyFilter = function(){
-      var domainfilter = $filter('filter')($scope.items, $scope.selectedsite);
-      var attackfilter = $filter('filter')(domainfilter, $scope.attackview);
-      var searchfilter = $filter('filter')(attackfilter, $scope.query);
-      $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
-    };
-
     $scope.selectAll = function(type){
       $scope.itemsPerPage = $scope.defaultItemsPerPage;
       $scope[type] = [];
@@ -97,17 +123,11 @@ angular.module('App.Controllers')
       $scope.applyFilter();
     };
 
-    $scope.$watch('currentPage', function(newValue, oldValue) {
-      $scope.itemsPerPage = $scope.defaultItemsPerPage;
-      if(newValue !== oldValue){
-        $scope.applyFilter();
+    $scope.highlight = function(text, search) {
+      if (!search) {
+        return $sce.trustAsHtml(text);
       }
-    });
-
-    $scope.$watch('query', function(newValue, oldValue){
-      $scope.itemsPerPage = $scope.defaultItemsPerPage;
-      if(newValue !== oldValue){
-        $scope.applyFilter();
-      }
-    })
+      //return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
+      return $sce.trustAsHtml(decodeURI(escape(text).replace(new RegExp(escape(search), 'gi'), '<span class="highlightedText">$&</span>')));
+    };
 }]);

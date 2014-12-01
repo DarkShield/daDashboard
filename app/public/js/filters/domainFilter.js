@@ -5,7 +5,7 @@ angular.module('App.Filters')
 
   .filter('domain', function() {
     return function(items, domain) {
-      if (domain === undefined) {
+      if (domain.length == 0) {
         return items;
       }
       if (items === undefined) {

@@ -1,4 +1,4 @@
-<div class="content" data-ng-init="getRequestData()">
+<div class="content">
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-title">Traffic Report<small>Request Data</small></h2>
@@ -21,7 +21,7 @@
                                     <ul class="dropdown-menu">
                                         <li data-ng-repeat="domain in domains()"><a href="" data-ng-click="pickDomain(domain.name)">{{domain.name}}</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="" data-ng-click="selectAll('drillsite')">All Sites</a></li>
+                                        <li><a href="" data-ng-click="selectAll('selectedsite')">All Sites</a></li>
                                     </ul>
                                 </div>
                                 <div class="input-group-btn">
@@ -51,14 +51,14 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody data-ng-repeat="item in getPagedItems() track by $index" ng-switch="row.show" ng-init="row={}">
+                        <tbody data-ng-repeat="(key, item) in getPagedItems() track by $index" ng-switch="row.show" ng-init="row={}">
                             <tr>
-                                <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
+                                <td class="hidden-xs-portrait">{{item.requestedtimestamp | date: 'mediumTime'}}</td>
                                 <td>{{item.method}}</td>
                                 <td style="word-wrap: break-word;"><div style="width:100%;height:100%;overflow:auto;">{{item.headers.host}}{{item.url}}</div></td>
                                 <td>{{item.remoteIP}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show">
+                                    <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show;showDetails(row.show, item._id, key)">
                                         {{showButtonDisplay(row.show)}}
                                     </button>
                                     <button class="btn btn-sm btn-warning" ng-click="toggleAttack(item)">
@@ -67,17 +67,19 @@
                                 </td>
                             </tr>
                             <tr data-ng-switch-when="true">
-                                <td class="hidden-xs-portrait" colspan="5">{{item.body}}</td>
+                                <td class="hidden-xs-portrait" colspan="5"></td>
                             </tr>
                             <tr data-ng-switch-when="true" >
                                 <td colspan="5" class="well-white" style="word-wrap: break-word">
                                     <ul>
                                         <h4>Full URL:</h4>
-                                        <li>{{item.headers.host}}{{item.url}}</li><br>
+                                        <span ng-bind-html="highlight(item.headers.host+item.url, item.attacks[0].matches[0])"></span><br>
+                                        <!--<li>{{item.headers.host}}{{item.url}}</li><br>-->
                                         <h4>Headers</h4>
                                         <li data-ng-repeat="(name,header) in item.headers">{{name}}: {{header}}</li><br>
                                         <h4>POST Body:</h4>
-                                        <li>{{item.body}}</li><br>
+                                        <span ng-bind-html="highlight(item.body, item.attacks[0].matches[0])"></span><br>
+                                        <!--<li>{{item.body}}</li><br>-->
                                         <h4>Attack Info:</h4>
                                         <li data-ng-repeat="attack in item.attacks">{{attack.type}} - Confidence Level: {{attack.score}}</li><br>
                                         <li>
@@ -87,6 +89,9 @@
                                         </li>
                                     </ul>
                                 </td>
+                            </tr>
+                            <tr data-ng-switch-when="true">
+                                <td class="hidden-xs-portrait" colspan="5"></td>
                             </tr>
                         </tbody>
                     </table>

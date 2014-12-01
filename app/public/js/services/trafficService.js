@@ -31,9 +31,13 @@ angular.module('App.Services')
       getAttacks: function(){
         var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
         return groupedByAttackBool.true
+      },
+
+      getDetails: function(id, callback){
+        return $http.post('/traffic/request-details', {id: id}).then(function(response){
+          return response.data;
+        });
       }
-
-
    };
    return traffic;
   }]);

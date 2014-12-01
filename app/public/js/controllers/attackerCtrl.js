@@ -1,11 +1,11 @@
 angular.module('App.Controllers')
 
-  .controller('attackerCtrl',['$scope', '$filter', 'domainService', 'paginationService', 'trafficService', 'ipFilter', 'attackFilter', function($scope, $filter, domainService, paginationService, trafficService, ipFilter, attackFilter) {
+  .controller('attackerCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', 'ipFilter', 'attackFilter', function($scope, $filter, domainService, domainFilter, paginationService, trafficService, ipFilter, attackFilter) {
 
     $scope.selectedsite = [];
     $scope.filterby ='';
 
-    $scope = paginationService.init($scope);
+
     $scope.getDomains = domainService.fetchDomains;
     $scope.domains = domainService.getDomains;
 
@@ -29,12 +29,26 @@ angular.module('App.Controllers')
       }
     };
 
+    $scope.getRequestData();
+
+    //Pagination and Sorting
+    $scope = paginationService.init($scope);
+
     $scope.applyFilter = function(){
       var activeDomains = $filter('filterBy')(trafficService.getAttacks(), ['headers.host'], $scope.selectedsite);
       var groupIP = $filter('groupBy')(activeDomains, 'remoteIP');
       var searchData = $filter('filter')(groupIP, $scope.query);
 
       $scope.pagedItems = paginationService.paginate(searchData, $scope);
+    };
+
+
+    /*Below called in view
+    ng-inti*/
+    $scope.getRequestData = function(){
+      if(trafficService.requests.length === 0){
+        trafficService.getRange($scope.requestrange);
+      }
     };
 
     //Table ng-repeat
@@ -95,6 +109,12 @@ angular.module('App.Controllers')
     $scope.getSessionCount = function(filteredData){
       var uniqueDSTC = $filter('unique')(filteredData,'dstc');
       return uniqueDSTC.length
+    };
+
+    $scope.getAttackersImproved = function(filteredData){
+      var DSTC = $filter('groupBy')(filteredData,'dstc');
+      var IP = $filter('groupBy')(filteredData,'remoteIP');
+
     };
 
     $scope.displayAttackTypes = function(filteredData){

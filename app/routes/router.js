@@ -6,7 +6,7 @@ var User = exports.User = require('../model/user'),
     sys = require('sys');
 
 exports.loginpage = function loginpage(req, res) {
-  res.sendfile('./public/html/login.html');
+  res.sendfile('./app/public/html/login.html');
 };
 
 exports.login = function authenticate(req, res) {
@@ -26,7 +26,7 @@ exports.login = function authenticate(req, res) {
 };
 
 exports.signuppage = function signuppage(req, res) {
-  res.sendfile('./public/html/register.html');
+  res.sendfile('./app/public/html/register.html');
 };
 
 exports.signup = function addAccount(req, res) {
@@ -63,7 +63,7 @@ exports.logout = function logout(req, res){
 };
 
 exports.home = function homePage(req, res) {
-  res.sendfile('./routes/html/dashboard.html');
+  res.sendfile('./app/routes/html/dashboard.html');
 };
 
 exports.domains = function getDomains(req, res) {
@@ -73,7 +73,7 @@ exports.domains = function getDomains(req, res) {
 exports.domains.info = function getDomainData (req, res){
    var domainName = req.body.name;
    var respond = function (err, docs){
-     res.send(docs);
+     res.send(JSON.stringify(docs));
    };
    RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
 };
@@ -81,7 +81,7 @@ exports.domains.info = function getDomainData (req, res){
 exports.domains.attacks = function getDomainAttacks(req, res){
    var domainName = req.body.name;
    var respond = function (err, docs) {
-     res.send(docs);
+     res.send(JSON.stringify(docs));
    };
    RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
 };
@@ -92,7 +92,7 @@ exports.domains.info.lastday = function getLastDay (req, res) {
   yesterday.setDate(yesterday.getDate() - 1);
   var yesterdayISO = yesterday.toISOString();
   var respond = function (err, docs) {
-    res.send(docs);
+    res.send(JSON.stringify(docs));
   };
   RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
 };
@@ -107,10 +107,23 @@ exports.traffic = function getRange (req, res) {
     else console.log('doesnt have prop');
   }
   var respond = function (err, docs) {
-    res.send(docs);
+    docs.forEach(function(value){
+      value.headers = {host: value.headers.host};
+      value.body = '';
+    });
+    res.send(JSON.stringify(docs));
   };
 
   RequestStore.find({'headers.host': { $in : sitesArray }, 'requestedtimestamp' : { $gte : new Date(req.body.start), $lt : new Date(req.body.end) } }, respond);
+};
+exports.requestDetails = function (req, res) {
+
+  var respond = function (err, doc) {
+    console.log(err,doc);
+    res.send(JSON.stringify(doc));
+  };
+  console.log(req.body.id);
+  RequestStore.findById(req.body.id, respond);
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {

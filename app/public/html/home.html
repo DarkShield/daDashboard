@@ -1,7 +1,7 @@
 <div class="content">
 <div class="row">
     <div class="col-md-12">
-        <h2 class="page-title">Dashboard <small>Overview (Coming Soon!)</small></h2>
+        <h2 class="page-title">Dashboard <small>Overview</small></h2>
     </div>
 </div>
 <div class="row">
@@ -12,7 +12,7 @@
                 <i class="icon-group"></i>
                 Traffic
                 <small>
-                    Based on last 30 days of data
+                    Last Day
                 </small>
             </h4>
         </header>
@@ -24,19 +24,19 @@
                 <div class="row">
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="eicon-users"></i> Total Visitors</div>
-                        <div class="value">24 541 <i class="icon-caret-up color-green"></i></div>
+                        <div class="value">{{ getVisitors() }}<i class="icon-caret-up color-green"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="eicon-user"></i> Unique Attackers</div>
-                        <div class="value">14 778 <i class="icon-caret-down color-red"></i></div>
+                        <div class="value">{{ getAttackerCount() }}<i class="icon-caret-down color-red"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="icon-plus-sign-alt"></i> Attacker %</div>
-                        <div class="value">3% <i class="icon-caret-up color-green"></i></div>
+                        <div class="value">{{ getAttackerCount() | percent: getVisitors(): true }} <i class="icon-caret-up color-green"></i></div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="key"><i class="icon-user"></i> Attack %</div>
-                        <div class="value">12% <i class="icon-caret-down color-red"></i></div>
+                        <div class="value">{{ getAttackCount() | percent: getRequestCount(): true  }}<i class="icon-caret-down color-red"></i></div>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 <i class="icon-shopping-cart"></i>
                 Top Attackers
                 <small>
-                    One month tracking
+                    Last Day
                 </small>
             </h4>
         </header>
@@ -65,54 +65,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><span class="label label-important">Bob</span></td>
-                    <td>713</td>
-                    <td><strong class="color-green">+53</strong></td>
+                <tr data-ng-repeat="(IP, attacks) in getAttackers() | orderBy: 'getAttackerCount()' | limitTo: 5">
+                    <td><span class="label label-important">{{attacks[0].remoteIP}}</span></td>
+                    <td>{{attacks.length}}</td>
+                    <td><strong class="color-green">{{getLastSeen(attacks) | date: 'mediumTime'}}</strong></td>
                     <td class="hidden-xs">+12</td>
                     <td>900</td>
                     <td class="chart-cell hidden-xs">
                         <div id="direct-trend"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="label label-warning">Alice</span></td>
-                    <td>562</td>
-                    <td><strong>+84</strong></td>
-                    <td class="hidden-xs">+64</td>
-                    <td>500</td>
-                    <td class="chart-cell hidden-xs">
-                        <div id="refer-trend"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="label label-success">Scripty</span></td>
-                    <td>148</td>
-                    <td><strong class="color-red">-12</strong></td>
-                    <td class="hidden-xs">+3</td>
-                    <td>180</td>
-                    <td class="chart-cell hidden-xs">
-                        <div id="social-trend"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="label label-info">Eve</span></td>
-                    <td>653</td>
-                    <td><strong class="color-green">+23</strong></td>
-                    <td class="hidden-xs">+43</td>
-                    <td>876</td>
-                    <td class="chart-cell hidden-xs">
-                        <div id="search-trend"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="label label-inverse">Smash</span></td>
-                    <td>976</td>
-                    <td><strong>+101</strong></td>
-                    <td class="hidden-xs">-7</td>
-                    <td>844</td>
-                    <td class="chart-cell hidden-xs">
-                        <div id="internal-trend"></div>
                     </td>
                 </tr>
                 </tbody>

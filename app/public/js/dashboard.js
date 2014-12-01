@@ -18,7 +18,8 @@ var App = window.App = angular.module('App',
       controller: 'attackerCtrl'
     });
     $routeProvider.when('/', {
-      templateUrl: '/html/home.html'
+      templateUrl: '/html/home.html',
+      controller: 'dashboardCtrl'
     });
   }
 );
