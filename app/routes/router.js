@@ -168,6 +168,8 @@ exports.requestDetails = function (req, res) {
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {
+  var authorized = false;
+  var name;
   var respond = function (err, numUpdated) {
     if(err){
       console.log(err);
@@ -176,9 +178,28 @@ exports.toggleAttack = function toggleAttack (req, res) {
     console.log(numUpdated);
     res.send(200);
   };
+  RequestStore.getHostByID(req.body.id, function(err, reqDoc) {
+    if (err) respond(err);
+    else {
+      name = reqDoc.headers.host;
+    }
+  });
+
   var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
   req.body.attack = (req.body.attack === "false")
-  RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
+
+  req.session.user.sites.forEach(function(site){
+    if(site.name === name){
+      authorized = true;
+      RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
+    }
+  });
+
+  if(!authorized){
+    var err = 'Not authorized to modify Attack for host ' + req.session.user._id;
+    respond(err);
+  }
+
   EmailServer.send({
     text: text + ' - ' + req.body.id,
     from: 'Admin <vicet3ch@gmail.com>',
