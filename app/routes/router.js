@@ -91,11 +91,25 @@ exports.domains.info = function getDomainData (req, res){
 };
 
 exports.domains.attacks = function getDomainAttacks(req, res){
-   var domainName = req.body.name;
-   var respond = function (err, docs) {
-     res.send(JSON.stringify(docs));
-   };
-   RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
+  var domainName = req.body.name;
+  var authorized = false;
+  var respond = function (err, docs) {
+    res.send(JSON.stringify(docs));
+  };
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
+    }
+  });
+
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
+
 };
 
 exports.domains.info.lastday = function getLastDay (req, res) {

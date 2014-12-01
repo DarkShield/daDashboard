@@ -247,11 +247,11 @@ describe('routes', function(){
     it('should call send with argument docs', function(){
       var req = {
         body: {
-          name: 'www.mattjay.com'
+          name: 'www.test.com'
         },
         session: {
           user: {
-            sites: [{name: 'www.mattjay.com'}
+            sites: [{name: 'www.test.com'}
             ]
           }
         }
@@ -278,8 +278,14 @@ describe('routes', function(){
   //nested describe for domain.attacks route
   describe('domains.attacks route', function() {
     var req = {
-      body:{
-        name:'www.test.com'
+      body: {
+        name: 'www.test.com'
+      },
+      session: {
+        user: {
+          sites: [{name: 'www.test.com'}
+          ]
+        }
       }
     };
     var res = {
