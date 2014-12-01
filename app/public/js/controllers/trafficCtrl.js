@@ -1,6 +1,6 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', function($scope, $filter, domainService, domainFilter, paginationService, trafficService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', '$sce', function($scope, $filter, domainService, domainFilter, paginationService, trafficService, $sce) {
 
     $scope.selectedsite = [];
     $scope.attackview = [];
@@ -113,5 +113,13 @@ angular.module('App.Controllers')
     $scope.showAttacks = function(){
       $scope.attackview = {attack: 'true'};
       $scope.applyFilter();
+    };
+
+    $scope.highlight = function(text, search) {
+      if (!search) {
+        return $sce.trustAsHtml(text);
+      }
+      //return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
+      return $sce.trustAsHtml(unescape(escape(text).replace(new RegExp(escape(search), 'gi'), '<span class="highlightedText">$&</span>')));
     };
 }]);
