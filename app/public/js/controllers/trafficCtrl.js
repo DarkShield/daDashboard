@@ -32,7 +32,8 @@ angular.module('App.Controllers')
       var domainfiltered = $filter('domain')($scope.items, $scope.selectedsite);
       var attackfilter = $filter('filter')(domainfiltered, $scope.attackview);
       var searchfilter = $filter('filter')(attackfilter, $scope.query);
-      $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
+      var ordered = $filter('orderBy')(searchfilter, 'requestedtimestamp', true);
+      $scope.pagedItems = paginationService.paginate(ordered, $scope);
     };
 
     $scope.watchHandler = function(newValue, oldValue) {
@@ -51,6 +52,8 @@ angular.module('App.Controllers')
         trafficService.getRange($scope.requestrange);
       }
     };
+
+    $scope.getRequestData();
 
     $scope.showDetails = function(show, id, key){
       if(show) {
