@@ -309,8 +309,14 @@ describe('routes', function(){
 
   describe('domains.info.lastday', function(){
     var req = {
-      body:{
-        name:'www.test.com'
+      body: {
+        name: 'www.test.com'
+      },
+      session: {
+        user: {
+          sites: [{name: 'www.test.com'}
+          ]
+        }
       }
     };
     var res = {

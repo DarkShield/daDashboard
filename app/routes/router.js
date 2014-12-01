@@ -114,13 +114,28 @@ exports.domains.attacks = function getDomainAttacks(req, res){
 
 exports.domains.info.lastday = function getLastDay (req, res) {
   var domainName = req.body.name;
+  var authorized = false;
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   var yesterdayISO = yesterday.toISOString();
   var respond = function (err, docs) {
     res.send(JSON.stringify(docs));
   };
-  RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
+    }
+  });
+
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
+
+
 };
 
 exports.traffic = function getRange (req, res) {
