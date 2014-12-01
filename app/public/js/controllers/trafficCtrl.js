@@ -53,6 +53,8 @@ angular.module('App.Controllers')
       }
     };
 
+    $scope.getRequestData();
+
     $scope.showDetails = function(show, id, key){
       if(show) {
         trafficService.getDetails(id).then(function(request){

@@ -14,7 +14,9 @@ angular.module('App.Controllers')
     };
 
     $scope.getRequestData = function(){
-      trafficService.getRange($scope.requestrange);
+      if(trafficService.requests.length === 0) {
+        trafficService.getRange($scope.requestrange);
+      }
     };
 
     $scope.getRequestData();
