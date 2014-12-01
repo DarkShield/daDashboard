@@ -120,6 +120,6 @@ angular.module('App.Controllers')
         return $sce.trustAsHtml(text);
       }
       //return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
-      return $sce.trustAsHtml(unescape(escape(text).replace(new RegExp(escape(search), 'gi'), '<span class="highlightedText">$&</span>')));
+      return $sce.trustAsHtml(decodeURI(escape(text).replace(new RegExp(escape(search), 'gi'), '<span class="highlightedText">$&</span>')));
     };
 }]);

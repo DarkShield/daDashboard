@@ -78,7 +78,8 @@
                                         <h4>Headers</h4>
                                         <li data-ng-repeat="(name,header) in item.headers">{{name}}: {{header}}</li><br>
                                         <h4>POST Body:</h4>
-                                        <li>{{item.body}}</li><br>
+                                        <span ng-bind-html="highlight(item.body, item.attacks[0].matches[0])"></span><br>
+                                        <!--<li>{{item.body}}</li><br>-->
                                         <h4>Attack Info:</h4>
                                         <li data-ng-repeat="attack in item.attacks">{{attack.type}} - Confidence Level: {{attack.score}}</li><br>
                                         <li>
