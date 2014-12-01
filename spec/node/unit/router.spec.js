@@ -387,6 +387,9 @@ describe('routes', function(){
 
     beforeEach(function(){
       spyOn(routes.RequestStore, 'update');
+      spyOn(routes.RequestStore, 'getHostByID').and.callFake(function() {
+        return {headers: {host: 'www.test.com'}};
+      });
       spyOn(routes.EmailServer, 'send');
 
     });
@@ -394,6 +397,7 @@ describe('routes', function(){
     it('should update the db with a properly configured object (true case)', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
       expect(routes.RequestStore.update).toHaveBeenCalled();
       expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(false);
 
