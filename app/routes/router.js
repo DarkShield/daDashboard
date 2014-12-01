@@ -179,7 +179,9 @@ exports.toggleAttack = function toggleAttack (req, res) {
     res.send(200);
   };
   RequestStore.getHostByID(req.body.id, function(err, reqDoc) {
-    if (err) respond(err);
+    if (err) {
+      respond(err);
+    }
     else {
       name = reqDoc.headers.host;
 
