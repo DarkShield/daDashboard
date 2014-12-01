@@ -71,11 +71,23 @@ exports.domains = function getDomains(req, res) {
 };
 
 exports.domains.info = function getDomainData (req, res){
-   var domainName = req.body.name;
-   var respond = function (err, docs){
-     res.send(JSON.stringify(docs));
-   };
-   RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
+  var domainName = req.body.name;
+  var authorized = false;
+  var respond = function (err, docs){
+    res.send(JSON.stringify(docs));
+  };
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
+    }
+  });
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
 };
 
 exports.domains.attacks = function getDomainAttacks(req, res){

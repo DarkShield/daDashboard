@@ -246,8 +246,16 @@ describe('routes', function(){
 
     it('should call send with argument docs', function(){
       var req = {
-            body: { name: 'www.supercroppers.com'  }
-          };
+        body: {
+          name: 'www.mattjay.com'
+        },
+        session: {
+          user: {
+            sites: [{name: 'www.mattjay.com'}
+            ]
+          }
+        }
+      };
       var res = {
             send: function(){ done = true; }
           };
@@ -261,7 +269,7 @@ describe('routes', function(){
       }, 'Send to be called', 1000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
-        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('string');
       });
     });
 
@@ -375,14 +383,14 @@ describe('routes', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
       expect(routes.RequestStore.update).toHaveBeenCalled();
-      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('true');
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(false);
 
     });
     it('should update the db with a properly configured object (false case)', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
       expect(routes.RequestStore.update).toHaveBeenCalled();
-      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('false');
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(true);
     });
 
     it('should send an email with the correct info (true case)', function(){
@@ -403,7 +411,7 @@ describe('routes', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
       routes.RequestStore.update.calls[0].args[2](null, doc);
-      expect(res.send).toHaveBeenCalledWith(doc);
+      expect(res.send).toHaveBeenCalledWith(200);
       routes.EmailServer.send.calls[0].args[1](null,'test');
     });
 
