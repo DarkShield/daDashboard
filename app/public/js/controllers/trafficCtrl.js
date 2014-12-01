@@ -5,6 +5,7 @@ angular.module('App.Controllers')
     $scope.selectedsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
+    $scope.selectedItem = [];
 
     $scope.enddate = new Date();
 
@@ -46,14 +47,16 @@ angular.module('App.Controllers')
 
     //Below called from view
     $scope.getRequestData = function(){
-      if(trafficService.requests.length !== 0) {
+      if(trafficService.requests.length === 0) {
         trafficService.getRange($scope.requestrange);
       }
     };
 
-    $scope.showDetails = function(show, id){
+    $scope.showDetails = function(show, id, key){
       if(show) {
-        trafficService.getDetails(id);
+        trafficService.getDetails(id).then(function(request){
+          $scope.pagedItems[key] = request;
+        });
       }
     };
 

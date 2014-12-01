@@ -51,14 +51,14 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody data-ng-repeat="item in getPagedItems() track by $index" ng-switch="row.show" ng-init="row={}">
+                        <tbody data-ng-repeat="(key, item) in getPagedItems() track by $index" ng-switch="row.show" ng-init="row={}">
                             <tr>
                                 <td class="hidden-xs-portrait">{{item.requestedtimestamp}}</td>
                                 <td>{{item.method}}</td>
                                 <td style="word-wrap: break-word;"><div style="width:100%;height:100%;overflow:auto;">{{item.headers.host}}{{item.url}}</div></td>
                                 <td>{{item.remoteIP}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show;showDetails(row.show, item._id)">
+                                    <button class="btn btn-sm btn-primary" ng-click="row.show=!row.show;showDetails(row.show, item._id, key)">
                                         {{showButtonDisplay(row.show)}}
                                     </button>
                                     <button class="btn btn-sm btn-warning" ng-click="toggleAttack(item)">
@@ -67,7 +67,7 @@
                                 </td>
                             </tr>
                             <tr data-ng-switch-when="true">
-                                <td class="hidden-xs-portrait" colspan="5">{{item.body}}</td>
+                                <td class="hidden-xs-portrait" colspan="5"></td>
                             </tr>
                             <tr data-ng-switch-when="true" >
                                 <td colspan="5" class="well-white" style="word-wrap: break-word">
@@ -87,6 +87,9 @@
                                         </li>
                                     </ul>
                                 </td>
+                            </tr>
+                            <tr data-ng-switch-when="true">
+                                <td class="hidden-xs-portrait" colspan="5"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -33,17 +33,11 @@ angular.module('App.Services')
         return groupedByAttackBool.true
       },
 
-      getDetails: function(id){
-        $http.post('/traffic/request-details', {id: id}).success(function(body){
-          angular.forEach(traffic.requests, function(value){
-            if (value._id === id){
-              value = body;
-            }
-          })
+      getDetails: function(id, callback){
+        return $http.post('/traffic/request-details', {id: id}).then(function(response){
+          return response.data;
         });
       }
-
-
    };
    return traffic;
   }]);
