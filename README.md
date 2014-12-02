@@ -14,9 +14,6 @@ docker run -d -p 80:1337 -e NODE_ENV=production -e NEW_RELIC_LICENSE_KEY=9c83fc1
 
 `grunt backend` runs node tests with code coverage
 
-We need a configuration that allows node tests with no coverage
-
-
 ##Strider Scripts
 ### Environment
 `NODE_ENV=test` connects to aws testing db
