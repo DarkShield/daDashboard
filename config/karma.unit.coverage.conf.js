@@ -16,10 +16,8 @@ module.exports = function(config) {
     files: [
 
       //Include Vendor Files
-      './bower_components/angular/angular.js',
-      './bower_components/angular-mocks/angular-mocks.js',
-      './bower_components/angular-route/angular-route.js',
-      './bower_components/angular-filter/dist/angular-filter.js',
+      './app/public/js/vendor/angular/angular.js',
+      './app/public/js/vendor/angular/angular-mocks.js',
       './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
       './app/public/js/directives/angular-strap/dist/angular-strap.js',
 
@@ -33,7 +31,20 @@ module.exports = function(config) {
       './spec/angular/unit/*.spec.js'
     ],
 
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+    preprocessors: {
+      './app/public/js/*.js': ['coverage'],
+      './app/public/js/services/*.js': ['coverage'],
+      './app/public/js/controllers/*.js': ['coverage'],
+      './app/public/js/filters/*.js': ['coverage']
+    },
+
+    // optionally, configure the reporter
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
 
 
     // list of files to exclude

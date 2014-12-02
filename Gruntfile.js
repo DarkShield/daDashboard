@@ -19,11 +19,22 @@ module.exports = function(grunt) {
     },
 
     karma: {
+      unit : {
+        configFile: './config/karma.unit.conf.js',
+        autoWatch: false,
+        singleRun: true
+      },
+      unit_watch : {
+        configFile: './config/karma.unit.conf.js',
+        autoWatch: true,
+        singleRun: false
+      },
       unit_coverage: {
         configFile: './config/karma.unit.conf.js',
         autoWatch: false,
         singleRun: true
       }
+
     },
 
     jasmine_node: {
@@ -54,6 +65,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('backend', ['jasmine_node']);
   grunt.registerTask('frontend', ['karma:unit_coverage']);
+  grunt.registerTask('frontend:unit', ['karma:unit']);
 
   grunt.registerTask('test:unit', ['karma:unit_coverage', 'jasmine_node']);
   grunt.registerTask('autotest',['watch:assets']);
