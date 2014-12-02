@@ -9,6 +9,7 @@
     "nvd3": "1.1.15-beta",
     "backbone": "1.1.0",
     "bootstrap": "3.0.3",
-    "angular-filter": "~0.5.1"
+    "angular-filter": "~0.5.1",
+    "angular-bootstrap": "~0.12.0"
   }
 }

@@ -5,12 +5,16 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     watch: {
-      options : {
-        livereload: 7777
-      },
       assets: {
-        files: ['app/public/css/**/*.css','app/public/js/**/*.js'],
-        tasks: ['concat']
+        files: [
+          'app/lib/*.js',
+          'app/model/*.js',
+          'app/routes/router.js',
+          'app/app.js',
+          'app/server.js',
+          'spec/node/unit/*.*.js'
+        ],
+        tasks: ['jasmine_node']
       },
       protractor: {
         files: ['app/public/js/**/*.js','spec/angular/e2e/**/*.js'],

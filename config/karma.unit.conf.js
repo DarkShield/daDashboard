@@ -20,8 +20,7 @@ module.exports = function(config) {
       './bower_components/angular-mocks/angular-mocks.js',
       './bower_components/angular-route/angular-route.js',
       './bower_components/angular-filter/dist/angular-filter.js',
-      './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
-      './app/public/js/directives/angular-strap/dist/angular-strap.js',
+      './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
       //Include App Code
       './app/public/js/dashboard.js',

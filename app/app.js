@@ -1,5 +1,5 @@
 var app = require('./server'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose')
 
 //To set environment run
 // $export NODE_ENV=development
