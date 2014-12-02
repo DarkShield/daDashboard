@@ -1,7 +1,7 @@
 {
   "name": "Dashboard",
-  "description": "Top Secret",
-  "version": "0.0.1",
+  "description": "Customer Web UI for Darkshield.io",
+  "version": "0.1.2",
   "private": true,
   "author": "Mattjay & ProZachJ",
   "dependencies": {
