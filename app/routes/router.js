@@ -179,35 +179,39 @@ exports.toggleAttack = function toggleAttack (req, res) {
     res.send(200);
   };
   RequestStore.getHostByID(req.body.id, function(err, reqDoc) {
-    if (err) respond(err);
+    if (err) {
+      respond(err);
+    }
     else {
       name = reqDoc.headers.host;
+
+      var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
+      req.body.attack = (req.body.attack === "false")
+
+      req.session.user.sites.forEach(function(site){
+        if(site.name === name){
+          authorized = true;
+          RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
+        }
+      });
+
+      if(!authorized){
+        var err = 'Not authorized to modify Attack for host ' + req.session.user._id;
+        respond(err);
+      }
+
+      EmailServer.send({
+        text: text + ' - ' + req.body.id,
+        from: 'Admin <vicet3ch@gmail.com>',
+        to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+        subject: text
+      }, function (err, message) {
+        console.log(err || message);
+      });
     }
   });
 
-  var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
-  req.body.attack = (req.body.attack === "false")
 
-  req.session.user.sites.forEach(function(site){
-    if(site.name === name){
-      authorized = true;
-      RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
-    }
-  });
-
-  if(!authorized){
-    var err = 'Not authorized to modify Attack for host ' + req.session.user._id;
-    respond(err);
-  }
-
-  EmailServer.send({
-    text: text + ' - ' + req.body.id,
-    from: 'Admin <vicet3ch@gmail.com>',
-    to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
-    subject: text
-  }, function (err, message) {
-    console.log(err || message);
-  });
 };
 
 //currently is only a block route need to add unblocking

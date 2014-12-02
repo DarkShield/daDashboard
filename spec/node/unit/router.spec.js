@@ -373,7 +373,7 @@ describe('routes', function(){
     var req = {
       session:{
         user:{
-          sites:['www.test.com']
+          sites:[{name: 'www.test.com'}]
         }
       },
       body:{
@@ -387,6 +387,7 @@ describe('routes', function(){
 
     beforeEach(function(){
       spyOn(routes.RequestStore, 'update');
+      spyOn(routes.RequestStore, 'getHostByID');
       spyOn(routes.EmailServer, 'send');
 
     });
@@ -394,6 +395,8 @@ describe('routes', function(){
     it('should update the db with a properly configured object (true case)', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.RequestStore.update).toHaveBeenCalled();
       expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(false);
 
@@ -401,6 +404,8 @@ describe('routes', function(){
     it('should update the db with a properly configured object (false case)', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.RequestStore.update).toHaveBeenCalled();
       expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(true);
     });
@@ -408,6 +413,8 @@ describe('routes', function(){
     it('should send an email with the correct info (true case)', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.EmailServer.send).toHaveBeenCalled();
       expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('Missed Attack');
     });
@@ -415,6 +422,8 @@ describe('routes', function(){
     it('should send an email with the correct info (false case)', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.EmailServer.send).toHaveBeenCalled();
       expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('False Positive');
     });
@@ -422,6 +431,8 @@ describe('routes', function(){
     it('should respond with any doc returned by the update', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       routes.RequestStore.update.calls[0].args[2](null, doc);
       expect(res.send).toHaveBeenCalledWith(200);
       routes.EmailServer.send.calls[0].args[1](null,'test');
