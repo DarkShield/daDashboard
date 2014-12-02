@@ -31,7 +31,7 @@ describe('Domain Service:', function() {
     expect(typeof dS.getSelectedSite).toBe('function');
   });
 
-  describe('getDomains method', function(){
+  describe('fetchDomains method', function(){
     var domainsresponse = [
       {name: 'test.com'},
       {name: 'www.test.com'}];
@@ -41,13 +41,14 @@ describe('Domain Service:', function() {
         $httpBackend = $injector.get('$httpBackend');
         $httpBackend.when('GET', '/domains').respond(domainsresponse);
       });
+      spyOn(dS, 'fetchDomains').andCallThrough();
     });
 
     it('should add the response data into the doms array', function() {
       $httpBackend.expectGET('/domains');
-      expect(dS.getDomains).not.toHaveBeenCalled();
-      dS.getDomains();
-      expect(dS.getDomains).toHaveBeenCalled();
+      expect(dS.fetchDomains).not.toHaveBeenCalled();
+      dS.fetchDomains();
+      expect(dS.fetchDomains).toHaveBeenCalled();
       $httpBackend.flush();
       expect(dS.doms[0].name).toBe('test.com');
       expect(dS.doms[1].name).toBe('www.test.com');
