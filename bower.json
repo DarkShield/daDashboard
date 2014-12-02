@@ -2,7 +2,6 @@
   "name": "DarkShield-Dashboard",
   "version": "0.0.1",
   "dependencies": {
-    "jquery": "~2.0.3",
     "angular": "1.2.5",
     "angular-route": "1.2.5",
     "angular-mocks": "1.2.5",
