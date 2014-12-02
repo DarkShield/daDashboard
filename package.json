@@ -14,7 +14,7 @@
     "mongoose": "~3.6.17"
   },
   "scripts": {
-    "postinstall": "npm install bower"
+    "postinstall": "npm install bcrypt",
     "test": "grunt test:unit",
     "start": "node app/app.js"
   },
