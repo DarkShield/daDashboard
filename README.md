@@ -5,6 +5,18 @@
 docker run -d -p 80:1337 -e NODE_ENV=production -e NEW_RELIC_LICENSE_KEY=9c83fc1e01356f9fc7299fcf5af082a32a76ced4 Dashboard
 ```
 
+##Development
+`grunt test:unit` runs all unit tests with coverage
+
+`grunt frontend` runs all angular tests with code coverage
+
+`grunt frontend:unit` runs angular unit tests no coverage (helpful for debugging)
+
+`grunt backend` runs node tests with code coverage
+
+We need a configuration that allows node tests with no coverage
+
+
 ##Strider Scripts
 ### Environment
 `NODE_ENV=test` connects to aws testing db
