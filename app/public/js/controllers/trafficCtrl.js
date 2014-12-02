@@ -1,10 +1,11 @@
 angular.module('App.Controllers')
 
-  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', function($scope, $filter, domainService, domainFilter, paginationService, trafficService) {
+  .controller('trafficCtrl',['$scope', '$filter', 'domainService', 'domainFilter', 'paginationService', 'trafficService', '$sce', function($scope, $filter, domainService, domainFilter, paginationService, trafficService, $sce) {
 
     $scope.selectedsite = [];
     $scope.attackview = [];
     $scope.filterby ='';
+    $scope.selectedItem = [];
 
     $scope.enddate = new Date();
 
@@ -31,7 +32,8 @@ angular.module('App.Controllers')
       var domainfiltered = $filter('domain')($scope.items, $scope.selectedsite);
       var attackfilter = $filter('filter')(domainfiltered, $scope.attackview);
       var searchfilter = $filter('filter')(attackfilter, $scope.query);
-      $scope.pagedItems = paginationService.paginate(searchfilter, $scope);
+      var ordered = $filter('orderBy')(searchfilter, 'requestedtimestamp', true);
+      $scope.pagedItems = paginationService.paginate(ordered, $scope);
     };
 
     $scope.watchHandler = function(newValue, oldValue) {
@@ -46,12 +48,18 @@ angular.module('App.Controllers')
 
     //Below called from view
     $scope.getRequestData = function(){
-      trafficService.getRange($scope.requestrange);
+      if(trafficService.requests.length === 0) {
+        trafficService.getRange($scope.requestrange);
+      }
     };
 
-    $scope.showDetails = function(show, id){
+    $scope.getRequestData();
+
+    $scope.showDetails = function(show, id, key){
       if(show) {
-        trafficService.getDetails(id);
+        trafficService.getDetails(id).then(function(request){
+          $scope.pagedItems[key] = request;
+        });
       }
     };
 
@@ -113,5 +121,13 @@ angular.module('App.Controllers')
     $scope.showAttacks = function(){
       $scope.attackview = {attack: 'true'};
       $scope.applyFilter();
+    };
+
+    $scope.highlight = function(text, search) {
+      if (!search) {
+        return $sce.trustAsHtml(text);
+      }
+      //return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
+      return $sce.trustAsHtml(decodeURI(escape(text).replace(new RegExp(escape(search), 'gi'), '<span class="highlightedText">$&</span>')));
     };
 }]);

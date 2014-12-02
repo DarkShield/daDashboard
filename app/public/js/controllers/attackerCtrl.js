@@ -29,6 +29,8 @@ angular.module('App.Controllers')
       }
     };
 
+    $scope.getRequestData();
+
     //Pagination and Sorting
     $scope = paginationService.init($scope);
 
