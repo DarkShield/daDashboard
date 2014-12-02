@@ -42,8 +42,6 @@ angular.module('App.Services')
           })
         });
       }
-
-
    };
    return traffic;
   }]);
