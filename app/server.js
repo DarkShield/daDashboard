@@ -8,10 +8,10 @@ var app = express();
 var Routes = require('./routes/router');
 
 //middleware order matters
+app.use(express.compress());
 app.use(helmet.frameguard());
 app.use(helmet.xssFilter());
 app.use(helmet.hidePoweredBy());
-app.use(express.compress());
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/../bower_components'));;
 app.use(express.bodyParser());
