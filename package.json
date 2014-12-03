@@ -1,7 +1,7 @@
 {
   "name": "Dashboard",
   "version": "0.1.2",
-  "homepage" : "dashboard.darkshield.io",
+  "homepage": "dashboard.darkshield.io",
   "description": "Customer Web UI for Darkshield.io",
   "private": true,
   "author": "Mattjay & ProZachJ",
@@ -11,6 +11,7 @@
     "connect": "~2.8.5",
     "emailjs": "~0.3.5",
     "express": "~3.3.5",
+    "helmet": "^0.5.2",
     "mongoose": "~3.6.17"
   },
   "scripts": {

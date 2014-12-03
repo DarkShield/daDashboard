@@ -2,11 +2,15 @@ var express = require('express');
 var mongoose = require('mongoose');
 var LoginToken = require('./model/token');
 var User = require('./model/user');
+var helmet = require('helmet');
 
 var app = express();
 var Routes = require('./routes/router');
 
 //middleware order matters
+app.use(helmet.frameguard());
+app.use(helmet.xssFilter());
+app.use(helmet.hidePoweredBy());
 app.use(express.compress());
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/../bower_components'));;
