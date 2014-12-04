@@ -82,7 +82,7 @@ describe('routes', function(){
 
       waitsFor(function() {
         return req.session.user;
-      }, 'User should be set', 750);
+      }, 'User should be set', 2000);
 
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
@@ -268,7 +268,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 1000);
+      }, 'Send to be called', 2000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('string');
