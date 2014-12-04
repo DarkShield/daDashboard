@@ -71,30 +71,71 @@ exports.domains = function getDomains(req, res) {
 };
 
 exports.domains.info = function getDomainData (req, res){
-   var domainName = req.body.name;
-   var respond = function (err, docs){
-     res.send(JSON.stringify(docs));
-   };
-   RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
+  var domainName = req.body.name;
+  var authorized = false;
+  var respond = function (err, docs){
+    res.send(JSON.stringify(docs));
+  };
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName}, {'body' : 0}, respond);
+    }
+  });
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
 };
 
 exports.domains.attacks = function getDomainAttacks(req, res){
-   var domainName = req.body.name;
-   var respond = function (err, docs) {
-     res.send(JSON.stringify(docs));
-   };
-   RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
+  var domainName = req.body.name;
+  var authorized = false;
+  var respond = function (err, docs) {
+    res.send(JSON.stringify(docs));
+  };
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName, 'attack': 'true'},respond);
+    }
+  });
+
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
+
 };
 
 exports.domains.info.lastday = function getLastDay (req, res) {
   var domainName = req.body.name;
+  var authorized = false;
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   var yesterdayISO = yesterday.toISOString();
   var respond = function (err, docs) {
     res.send(JSON.stringify(docs));
   };
-  RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
+
+  //make sure hostname is owned by user
+  req.session.user.sites.forEach(function(site){
+    if(site.name === req.body.name){
+      authorized = true;
+      RequestStore.find({'headers.host': domainName, 'requestedtimestamp': {$gte: yesterdayISO}}, {'body': 0}, respond);
+    }
+  });
+
+  if(!authorized){
+    var err = 'Not authorized for host ' + req.session.user._id;
+    respond(err);
+  }
+
+
 };
 
 exports.traffic = function getRange (req, res) {
@@ -127,6 +168,8 @@ exports.requestDetails = function (req, res) {
 };
 
 exports.toggleAttack = function toggleAttack (req, res) {
+  var authorized = false;
+  var name;
   var respond = function (err, numUpdated) {
     if(err){
       console.log(err);
@@ -135,17 +178,40 @@ exports.toggleAttack = function toggleAttack (req, res) {
     console.log(numUpdated);
     res.send(200);
   };
-  var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
-  req.body.attack = (req.body.attack === "false")
-  RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
-  EmailServer.send({
-    text: text + ' - ' + req.body.id,
-    from: 'Admin <vicet3ch@gmail.com>',
-    to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
-    subject: text
-  }, function (err, message) {
-    console.log(err || message);
+  RequestStore.getHostByID(req.body.id, function(err, reqDoc) {
+    if (err) {
+      respond(err);
+    }
+    else {
+      name = reqDoc.headers.host;
+
+      var text = (req.body.attack === 'true') ? 'Missed Attack' : 'False Positive';
+      req.body.attack = (req.body.attack === "false")
+
+      req.session.user.sites.forEach(function(site){
+        if(site.name === name){
+          authorized = true;
+          RequestStore.update({'_id': new ObjectId(req.body.id)}, {'attack': req.body.attack}, respond);
+        }
+      });
+
+      if(!authorized){
+        var err = 'Not authorized to modify Attack for host ' + req.session.user._id;
+        respond(err);
+      }
+
+      EmailServer.send({
+        text: text + ' - ' + req.body.id,
+        from: 'Admin <vicet3ch@gmail.com>',
+        to: 'Matt <matt@darkshield.io>, Zach <zach@darkshield.io>',
+        subject: text
+      }, function (err, message) {
+        console.log(err || message);
+      });
+    }
   });
+
+
 };
 
 //currently is only a block route need to add unblocking

@@ -1,6 +1,8 @@
 var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
+console.log(process.env.NODE_ENV === 'development')
+
 if (process.env.NODE_ENV === 'development'){
   mongoose.connect('localhost', 'vicetest');
 }
@@ -22,7 +24,7 @@ describe('routes', function(){
       expect(routes.loginpage.name).toBe('loginpage');
     });
 
-    it('should call sendfile with argument "./public/html/login.html"', function(){
+    it('should call sendfile with argument "./app/public/html/login.html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -30,7 +32,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.loginpage(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./public/html/login.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/login.html');
     }); 
   });
 
@@ -80,7 +82,7 @@ describe('routes', function(){
 
       waitsFor(function() {
         return req.session.user;
-      }, 'User should be set', 750);
+      }, 'User should be set', 2000);
 
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
@@ -94,7 +96,7 @@ describe('routes', function(){
     var req = {},
         res = {sendfile:jasmine.createSpy('sendfile')};
     routes.signuppage(req, res);
-    expect(res.sendfile).toHaveBeenCalledWith('./public/html/register.html');
+    expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/register.html');
   });
 
   //nested describe for signup route
@@ -202,7 +204,7 @@ describe('routes', function(){
       expect(routes.home.name).toBe('homePage');
     });
 
-    it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
+    it('should call sendFile with argument "./app/routes/html/dashboard..html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -210,7 +212,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.home(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/routes/html/dashboard.html');
     }); 
   });
 
@@ -246,8 +248,16 @@ describe('routes', function(){
 
     it('should call send with argument docs', function(){
       var req = {
-            body: { name: 'www.supercroppers.com'  }
-          };
+        body: {
+          name: 'www.test.com'
+        },
+        session: {
+          user: {
+            sites: [{name: 'www.test.com'}
+            ]
+          }
+        }
+      };
       var res = {
             send: function(){ done = true; }
           };
@@ -258,10 +268,10 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 1000);
+      }, 'Send to be called', 2000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
-        expect(typeof(res.send.mostRecentCall.args[0])).toBe('object');
+        expect(typeof(res.send.mostRecentCall.args[0])).toBe('string');
       });
     });
 
@@ -270,8 +280,14 @@ describe('routes', function(){
   //nested describe for domain.attacks route
   describe('domains.attacks route', function() {
     var req = {
-      body:{
-        name:'www.test.com'
+      body: {
+        name: 'www.test.com'
+      },
+      session: {
+        user: {
+          sites: [{name: 'www.test.com'}
+          ]
+        }
       }
     };
     var res = {
@@ -287,16 +303,22 @@ describe('routes', function(){
       expect(routes.RequestStore.find.calls[0].args[0]).toEqual({'headers.host': 'www.test.com', 'attack': 'true'})
     });
 
-    it('should respond with the result documents', function(){
+    it('should respond with the result documents in JSON', function(){
       routes.RequestStore.find.calls[0].args[1](null, doc);
-      expect(res.send).toHaveBeenCalledWith(doc);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 
   describe('domains.info.lastday', function(){
     var req = {
-      body:{
-        name:'www.test.com'
+      body: {
+        name: 'www.test.com'
+      },
+      session: {
+        user: {
+          sites: [{name: 'www.test.com'}
+          ]
+        }
       }
     };
     var res = {
@@ -314,7 +336,7 @@ describe('routes', function(){
 
     it('should respond with the returned documents', function(){
       routes.RequestStore.find.calls[0].args[2](null, docs);
-      expect(res.send).toHaveBeenCalledWith(docs);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(docs));
     });
   });
 
@@ -332,7 +354,7 @@ describe('routes', function(){
     var res = {
     send:jasmine.createSpy('send')
     };
-    var doc = {doc:'thisisadoc'}
+    var doc = [{host:'thisisadoc', headers: {host: 'test'}},{host:'thisisadoc', headers: {host: 'test'}}];
     beforeEach(function(){
       spyOn(routes.RequestStore, 'find');
       routes.traffic(req, res);
@@ -345,7 +367,7 @@ describe('routes', function(){
 
     it('should respond with the documents', function(){
         routes.RequestStore.find.calls[0].args[1](null, doc);
-        expect(res.send).toHaveBeenCalledWith(doc);
+        expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 
@@ -353,7 +375,7 @@ describe('routes', function(){
     var req = {
       session:{
         user:{
-          sites:['www.test.com']
+          sites:[{name: 'www.test.com'}]
         }
       },
       body:{
@@ -367,6 +389,7 @@ describe('routes', function(){
 
     beforeEach(function(){
       spyOn(routes.RequestStore, 'update');
+      spyOn(routes.RequestStore, 'getHostByID');
       spyOn(routes.EmailServer, 'send');
 
     });
@@ -374,20 +397,26 @@ describe('routes', function(){
     it('should update the db with a properly configured object (true case)', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.RequestStore.update).toHaveBeenCalled();
-      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('true');
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(false);
 
     });
     it('should update the db with a properly configured object (false case)', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.RequestStore.update).toHaveBeenCalled();
-      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe('false');
+      expect(routes.RequestStore.update.calls[0].args[1].attack).toBe(true);
     });
 
     it('should send an email with the correct info (true case)', function(){
       req.body.attack = 'true';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.EmailServer.send).toHaveBeenCalled();
       expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('Missed Attack');
     });
@@ -395,6 +424,8 @@ describe('routes', function(){
     it('should send an email with the correct info (false case)', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       expect(routes.EmailServer.send).toHaveBeenCalled();
       expect(routes.EmailServer.send.calls[0].args[0].subject).toBe('False Positive');
     });
@@ -402,8 +433,10 @@ describe('routes', function(){
     it('should respond with any doc returned by the update', function(){
       req.body.attack = 'false';
       routes.toggleAttack(req, res);
+      expect(routes.RequestStore.getHostByID).toHaveBeenCalled();
+      routes.RequestStore.getHostByID.calls[0].args[1](undefined, {headers: {host: 'www.test.com'}});
       routes.RequestStore.update.calls[0].args[2](null, doc);
-      expect(res.send).toHaveBeenCalledWith(doc);
+      expect(res.send).toHaveBeenCalledWith(200);
       routes.EmailServer.send.calls[0].args[1](null,'test');
     });
 
@@ -478,6 +511,6 @@ describe('routes', function(){
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 4000);
+  }, 10000);
 
 });
