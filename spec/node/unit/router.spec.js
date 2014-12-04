@@ -511,6 +511,6 @@ describe('routes', function(){
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 4000);
+  }, 10000);
 
 });
