@@ -10,6 +10,9 @@ module.exports = function(grunt) {
       },
       dev : {
         NODE_ENV : 'development'
+      },
+      strider : {
+        NODE_ENV : 'test'
       }
     },
 
@@ -89,5 +92,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test:unit:cov', ['env:dev','karma:unit_coverage', 'jasmine_node:cov']);
   grunt.registerTask('test:unit', ['env:dev','karma:unit', 'jasmine_node:dev']);
+  grunt.registerTask('test:strider', ['env:dev','karma:unit', 'jasmine_node:dev']);
   grunt.registerTask('autotest:backend',['env:dev','watch:backend']);
 };
