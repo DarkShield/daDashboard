@@ -212,7 +212,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.home(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/routes/html/dashboard.html');
     }); 
   });
 

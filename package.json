@@ -26,7 +26,7 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-env": "^0.4.2",
     "grunt-jasmine-node": "~0.1.0",
-    "grunt-jasmine-node-coverage-validation": "0.0.4",
+    "grunt-jasmine-node-coverage": "^0.3.1",
     "grunt-karma": "~0.6.2",
     "grunt-open": "~0.2.2",
     "grunt-protractor-runner": "~0.1.6",
