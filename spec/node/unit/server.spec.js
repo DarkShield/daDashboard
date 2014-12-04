@@ -18,14 +18,19 @@ describe("app", function(){
     expect(typeof(app.stack)).toBe('object');
   });
 
-  it("should have a static route configured", function(){
+  it("should utilize compression", function(){
     expect(typeof(app.stack[2].handle)).toBe('function');
-    expect(app.stack[2].handle.name).toBe('staticMiddleware');
+    expect(app.stack[2].handle.name).toBe('compress');
+  });
+
+  it("should have a static route configured", function(){
+    expect(typeof(app.stack[3].handle)).toBe('function');
+    expect(app.stack[3].handle.name).toBe('staticMiddleware');
   });
 
   it("should have bodyparser endabled", function(){
-    expect(typeof(app.stack[3].handle)).toBe('function');
-    expect(app.stack[3].handle.name).toBe('bodyParser');	    
+    expect(typeof(app.stack[5].handle)).toBe('function');
+    expect(app.stack[5].handle.name).toBe('bodyParser');
   });
 
   it("should have router enabled", function(){
@@ -99,14 +104,14 @@ describe("app", function(){
   });
 
   it("should have a POST route to /toggle/attack that calls the toggleAttack function if authenticated", function(){
-    expect(app.routes.post[6].path).toBe('/toggle/attack');
-    expect(app.routes.post[6].callbacks[0].name).toBe('loadUser');
-    expect(app.routes.post[6].callbacks[1].name).toBe('toggleAttack');
+    expect(app.routes.post[7].path).toBe('/toggle/attack');
+    expect(app.routes.post[7].callbacks[0].name).toBe('loadUser');
+    expect(app.routes.post[7].callbacks[1].name).toBe('toggleAttack');
   });
 
   it("should have a POST route to /toggle/block that calls the toggleBlock function if authenticated", function(){
-    expect(app.routes.post[7].path).toBe('/toggle/block');
-    expect(app.routes.post[7].callbacks[0].name).toBe('loadUser');
-    expect(app.routes.post[7].callbacks[1].name).toBe('toggleBlock');
+    expect(app.routes.post[8].path).toBe('/toggle/block');
+    expect(app.routes.post[8].callbacks[0].name).toBe('loadUser');
+    expect(app.routes.post[8].callbacks[1].name).toBe('toggleBlock');
   });
 });

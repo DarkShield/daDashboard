@@ -204,7 +204,7 @@ describe('routes', function(){
       expect(routes.home.name).toBe('homePage');
     });
 
-    it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
+    it('should call sendFile with argument "./app/routes/html/dashboard..html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -303,9 +303,9 @@ describe('routes', function(){
       expect(routes.RequestStore.find.calls[0].args[0]).toEqual({'headers.host': 'www.test.com', 'attack': 'true'})
     });
 
-    it('should respond with the result documents', function(){
+    it('should respond with the result documents in JSON', function(){
       routes.RequestStore.find.calls[0].args[1](null, doc);
-      expect(res.send).toHaveBeenCalledWith(doc);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 
@@ -336,7 +336,7 @@ describe('routes', function(){
 
     it('should respond with the returned documents', function(){
       routes.RequestStore.find.calls[0].args[2](null, docs);
-      expect(res.send).toHaveBeenCalledWith(docs);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(docs));
     });
   });
 
@@ -354,7 +354,7 @@ describe('routes', function(){
     var res = {
     send:jasmine.createSpy('send')
     };
-    var doc = {doc:'thisisadoc'}
+    var doc = [{host:'thisisadoc', headers: {host: 'test'}},{host:'thisisadoc', headers: {host: 'test'}}];
     beforeEach(function(){
       spyOn(routes.RequestStore, 'find');
       routes.traffic(req, res);
@@ -367,7 +367,7 @@ describe('routes', function(){
 
     it('should respond with the documents', function(){
         routes.RequestStore.find.calls[0].args[1](null, doc);
-        expect(res.send).toHaveBeenCalledWith(doc);
+        expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 

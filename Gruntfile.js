@@ -84,10 +84,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('backend', ['env:dev', 'jasmine_node:dev']);
   grunt.registerTask('backend:cov', ['env:dev', 'jasmine_node:cov']);
-  grunt.registerTask('frontend:unit:coverage', ['karma:unit_coverage']);
-  grunt.registerTask('frontend:unit', ['karma:unit']);
+  grunt.registerTask('frontend:unit:coverage', ['env:dev','karma:unit_coverage']);
+  grunt.registerTask('frontend:unit', ['env:dev','karma:unit']);
 
-  grunt.registerTask('test:unit:cov', ['karma:unit_coverage', 'jasmine_node:cov']);
-  grunt.registerTask('test:unit', ['karma:unit', 'jasmine_node:dev']);
-  grunt.registerTask('autotest:backend',['watch:backend']);
+  grunt.registerTask('test:unit:cov', ['env:dev','karma:unit_coverage', 'jasmine_node:cov']);
+  grunt.registerTask('test:unit', ['env:dev','karma:unit', 'jasmine_node:dev']);
+  grunt.registerTask('autotest:backend',['env:dev','watch:backend']);
 };
