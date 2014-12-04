@@ -2,17 +2,15 @@
 ## Running the container
 
 ```bash
-docker run -d -p 80:1337 -e NODE_ENV=production -e NEW_RELIC_LICENSE_KEY=9c83fc1e01356f9fc7299fcf5af082a32a76ced4 Dashboard
+sudo docker run -p 8888:1337 -e NODE_ENV=production -e NEW_RELIC_LICENSE_KEY=9c83fc1e01356f9fc7299fcf5af082a32a76ced4 darkdocker.darkshield.io:5000/dashboard
 ```
 
 ##Development
-`grunt test:unit` runs all unit tests with coverage
+```bash
+npm test
+```
+I suggest running `autotest:backend` with the webstorm grunt tool while also running the webstorm karmatool using `config/karma.unit.conf.js` as your config file. This will allow you to just code and save and get feedback via webstorms notifications, well for grunt you just get "process finished with exit code zero" in the bottom left, but karma gives a nice little popup to remind you look.
 
-`grunt frontend` runs all angular tests with code coverage
-
-`grunt frontend:unit` runs angular unit tests no coverage (helpful for debugging)
-
-`grunt backend` runs node tests with code coverage
 
 ##Strider Scripts
 ### Environment
