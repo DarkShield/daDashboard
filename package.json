@@ -1,7 +1,7 @@
 {
   "name": "Dashboard",
   "version": "0.1.2",
-  "homepage" : "dashboard.darkshield.io",
+  "homepage": "dashboard.darkshield.io",
   "description": "Customer Web UI for Darkshield.io",
   "private": true,
   "author": "Mattjay & ProZachJ",
@@ -24,6 +24,7 @@
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-env": "^0.4.2",
     "grunt-jasmine-node": "~0.1.0",
     "grunt-jasmine-node-coverage-validation": "0.0.4",
     "grunt-karma": "~0.6.2",

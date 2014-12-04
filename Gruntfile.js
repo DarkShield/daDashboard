@@ -4,6 +4,15 @@
 module.exports = function(grunt) {
   grunt.initConfig({
 
+    env : {
+      options : {
+        //Shared Options Hash
+      },
+      dev : {
+        NODE_ENV : 'development'
+      }
+    },
+
     watch: {
       assets: {
         files: [
@@ -42,15 +51,7 @@ module.exports = function(grunt) {
     },
 
     jasmine_node: {
-      coverage: {
-        options : {
-          failTask: false,
-          branches : 83 ,
-          functions: 98,
-          statements:99,
-          lines:99
-        }
-      },
+
       options: {
         specFolders: ['./spec/node'],
         forceExit: true,
@@ -66,8 +67,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jasmine-node-coverage-validation');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-env');
 
-  grunt.registerTask('backend', ['jasmine_node']);
+  grunt.registerTask('backend', ['env:dev', 'jasmine_node']);
   grunt.registerTask('frontend', ['karma:unit_coverage']);
   grunt.registerTask('frontend:unit', ['karma:unit']);
 
