@@ -1,6 +1,8 @@
 var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
+console.log(process.env.NODE_ENV === 'development')
+
 if (process.env.NODE_ENV === 'development'){
   mongoose.connect('localhost', 'vicetest');
 }
@@ -22,7 +24,7 @@ describe('routes', function(){
       expect(routes.loginpage.name).toBe('loginpage');
     });
 
-    it('should call sendfile with argument "./public/html/login.html"', function(){
+    it('should call sendfile with argument "./app/public/html/login.html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -30,7 +32,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.loginpage(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./public/html/login.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/login.html');
     }); 
   });
 
@@ -94,7 +96,7 @@ describe('routes', function(){
     var req = {},
         res = {sendfile:jasmine.createSpy('sendfile')};
     routes.signuppage(req, res);
-    expect(res.sendfile).toHaveBeenCalledWith('./public/html/register.html');
+    expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/register.html');
   });
 
   //nested describe for signup route
