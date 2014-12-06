@@ -9,6 +9,9 @@ sudo docker run -p 8888:1337 -e NODE_ENV=production -e NEW_RELIC_LICENSE_KEY=9c8
 ```bash
 npm test
 ```
+To see all the grunt test configurations in Webstorm:
+`ctrl + click` on `Gruntfile.js`  and select "Open Grunt Console". There you can see all the test options. Grunt now automatically sets the proper environment variable based on the test you select. So no more `export NODE_ENV`
+
 I suggest running `autotest:backend` with the webstorm grunt tool while also running the webstorm karmatool using `config/karma.unit.conf.js` as your config file. This will allow you to just code and save and get feedback via webstorms notifications, well for grunt you just get "process finished with exit code zero" in the bottom left, but karma gives a nice little popup to remind you look.
 
 
