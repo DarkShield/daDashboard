@@ -24,13 +24,13 @@ describe("app", function(){
   });
 
   it("should have a static route configured", function(){
-    expect(typeof(app.stack[3].handle)).toBe('function');
-    expect(app.stack[3].handle.name).toBe('staticMiddleware');
+    expect(typeof(app.stack[6].handle)).toBe('function');
+    expect(app.stack[6].handle.name).toBe('staticMiddleware');
   });
 
   it("should have bodyparser endabled", function(){
-    expect(typeof(app.stack[5].handle)).toBe('function');
-    expect(app.stack[5].handle.name).toBe('bodyParser');
+    expect(typeof(app.stack[8].handle)).toBe('function');
+    expect(app.stack[8].handle.name).toBe('bodyParser');
   });
 
   it("should have router enabled", function(){
