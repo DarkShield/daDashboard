@@ -1,6 +1,8 @@
 var routes = require('../../../app/routes/router');
 var mongoose = require('mongoose');
 
+console.log(process.env.NODE_ENV === 'development')
+
 if (process.env.NODE_ENV === 'development'){
   mongoose.connect('localhost', 'vicetest');
 }
@@ -22,7 +24,7 @@ describe('routes', function(){
       expect(routes.loginpage.name).toBe('loginpage');
     });
 
-    it('should call sendfile with argument "./public/html/login.html"', function(){
+    it('should call sendfile with argument "./app/public/html/login.html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -30,7 +32,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.loginpage(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./public/html/login.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/login.html');
     }); 
   });
 
@@ -80,7 +82,7 @@ describe('routes', function(){
 
       waitsFor(function() {
         return req.session.user;
-      }, 'User should be set', 750);
+      }, 'User should be set', 2000);
 
       runs(function() {
         expect(res.redirect).toHaveBeenCalled();
@@ -94,7 +96,7 @@ describe('routes', function(){
     var req = {},
         res = {sendfile:jasmine.createSpy('sendfile')};
     routes.signuppage(req, res);
-    expect(res.sendfile).toHaveBeenCalledWith('./public/html/register.html');
+    expect(res.sendfile).toHaveBeenCalledWith('./app/public/html/register.html');
   });
 
   //nested describe for signup route
@@ -202,7 +204,7 @@ describe('routes', function(){
       expect(routes.home.name).toBe('homePage');
     });
 
-    it('should call sendFile with argument "./routes/html/dashboard..html"', function(){
+    it('should call sendFile with argument "./app/routes/html/dashboard..html"', function(){
       var req = {};
       var res = {
             sendfile: jasmine.createSpy('sendfile')
@@ -210,7 +212,7 @@ describe('routes', function(){
       //spyOn(res, 'sendfile');
       routes.home(req, res);
       expect(res.sendfile).toHaveBeenCalled();
-      expect(res.sendfile).toHaveBeenCalledWith('./routes/html/dashboard.html');
+      expect(res.sendfile).toHaveBeenCalledWith('./app/routes/html/dashboard.html');
     }); 
   });
 
@@ -266,7 +268,7 @@ describe('routes', function(){
       });
       waitsFor(function() {
         return done;
-      }, 'Send to be called', 1000);
+      }, 'Send to be called', 2000);
       runs(function(){
         expect(res.send).toHaveBeenCalled();
         expect(typeof(res.send.mostRecentCall.args[0])).toBe('string');
@@ -301,9 +303,9 @@ describe('routes', function(){
       expect(routes.RequestStore.find.calls[0].args[0]).toEqual({'headers.host': 'www.test.com', 'attack': 'true'})
     });
 
-    it('should respond with the result documents', function(){
+    it('should respond with the result documents in JSON', function(){
       routes.RequestStore.find.calls[0].args[1](null, doc);
-      expect(res.send).toHaveBeenCalledWith(doc);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 
@@ -334,7 +336,7 @@ describe('routes', function(){
 
     it('should respond with the returned documents', function(){
       routes.RequestStore.find.calls[0].args[2](null, docs);
-      expect(res.send).toHaveBeenCalledWith(docs);
+      expect(res.send).toHaveBeenCalledWith(JSON.stringify(docs));
     });
   });
 
@@ -352,7 +354,7 @@ describe('routes', function(){
     var res = {
     send:jasmine.createSpy('send')
     };
-    var doc = {doc:'thisisadoc'}
+    var doc = [{host:'thisisadoc', headers: {host: 'test'}},{host:'thisisadoc', headers: {host: 'test'}}];
     beforeEach(function(){
       spyOn(routes.RequestStore, 'find');
       routes.traffic(req, res);
@@ -365,7 +367,7 @@ describe('routes', function(){
 
     it('should respond with the documents', function(){
         routes.RequestStore.find.calls[0].args[1](null, doc);
-        expect(res.send).toHaveBeenCalledWith(doc);
+        expect(res.send).toHaveBeenCalledWith(JSON.stringify(doc));
     });
   });
 
@@ -509,6 +511,6 @@ describe('routes', function(){
   setTimeout(function() {
     console.log('disconnect');
     mongoose.disconnect();
-  }, 4000);
+  }, 10000);
 
 });

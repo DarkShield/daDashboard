@@ -4,8 +4,20 @@
 module.exports = function(grunt) {
   grunt.initConfig({
 
+    env : {
+      options : {
+        //Shared Options Hash
+      },
+      dev : {
+        NODE_ENV : 'development'
+      },
+      strider : {
+        NODE_ENV : 'test'
+      }
+    },
+
     watch: {
-      assets: {
+      backend: {
         files: [
           'app/lib/*.js',
           'app/model/*.js',
@@ -14,7 +26,7 @@ module.exports = function(grunt) {
           'app/server.js',
           'spec/node/unit/*.*.js'
         ],
-        tasks: ['jasmine_node']
+        tasks: ['jasmine_node:dev']
       },
       protractor: {
         files: ['app/public/js/**/*.js','spec/angular/e2e/**/*.js'],
@@ -42,35 +54,44 @@ module.exports = function(grunt) {
     },
 
     jasmine_node: {
-      coverage: {
-        options : {
-          failTask: false,
-          branches : 83 ,
-          functions: 98,
-          statements:99,
-          lines:99
-        }
+      dev: {
+          options: {
+            coverage: false,
+            specFolders: ['./spec/node'],
+            forceExit: true,
+            match: '.',
+            matchall: false,
+            extensions: 'js',
+            specNameMatcher: 'spec'
+          },
+          src: ['**/*.js']
       },
-      options: {
-        specFolders: ['./spec/node'],
-        forceExit: true,
-        match: '.',
-        matchall: false,
-        extensions: 'js',
-        specNameMatcher: 'spec'
-
+      cov: {
+        options: {
+          specFolders: ['./spec/node'],
+          forceExit: true,
+          match: '.',
+          matchall: false,
+          extensions: 'js',
+          specNameMatcher: 'spec'
+        },
+        src: ['**/*.js']
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-jasmine-node-coverage-validation');
+  grunt.loadNpmTasks('grunt-jasmine-node-coverage');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-env');
 
-  grunt.registerTask('backend', ['jasmine_node']);
-  grunt.registerTask('frontend', ['karma:unit_coverage']);
-  grunt.registerTask('frontend:unit', ['karma:unit']);
+  grunt.registerTask('backend', ['env:dev', 'jasmine_node:dev']);
+  grunt.registerTask('backend:cov', ['env:dev', 'jasmine_node:cov']);
+  grunt.registerTask('frontend:unit:coverage', ['env:dev','karma:unit_coverage']);
+  grunt.registerTask('frontend:unit', ['env:dev','karma:unit']);
 
-  grunt.registerTask('test:unit', ['karma:unit_coverage', 'jasmine_node']);
-  grunt.registerTask('autotest',['watch:assets']);
+  grunt.registerTask('test:unit:cov', ['env:dev','karma:unit_coverage', 'jasmine_node:cov']);
+  grunt.registerTask('test:unit', ['env:dev','karma:unit', 'jasmine_node:dev']);
+  grunt.registerTask('test:strider', ['env:strider','karma:unit', 'jasmine_node:dev']);
+  grunt.registerTask('autotest:backend',['env:dev','watch:backend']);
 };
