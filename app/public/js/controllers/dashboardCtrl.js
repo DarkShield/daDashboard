@@ -65,29 +65,29 @@ angular.module('App.Controllers')
 
     $scope.options = {
       chart: {
-        type: 'multiBarChart',
+        type: 'stackedAreaChart',
         height: 450,
         margin : {
           top: 20,
           right: 20,
           bottom: 60,
-          left: 45
+          left: 40
         },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        useVoronoi: false,
         clipEdge: true,
-        staggerLabels: true,
         transitionDuration: 500,
-        stacked: true,
+        useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
-          tickFormat: function(d){
-            return d;
+          tickFormat: function(d) {
+            return $filter('date')(d, 'shortTime');;
           }
         },
         yAxis: {
-          axisLabel: 'Requests',
-          axisLabelDistance: 40,
           tickFormat: function(d){
-            return d3.format(',.1f')(d);
+            return d;
           }
         }
       }
@@ -97,7 +97,10 @@ angular.module('App.Controllers')
     $scope.data = function(){
       trafficService.getRange($scope.requestrange).then(function(){
         var data = [
-          {key: 'Traffic', color: '#1f77b4', values: []}
+          {
+            key: 'Traffic',
+            values: []
+          }
           //{key: 'Attacks', values: []}
         ];
         var requests = trafficService.requests;
@@ -109,7 +112,8 @@ angular.module('App.Controllers')
         var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
 
         angular.forEach(requestsByTime, function(value, key){
-          data[0].values.push({x:key, y: value.length});
+          var d = new Date(key);
+          data[0].values.push([d, value.length]);
         });
         /*Removed for debug
         var attacks = trafficService.getAttacks();
