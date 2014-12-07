@@ -19,8 +19,6 @@ angular.module('App.Controllers')
       }
     };
 
-    $scope.getRequestData();
-
     $scope.getVisitors = function(){
       var requestsByIP = trafficService.getIPs();
       requestsByIP = $filter('toArray')(requestsByIP);
@@ -45,10 +43,7 @@ angular.module('App.Controllers')
     $scope.getLastSeen = function(attacks){
       var sorted = $filter('orderBy')(attacks, 'requestedtimestamp');
       var reversed = $filter('reverse')(sorted);
-      var now = new Date();
       var date = new Date(reversed[0].requestedtimestamp);
-      var timesincelastseen = (now - date) / 60;
-
       return (date) ? date : 'Loading'
     };
 
@@ -60,5 +55,80 @@ angular.module('App.Controllers')
       var attacks = $filter('toArray')(trafficService.getAttacks());
       return (attacks && attacks.length) ? attacks.length : 'Loading'
     };
+    $scope.config = {
+      visible: true, // default: true
+      extended: false, // default: false
+      disabled: false, // default: false
+      autorefresh: true, // default: true
+      refreshDataOnly: false // default: false
+    };
 
+    $scope.options = {
+      chart: {
+        type: 'multiBarChart',
+        height: 450,
+        margin : {
+          top: 20,
+          right: 20,
+          bottom: 60,
+          left: 45
+        },
+        clipEdge: true,
+        staggerLabels: true,
+        transitionDuration: 500,
+        stacked: true,
+        xAxis: {
+          showMaxMin: false,
+          tickFormat: function(d){
+            return d;
+          }
+        },
+        yAxis: {
+          axisLabel: 'Requests',
+          axisLabelDistance: 40,
+          tickFormat: function(d){
+            return d3.format(',.1f')(d);
+          }
+        }
+      }
+    };
+
+
+    $scope.data = function(){
+      trafficService.getRange($scope.requestrange).then(function(){
+        var data = [
+          {key: 'Traffic', color: '#1f77b4', values: []},
+          {key: 'Attacks', values: []},
+        ];
+        var requests = trafficService.requests;
+
+        angular.forEach(requests, function(value,key){
+          requests[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
+        });
+
+        var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
+
+        angular.forEach(requestsByTime, function(value, key){
+          data[0].values.push({x:key, y: value.length});
+        });
+
+        var attacks = trafficService.getAttacks();
+
+        angular.forEach(attacks, function(value, key){
+          attacks[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
+        });
+
+        var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
+
+        angular.forEach(attacksByTime, function(value, key){
+          data[1].values.push({x:key, y: value.length});
+        });
+
+
+
+        $scope.data = data;
+      });
+      //must return an array until the xhr returns to prevent d3 error
+      return []
+    }
   }]);
