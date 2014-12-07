@@ -1,23 +1,21 @@
 angular.module('App.Controllers')
   .controller('dashboardCtrl',['$scope', '$filter', 'trafficService', function($scope, $filter, trafficService){
-    $scope.enddate = new Date();
+
 
     $scope.startdate = (function(){
       var d = new Date();
-      d.setHours(-24);
+      var hour = d.getHours() - 4;
+      d.setHours(hour);
       return d;
     })();
+
+    $scope.enddate = new Date();
 
     $scope.requestrange = {
       start: $scope.startdate.toISOString(),
       end: $scope.enddate.toISOString()
     };
 
-    $scope.getRequestData = function(){
-      if(trafficService.requests.length === 0) {
-        trafficService.getRange($scope.requestrange);
-      }
-    };
 
     $scope.getVisitors = function(){
       var requestsByIP = trafficService.getIPs();
@@ -26,7 +24,7 @@ angular.module('App.Controllers')
     };
 
     $scope.getAttackerCount = function(){
-      $scope.attacks = trafficService.getAttacks();
+      $scope.attacks = trafficService.getAttacks(true);
       var attackers = $filter('groupBy')($scope.attacks, 'remoteIP');
       attackers = $filter('toArray')(attackers);
 
@@ -34,7 +32,7 @@ angular.module('App.Controllers')
     };
 
     $scope.getAttackers = function(){
-      $scope.attacks = trafficService.getAttacks();
+      $scope.attacks = trafficService.getAttacks(true);
       var attackers = $filter('groupBy')($scope.attacks, 'remoteIP');
       attackers = $filter('toArray')(attackers);
       return (attackers) ? attackers : []
@@ -52,7 +50,7 @@ angular.module('App.Controllers')
     };
 
     $scope.getAttackCount = function(){
-      var attacks = $filter('toArray')(trafficService.getAttacks());
+      var attacks = $filter('toArray')(trafficService.getAttacks(true));
       return (attacks && attacks.length) ? attacks.length : 'Loading'
     };
     $scope.config = {
@@ -86,6 +84,7 @@ angular.module('App.Controllers')
           }
         },
         yAxis: {
+          showMaxMin:false,
           tickFormat: function(d){
             return d;
           }
@@ -93,49 +92,60 @@ angular.module('App.Controllers')
       }
     };
 
-
+    $scope.queuedRequest = false;
     $scope.data = function(){
-      trafficService.getRange($scope.requestrange).then(function(){
-        var data = [
-          {
-            key: 'Traffic',
+
+      if(trafficService.requests.length === 0 && $scope.queuedRequest === false){
+       $scope.queuedRequest = true;
+        trafficService.getRange($scope.requestrange).then(function(){
+          var data = [];
+
+          var reqs = {
+            key: 'Requests',
             values: []
-          }
-        ];
-        var requests = trafficService.requests;
+          };
 
-        angular.forEach(requests, function(value,key){
-          requests[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
-        });
+          var att = {
+            key: 'Attacks',
+            values: []
+          };
+          var requests = trafficService.requests;
 
-        var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
+          angular.forEach(requests, function(value,key){
+            requests[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
+          });
 
-        angular.forEach(requestsByTime, function(value, key){
-          var d = new Date(key);
-          data[0].values.push([d, value.length]);
-        });
+          var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
 
 
-        var attacks = trafficService.getAttacks();
+          var attacks = trafficService.getAttacks();
+          angular.forEach(attacks, function(value, key){
+            attacks[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
+          });
 
-        angular.forEach(attacks, function(value, key){
-          attacks[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
-        });
+          var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
 
-        var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
-        var att = {
-          key: 'Attacks',
-          values: []
-        };
-        angular.forEach(attacksByTime, function(value, key){
-          var d = new Date(key);
-          att.values.push([d, value.length]);
-        });
-        data.push(att);
+          angular.forEach(requestsByTime, function(value, key){
+            var d = new Date(key);
+            var pushed = false
+            angular.forEach(attacksByTime,function(value2, key2){
+              if(key == key2){
+                att.values.push([d, value2.length]);
+                pushed = true;
+              }
+            });
+            reqs.values.push([d, value.length]);
+            if(!pushed){
+              att.values.push([d, 0]);
+            }
+          });
 
-        $scope.data = data;
+          data.push(att);
+          data.push(reqs);
+          $scope.data = data;
       });
-      //must return an array until the xhr returns to prevent d3 error
+      }
       return []
     }
+
   }]);

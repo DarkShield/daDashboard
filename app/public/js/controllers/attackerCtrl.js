@@ -35,7 +35,7 @@ angular.module('App.Controllers')
     $scope = paginationService.init($scope);
 
     $scope.applyFilter = function(){
-      var activeDomains = $filter('filterBy')(trafficService.getAttacks(), ['headers.host'], $scope.selectedsite);
+      var activeDomains = $filter('filterBy')(trafficService.getAttacks(true), ['headers.host'], $scope.selectedsite);
       var groupIP = $filter('groupBy')(activeDomains, 'remoteIP');
       var searchData = $filter('filter')(groupIP, $scope.query);
 
