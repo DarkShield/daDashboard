@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development'){
 }
 else if (process.env.NODE_ENV === 'production'){
   require('newrelic');
-  mongoose.connect('ec2-54-204-151-231.compute-1.amazonaws.com', 'vicetest');
+  mongoose.connect('10.136.20.210', 'vicetest');
 }
 else {
   mongoose.connect('10.136.20.210', 'dashtest');
