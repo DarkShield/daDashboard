@@ -97,8 +97,8 @@ angular.module('App.Controllers')
     $scope.data = function(){
       trafficService.getRange($scope.requestrange).then(function(){
         var data = [
-          {key: 'Traffic', color: '#1f77b4', values: []},
-          {key: 'Attacks', values: []},
+          {key: 'Traffic', color: '#1f77b4', values: []}
+          //{key: 'Attacks', values: []}
         ];
         var requests = trafficService.requests;
 
@@ -111,7 +111,7 @@ angular.module('App.Controllers')
         angular.forEach(requestsByTime, function(value, key){
           data[0].values.push({x:key, y: value.length});
         });
-
+        /*Removed for debug
         var attacks = trafficService.getAttacks();
 
         angular.forEach(attacks, function(value, key){
@@ -123,9 +123,7 @@ angular.module('App.Controllers')
         angular.forEach(attacksByTime, function(value, key){
           data[1].values.push({x:key, y: value.length});
         });
-
-
-
+        */
         $scope.data = data;
       });
       //must return an array until the xhr returns to prevent d3 error
