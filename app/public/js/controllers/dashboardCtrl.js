@@ -82,7 +82,7 @@ angular.module('App.Controllers')
         xAxis: {
           showMaxMin: false,
           tickFormat: function(d) {
-            return $filter('date')(d, 'shortTime');;
+            return $filter('date')(d, 'shortTime');
           }
         },
         yAxis: {
@@ -100,8 +100,11 @@ angular.module('App.Controllers')
           {
             key: 'Traffic',
             values: []
+          },
+          {
+            key: 'Attacks',
+            values: []
           }
-          //{key: 'Attacks', values: []}
         ];
         var requests = trafficService.requests;
 
@@ -115,7 +118,8 @@ angular.module('App.Controllers')
           var d = new Date(key);
           data[0].values.push([d, value.length]);
         });
-        /*Removed for debug
+
+
         var attacks = trafficService.getAttacks();
 
         angular.forEach(attacks, function(value, key){
@@ -125,9 +129,9 @@ angular.module('App.Controllers')
         var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
 
         angular.forEach(attacksByTime, function(value, key){
-          data[1].values.push({x:key, y: value.length});
+          var d = new Date(key);
+          data[1].values.push([d, value.length]);
         });
-        */
         $scope.data = data;
       });
       //must return an array until the xhr returns to prevent d3 error
