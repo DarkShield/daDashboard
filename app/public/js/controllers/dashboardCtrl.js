@@ -100,10 +100,6 @@ angular.module('App.Controllers')
           {
             key: 'Traffic',
             values: []
-          },
-          {
-            key: 'Attacks',
-            values: []
           }
         ];
         var requests = trafficService.requests;
@@ -127,11 +123,16 @@ angular.module('App.Controllers')
         });
 
         var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
-
+        var att = {
+          key: 'Attacks',
+          values: []
+        };
         angular.forEach(attacksByTime, function(value, key){
           var d = new Date(key);
-          data['1'].values.push([d, value.length]);
+          att.values.push([d, value.length]);
         });
+        data.push(att);
+
         $scope.data = data;
       });
       //must return an array until the xhr returns to prevent d3 error
