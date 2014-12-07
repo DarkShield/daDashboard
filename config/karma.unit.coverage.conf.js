@@ -20,6 +20,9 @@ module.exports = function(config) {
       './app/public/js/vendor/angular/angular-mocks.js',
       './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
       './app/public/js/directives/angular-strap/dist/angular-strap.js',
+      './bower_components/angular-nvd3/dist/angular-nvd3.js',
+      './bower_components/d3/d3.js',
+      './bower_components/nvd3/nv.d3.js',
 
       //Include App Code
       './app/public/js/dashboard.js',
