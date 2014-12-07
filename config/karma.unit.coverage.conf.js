@@ -16,10 +16,11 @@ module.exports = function(config) {
     files: [
 
       //Include Vendor Files
-      './app/public/js/vendor/angular/angular.js',
-      './app/public/js/vendor/angular/angular-mocks.js',
-      './app/public/js/vendor/ui-bootstrap-tpls-0.6.0.js',
-      './app/public/js/directives/angular-strap/dist/angular-strap.js',
+      './bower_components/angular/angular.js',
+      './bower_components/angular-mocks/angular-mocks.js',
+      './bower_components/angular-route/angular-route.js',
+      './bower_components/angular-filter/dist/angular-filter.js',
+      './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       './bower_components/angular-nvd3/dist/angular-nvd3.js',
       './bower_components/d3/d3.js',
       './bower_components/nvd3/nv.d3.js',
