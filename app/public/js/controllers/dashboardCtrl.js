@@ -130,7 +130,7 @@ angular.module('App.Controllers')
 
         angular.forEach(attacksByTime, function(value, key){
           var d = new Date(key);
-          data[1].values.push([d, value.length]);
+          data['1'].values.push([d, value.length]);
         });
         $scope.data = data;
       });
