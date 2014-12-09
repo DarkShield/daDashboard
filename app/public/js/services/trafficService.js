@@ -65,19 +65,18 @@ angular.module('App.Services')
           angular.forEach(requestsByTime, function(requests,timestamp){
             var d = new Date(timestamp);
             //reqs.values.push([d, requests.length]);
-            var hasattack = 0;
+            var hasattack = false;
             //This normalizes the attack time-series
             angular.forEach(requests, function(request){
               if(request.attack){
-                hasattack++;
+                hasattack = true;
               }
             });
             //no attacks fill time slot with 0
             if(hasattack == 0){
               att.values.push([d, 0]);
             }
-            var nonattacks = requests.length - hasattack;
-            reqs.values.push([d, nonattacks]);
+            reqs.values.push([d, requests.length]);
           });
           return [reqs, att];
         }
