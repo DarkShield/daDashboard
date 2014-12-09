@@ -55,30 +55,31 @@ angular.module('App.Services')
             request.requestedtimestamp = $filter('date')(request.requestedtimestamp, 'short');
           });
           var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
-          var attacksByTime = $filter('groupBy')($filter('attack')(requests, 'Attacks'), 'requestedtimestamp');
+          var attacksByTime = $filter('groupBy')(traffic.getAttacks(), 'requestedtimestamp');
           //Attack time-series
           angular.forEach(attacksByTime, function(attacks, timestamp){
             var d = new Date(timestamp);
             att.values.push([d, attacks.length]);
           });
           //Request time-series
-          angular.forEach(requestsByTime, function(requests,timestamp){
+          angular.forEach(requestsByTime, function(values,timestamp){
             var d = new Date(timestamp);
-            reqs.values.push([d, requests.length]);
+
             var hasattack = false;
+            var attcnt = 0
             //This normalizes the attack time-series
-            angular.forEach(requests, function(request){
-              if(request.attack){
+            angular.forEach(values, function(request){
+              if(request.attack === 'true'){
                 hasattack = true;
+                attcnt++
               }
             });
             //no attacks fill time slot with 0
-            if(!hasattack){
+            if(hasattack === false){
               att.values.push([d, 0]);
             }
+            reqs.values.push([d, values.length - attcnt]);
           });
-          console.log(reqs);
-          console.log(att);
           return [att, reqs];
         }
         else {
