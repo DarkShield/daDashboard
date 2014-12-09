@@ -77,7 +77,7 @@ angular.module('App.Services')
             }
             reqs.values.push([d, values.length]);
           });
-          return [att, reqs];
+          return [reqs, att];
         }
         else {
           return [];
