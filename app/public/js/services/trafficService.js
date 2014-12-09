@@ -30,20 +30,62 @@ angular.module('App.Services')
       },
 
       getAttacks: function(){
-        var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
-        return groupedByAttackBool.true;
+        return $filter('attack')(traffic.requests, 'Attacks');
       },
 
-      getNonAttacks: function(){
-        var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
-        return groupedByAttackBool.false;
-      },
-
-      getDetails: function(id, callback){
+      getDetails: function(id){
         return $http.post('/traffic/request-details', {id: id}).then(function(response){
           return response.data;
         });
+      },
+
+      getChartData: function(){
+        if(traffic.requests.length > 0){
+          var reqs = {
+            key: 'Requests',
+            values: []
+          };
+          var att = {
+            key: 'Attacks',
+            values: []
+          };
+          var requests = traffic.requests;
+          //Shorten timestamp to minutes
+          angular.forEach(requests, function(request){
+            request.requestedtimestamp = $filter('date')(request.requestedtimestamp, 'short');
+          });
+          var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
+          var attacksByTime = $filter('groupBy')($filter('attack')(requests, 'Attacks'), 'requestedtimestamp');
+          //Attack time-series
+          angular.forEach(attacksByTime, function(attacks, timestamp){
+            var d = new Date(timestamp);
+            att.values.push([d, attacks.length]);
+          });
+          //Request time-series
+          angular.forEach(requestsByTime, function(requests,timestamp){
+            var d = new Date(timestamp);
+            //reqs.values.push([d, requests.length]);
+            var hasattack = 0;
+            //This normalizes the attack time-series
+            angular.forEach(requests, function(request){
+              if(request.attack){
+                hasattack++;
+              }
+            });
+            //no attacks fill time slot with 0
+            if(hasattack == 0){
+              att.values.push([d, 0]);
+            }
+            var nonattacks = requests.length - hasattack;
+            reqs.values.push([d, nonattacks]);
+          });
+          return [reqs, att];
+        }
+        else {
+          return [];
+        }
       }
    };
+
    return traffic;
   }]);

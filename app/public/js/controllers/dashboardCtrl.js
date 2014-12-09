@@ -16,7 +16,6 @@ angular.module('App.Controllers')
       end: $scope.enddate.toISOString()
     };
 
-
     $scope.getVisitors = function(){
       var requestsByIP = trafficService.getIPs();
       requestsByIP = $filter('toArray')(requestsByIP);
@@ -92,60 +91,10 @@ angular.module('App.Controllers')
       }
     };
 
-    $scope.queuedRequest = false;
-    $scope.data = function(){
+    $scope.data = trafficService.getChartData;
 
-      if(trafficService.requests.length === 0 && $scope.queuedRequest === false){
-       $scope.queuedRequest = true;
-        trafficService.getRange($scope.requestrange).then(function(){
-          var data = [];
-
-          var reqs = {
-            key: 'Requests',
-            values: []
-          };
-
-          var att = {
-            key: 'Attacks',
-            values: []
-          };
-          var requests = trafficService.requests;
-
-          angular.forEach(requests, function(value,key){
-            requests[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
-          });
-
-          var requestsByTime = $filter('groupBy')(requests, 'requestedtimestamp');
-
-
-          var attacks = trafficService.getAttacks();
-          angular.forEach(attacks, function(value, key){
-            attacks[key].requestedtimestamp = $filter('date')(value.requestedtimestamp, 'short');
-          });
-
-          var attacksByTime = $filter('groupBy')(attacks, 'requestedtimestamp');
-
-          angular.forEach(requestsByTime, function(value, key){
-            var d = new Date(key);
-            var pushed = false
-            angular.forEach(attacksByTime,function(value2, key2){
-              if(key == key2){
-                att.values.push([d, value2.length]);
-                pushed = true;
-              }
-            });
-            reqs.values.push([d, value.length]);
-            if(!pushed){
-              att.values.push([d, 0]);
-            }
-          });
-
-          data.push(att);
-          data.push(reqs);
-          $scope.data = data;
-      });
-      }
-      return []
-    }
-
+    if(trafficService.requests.length === 0){
+      trafficService.getRange($scope.requestrange).then(function(){
+          $scope.data = trafficService.getChartData();
+    })}
   }]);
