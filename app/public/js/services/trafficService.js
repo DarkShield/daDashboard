@@ -77,6 +77,8 @@ angular.module('App.Services')
               att.values.push([d, 0]);
             }
           });
+          console.log(reqs);
+          console.log(att);
           return [att, reqs];
         }
         else {
