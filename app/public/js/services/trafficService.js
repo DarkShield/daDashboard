@@ -73,7 +73,7 @@ angular.module('App.Services')
               }
             });
             //no attacks fill time slot with 0
-            if(hasattack == 0){
+            if(!hasattack){
               att.values.push([d, 0]);
             }
           });
