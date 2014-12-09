@@ -64,7 +64,7 @@ angular.module('App.Services')
           //Request time-series
           angular.forEach(requestsByTime, function(requests,timestamp){
             var d = new Date(timestamp);
-            //reqs.values.push([d, requests.length]);
+            reqs.values.push([d, requests.length]);
             var hasattack = false;
             //This normalizes the attack time-series
             angular.forEach(requests, function(request){
@@ -76,9 +76,8 @@ angular.module('App.Services')
             if(hasattack == 0){
               att.values.push([d, 0]);
             }
-            reqs.values.push([d, requests.length]);
           });
-          return [reqs, att];
+          return [att];
         }
         else {
           return [];
