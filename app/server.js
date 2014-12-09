@@ -13,7 +13,7 @@ app.use(helmet.frameguard());
 app.use(helmet.xssFilter());
 app.use(helmet.hidePoweredBy());
 app.use(express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/../bower_components'));;
+app.use(express.static(__dirname + '/../bower_components'));
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 //app.use(express.cookieSession({key: 'sess', secret: 'SuperSecret'}));

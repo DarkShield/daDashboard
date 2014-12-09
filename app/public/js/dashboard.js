@@ -3,6 +3,7 @@ var App = window.App = angular.module('App',
     'ngRoute',
     'ui.bootstrap',
     'angular.filter',
+    'nvd3',
     'App.Controllers',
     'App.Services',
     'App.Filters'

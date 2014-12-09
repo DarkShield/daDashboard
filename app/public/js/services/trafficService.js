@@ -14,9 +14,10 @@ angular.module('App.Services')
         $http.post('/toggle/block', {ip: ip, host: host});
       },
 
-      getRange: function(range){
-        $http.post('/traffic', range).success(function(body){
-          traffic.requests = body;
+      getRange: function(range, callback){
+        return $http.post('/traffic', range).then(function(response){
+          traffic.requests = response.data;
+          return response.data
         });
       },
 
@@ -30,7 +31,12 @@ angular.module('App.Services')
 
       getAttacks: function(){
         var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
-        return groupedByAttackBool.true
+        return groupedByAttackBool.true;
+      },
+
+      getNonAttacks: function(){
+        var groupedByAttackBool = $filter('groupBy')(traffic.requests, 'attack');
+        return groupedByAttackBool.false;
       },
 
       getDetails: function(id, callback){

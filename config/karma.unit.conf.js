@@ -21,6 +21,9 @@ module.exports = function(config) {
       './bower_components/angular-route/angular-route.js',
       './bower_components/angular-filter/dist/angular-filter.js',
       './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      './bower_components/angular-nvd3/dist/angular-nvd3.js',
+      './bower_components/d3/d3.js',
+      './bower_components/nvd3/nv.d3.js',
 
       //Include App Code
       './app/public/js/dashboard.js',
